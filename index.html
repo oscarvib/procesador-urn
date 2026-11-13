@@ -162,7 +162,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.3.1</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.3.2</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-view="p" aria-selected="true" id="tab-p">Pasadas</button>
     <button role="tab" data-view="r" aria-selected="false" id="tab-r">Resumen</button>
@@ -208,7 +208,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.3.1';
+const APP_VERSION='1.3.2';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -555,12 +555,12 @@ S.showLim=S.lim!=='none';
 const saveS=()=>LS.set('urn.settings',S);
 
 const TXT={
- en:{trend:(v,s)=>`URN TREND – ${v} kn – ${s}`,time:'Time (s)',rms:'URN RMS (Pa)',fit:'Fitting',dwl:'Data window',fondo:'Background',cpa:'CPA',exp:'Expected 1/r (GPS)',cpaG:'GPS CPA',rec:'Recording',
+ en:{trend:(v,s)=>`URN TREND – ${v} kn – ${s}`,time:'Time (s)',rms:'URN RMS (Pa)',fit:'Fitting',dwl:'Data window',fondo:'Background',cpa:'CPA',exp:'Expected 1/r (GPS)',cpaG:'GPS CPA',rec:'Recording',sog:'Speed SOG (kn)',sogAx:'Speed (kn)',
    sl:(v,s)=>`SOURCE LEVEL URN – ${v} kn – ${s}`,freq:'Frequency (Hz)',db:'dB re 1 µPa @ 1 m',nb:df=>`URN ${df} Hz`,nbB:df=>`Background ${df} Hz`,
    to:'URN 1/3 oct',toB:'Background 1/3 oct',limA:'ICES R209 = SILENT(R) > 25 Hz',limB:'SILENT(R) < 25 Hz',
    map:'TRANSIT MAP',ew:'East–West (m)',ns:'North–South (m)',track:'Ship track',buoy:'Buoy fixes',hyd:'Hydrophone',start:'Start',
    dist:'DISTANCE SHIP – HYDROPHONE',utc:'Time (UTC)',dm:'Distance (m)',sum:'COMPARATIVE SUMMARY – ALL RUNS'},
- es:{trend:(v,s)=>`TENDENCIA URN – ${v} nudos – ${s}`,time:'Tiempo (s)',rms:'URN RMS (Pa)',fit:'Tendencia',dwl:'Ventana DWL',fondo:'Ruido de fondo',cpa:'CPA',exp:'Esperado 1/r (GPS)',cpaG:'CPA GPS',rec:'Registro',
+ es:{trend:(v,s)=>`TENDENCIA URN – ${v} nudos – ${s}`,time:'Tiempo (s)',rms:'URN RMS (Pa)',fit:'Tendencia',dwl:'Ventana DWL',fondo:'Ruido de fondo',cpa:'CPA',exp:'Esperado 1/r (GPS)',cpaG:'CPA GPS',rec:'Registro',sog:'Velocidad SOG (kn)',sogAx:'Velocidad (kn)',
    sl:(v,s)=>`NIVEL DE FUENTE URN – ${v} nudos – ${s}`,freq:'Frecuencia (Hz)',db:'dB ref 1 µPa @ 1 m',nb:df=>`URN ${df} Hz`,nbB:df=>`Fondo ${df} Hz`,
    to:'URN 1/3 oct',toB:'Fondo 1/3 oct',limA:'ICES R209 = SILENT(R) > 25 Hz',limB:'SILENT(R) < 25 Hz',
    map:'MAPA DE TRÁNSITO',ew:'Este–Oeste (m)',ns:'Norte–Sur (m)',track:'Derrota del barco',buoy:'Fijos de la boya',hyd:'Hidrófono',start:'Inicio',
@@ -642,6 +642,8 @@ function computeGPS(p){
   for(const s of Sh.fixes){let xh=0,yh=0;if(mode==='sync'){const h=Hm.get(Math.round(s.t));if(!h)continue;xh=X(h.lon);yh=Y(h.lat);}
     const xs=X(s.lon),ys=Y(s.lat);pr.push({t:s.t,xs,ys,xh,yh,d:Math.hypot(xs-xh,ys-yh),sog:s.sog});}
   if(!pr.length)return{err:'No hay posiciones del barco utilizables.'};
+  {let a=0,b=0;for(let i=0;i<pr.length;i++){while(pr[a].t<pr[i].t-5)a++;if(b<i)b=i;while(b+1<pr.length&&pr[b+1].t<=pr[i].t+5)b++;
+    const A=pr[a],B=pr[b];pr[i].v=B.t>A.t?Math.hypot(B.xs-A.xs,B.ys-A.ys)/(B.t-A.t)/KN:NaN;}}
   let im=0;for(let i=1;i<pr.length;i++)if(pr[i].d<pr[im].d)im=i;
   const c=pr[im];const j0=pr.findIndex(q=>q.t>=c.t-10);let j1=im;for(let i=im;i<pr.length&&pr[i].t<=c.t+10;i++)j1=i;
   let sog=null,cog=null;if(j1>j0){const a=pr[j0],b=pr[j1];const dd=Math.hypot(b.xs-a.xs,b.ys-a.ys);sog=dd/(b.t-a.t)/KN;cog=(Math.atan2(b.xs-a.xs,b.ys-a.ys)/D+360)%360;}
@@ -869,10 +871,10 @@ class Chart{
     c.font=FONT(12);const rows=[];let rw=0,row=[];const maxW=W-24;
     for(const e of leg){const w=26+c.measureText(e.s.label).width+16;if(rw+w>maxW&&row.length){rows.push(row);row=[];rw=0}row.push({...e,w});rw+=w}if(row.length)rows.push(row);
     const legH=rows.length?rows.length*18+8:0;
-    const pl=62,pr=18,pt=d.title?34:14,pb=44+legH;const pw=W-pl-pr,ph=H-pt-pb;if(pw<40||ph<30){c.restore();return null}
+    const has2=(d.series||[]).some(s=>s.axis==='y2');const pl=62,pr=has2?58:18,pt=d.title?34:14,pb=44+legH;const pw=W-pl-pr,ph=H-pt-pb;if(pw<40||ph<30){c.restore();return null}
     const allX=[],allY=[];
     for(const s of d.series||[]){const xs=s.x||s.lo,ys=s.y;if(!xs)continue;const n=xs.length;const st=Math.max(1,Math.floor(n/4000));
-      for(let i=0;i<n;i+=st){const xv=xs[i],yv=ys[i];if(fin(xv)&&fin(yv)&&(!d.xlog||xv>0)){allX.push(xv);allY.push(yv)}}
+      for(let i=0;i<n;i+=st){const xv=xs[i],yv=ys[i];if(fin(xv)&&fin(yv)&&(!d.xlog||xv>0)){allX.push(xv);if(s.axis!=='y2')allY.push(yv)}}
       if(s.hi){const h=s.hi[s.hi.length-1];if(fin(h))allX.push(h)}}
     const ext=a=>a.length?[Math.min(...a),Math.max(...a)]:[0,1];
     let [x0,x1]=(this.view&&this.view.x)||d.xlim||ext(allX);let [y0,y1]=d.ylim||ext(allY);
@@ -881,6 +883,8 @@ class Chart{
     if(d.equal){if(!this.view){const m=(x1-x0)*0.06;x0-=m;x1+=m}const ux=(x1-x0)/pw,uy=(y1-y0)/ph;if(ux>uy){const cc=(y0+y1)/2,h=ux*ph/2;y0=cc-h;y1=cc+h}else{const cc=(x0+x1)/2,w=uy*pw/2;x0=cc-w;x1=cc+w}}
     const lx=!!d.xlog,lx0=lx?log10(x0):0,lx1=lx?log10(x1):0;
     const X=v=>pl+(lx?(log10(v)-lx0)/(lx1-lx0):(v-x0)/(x1-x0))*pw;const Y=v=>pt+(1-(v-y0)/(y1-y0))*ph;
+    let Y2=null,z0=0,z1=1;if(has2){if(d.y2lim)[z0,z1]=d.y2lim;else{const a=[];for(const s of d.series)if(s.axis==='y2')for(const v of s.y)if(fin(v))a.push(v);if(a.length){z0=Math.min(...a);z1=Math.max(...a)}const m=(z1-z0)*0.08||1;z0-=m;z1+=m}
+      if(!(z1>z0))z1=z0+1;Y2=v=>pt+(1-(v-z0)/(z1-z0))*ph;}
     const invX=px=>{const t=(px-pl)/pw;return lx?10**(lx0+t*(lx1-lx0)):x0+t*(x1-x0)};const invY=py=>y0+(1-(py-pt)/ph)*(y1-y0);
     // rejilla
     c.lineWidth=1;c.font=FONT(12);c.fillStyle=P.ink2;
@@ -897,7 +901,7 @@ class Chart{
     c.save();c.beginPath();c.rect(pl,pt,pw,ph);c.clip();
     for(const s of d.shades||[]){const a=X(Math.max(s.x0,lx?x0:-1e300)),b=X(Math.min(s.x1,x1));c.fillStyle=col(s.color);c.fillRect(a,pt,b-a,ph)}
     for(const s of d.series||[]){c.strokeStyle=col(s.color);c.fillStyle=col(s.color);c.lineWidth=s.w||1.5;c.setLineDash(s.dash||[]);
-      if(s.type==='stairs')this.stairs(c,s,X,Y,x0,x1,lx);else if(s.type==='pts')this.pts(c,s,X,Y);else this.line(c,s,X,Y,x0,x1,pw,lx);}
+      const YY=s.axis==='y2'&&Y2?Y2:Y;if(s.type==='stairs')this.stairs(c,s,X,YY,x0,x1,lx);else if(s.type==='pts')this.pts(c,s,X,YY);else this.line(c,s,X,YY,x0,x1,pw,lx);}
     c.setLineDash([]);
     for(const v of d.vlines||[]){if(v.x<x0||v.x>x1)continue;c.strokeStyle=col(v.color);c.lineWidth=v.w||2;c.setLineDash(v.dash||[]);const px=X(v.x);c.beginPath();c.moveTo(px,pt);c.lineTo(px,pt+ph);c.stroke();c.setLineDash([])}
     if(live&&this.drag&&Math.abs(this.drag[1]-this.drag[0])>2){c.fillStyle='rgba(120,140,160,.18)';c.fillRect(Math.min(...this.drag),pt,Math.abs(this.drag[1]-this.drag[0]),ph)}
@@ -907,6 +911,9 @@ class Chart{
     if(d.title){c.font=FONT(15,700);c.fillText(d.title,pl+pw/2,21)}
     c.font=FONT(13,600);if(d.xlabel)c.fillText(d.xlabel,pl+pw/2,pt+ph+34);
     if(d.ylabel){c.save();c.translate(16,pt+ph/2);c.rotate(-Math.PI/2);c.fillText(d.ylabel,0,0);c.restore()}
+    if(Y2){const zt=linTicks(z0,z1,Math.max(3,ph/45));const c2=d.y2color?col(d.y2color):P.ink2;c.font=FONT(12);c.textAlign='left';c.fillStyle=c2;c.strokeStyle=c2;
+      for(const v of zt.t){const py=Math.round(Y2(v))+.5;c.beginPath();c.moveTo(pl+pw,py);c.lineTo(pl+pw+4,py);c.stroke();c.fillText(fmtTick(v,zt.st),pl+pw+7,py+4)}
+      if(d.y2label){c.font=FONT(13,600);c.textAlign='center';c.save();c.translate(W-12,pt+ph/2);c.rotate(Math.PI/2);c.fillText(d.y2label,0,0);c.restore()}c.fillStyle=P.ink;}
     if(d.box&&d.box.length){c.font=FONT(13);const bw=Math.max(...d.box.map(t=>c.measureText(t).width))+16,bh=d.box.length*18+8;
       const bx=pl+10,by=pt+10;c.fillStyle=P.plotbg;c.fillRect(bx,by,bw,bh);c.strokeStyle=P.ink2;c.strokeRect(bx+.5,by+.5,bw,bh);c.fillStyle=P.ink;c.textAlign='left';
       d.box.forEach((t,i)=>c.fillText(t,bx+8,by+19+i*18));}
@@ -1060,7 +1067,7 @@ function renderDetail(){
     <div id="gps-info"></div>
     <div class="charts2" id="gps-charts" ${g&&!g.err?'':'hidden'}>
       <div class="cbox"><div class="ctool"><span class="t">Mapa de tránsito</span><button class="btn sm" data-copy="map">Copiar imagen</button></div><div class="chart sq" id="c-map"></div></div>
-      <div class="cbox"><div class="ctool"><span class="t">Distancia horizontal al hidrófono</span><button class="btn sm" data-copy="dist">Copiar imagen</button></div><div class="chart sq" id="c-dist"></div></div>
+      <div class="cbox"><div class="ctool"><span class="t">Distancia horizontal al hidrófono y velocidad</span><button class="btn sm" data-copy="dist">Copiar imagen</button></div><div class="chart sq" id="c-dist"></div></div>
     </div>
   </section>
 
@@ -1195,7 +1202,9 @@ function updGPS(){
   charts.map.set({title:t.map,xlabel:t.ew,ylabel:t.ns,equal:true,series:ser,xname:'x'});
   charts.dist.set({title:t.dist,xlabel:t.utc,ylabel:t.dm,xtime:true,xname:'UTC',series:[
     {type:'line',x:g.pr.map(q=>q.t),y:g.pr.map(q=>q.d),color:'track',w:2,label:t.dm},
-    {type:'pts',x:[g.tcpa],y:[g.dcpa],color:'cpa',marker:'O',size:5,label:`CPA ${fmt(g.dcpa,1)} m · ${hmsStr(g.tcpa)}`}],
+    {type:'pts',x:[g.tcpa],y:[g.dcpa],color:'cpa',marker:'O',size:5,label:`CPA ${fmt(g.dcpa,1)} m · ${hmsStr(g.tcpa)}`},
+    {type:'line',x:g.pr.map(q=>q.t),y:g.pr.map(q=>q.v),color:1,w:1.6,axis:'y2',label:t.sog}],
+    y2label:t.sogAx,y2color:1,y2lim:(()=>{const a=g.pr.map(q=>q.v).filter(fin);if(!a.length)return null;return[Math.max(0,Math.floor(Math.min(...a))-1),Math.ceil(Math.max(...a))+1]})(),
     vlines:[{x:g.tcpa,color:'cpa',w:1.5,dash:[4,3]}],
     shades:p.res&&p.res.sync&&fin(p.res.sync.t0)?[{x0:p.res.sync.t0,x1:p.res.sync.t0+p.res.dur,color:'fondo',label:t.rec},{x0:p.res.sync.t0+p.res.tini_eff,x1:p.res.sync.t0+p.res.tfin_eff,color:'dwl',label:t.dwl}]:[]});
 }
