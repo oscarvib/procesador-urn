@@ -162,7 +162,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.2.1</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.3.0</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-view="p" aria-selected="true" id="tab-p">Pasadas</button>
     <button role="tab" data-view="r" aria-selected="false" id="tab-r">Resumen</button>
@@ -208,7 +208,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.2.1';
+const APP_VERSION='1.3.0';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -223,10 +223,10 @@ self.onmessage=async(e)=>{const m=e.data;try{
     const chans=await parseAny(buf,m.file.name,p=>post({id:m.id,progress:p}));
     if(!chans.length) throw new Error('No se han encontrado canales de datos (vectores numéricos) en el fichero.');
     store.set(m.passId,{chans,cache:null});
-    post({id:m.id,ok:true,meta:chans.map((c,i)=>({key:i,label:c.label,unit:c.unit||'',fs:c.fs||0,n:c.data.length,rms:rmsOf(c.data)}))});
+    post({id:m.id,ok:true,meta:chans.map((c,i)=>({key:i,label:c.label,unit:c.unit||'',fs:c.fs||0,n:c.data.length,rms:rmsOf(c.data),start:c.start||null}))});
   }else if(m.cmd==='synth'){
     const chans=synth(m); store.set(m.passId,{chans,cache:null});
-    post({id:m.id,ok:true,meta:chans.map((c,i)=>({key:i,label:c.label,unit:c.unit,fs:c.fs,n:c.data.length,rms:rmsOf(c.data)}))});
+    post({id:m.id,ok:true,meta:chans.map((c,i)=>({key:i,label:c.label,unit:c.unit,fs:c.fs,n:c.data.length,rms:rmsOf(c.data),start:c.start||null}))});
   }else if(m.cmd==='setfs'){
     const st=store.get(m.passId); if(st){st.chans[m.key].fs=m.fs; st.cache=null;} post({id:m.id,ok:true});
   }else if(m.cmd==='free'){store.delete(m.passId);post({id:m.id,ok:true});
@@ -319,6 +319,7 @@ const strOf=v=>{if(!v)return null;if(v.str!=null)return v.str;if(v.cells&&v.cell
 function fsFrom(o){for(const k of FSK){const s=scal(o[k]);if(s>0)return s<1?1/s:s}return 0}
 function matChannels(vars){
   const top={};vars.forEach(v=>top[v.name]=v);const gfs=fsFrom(top);const out=[];
+  let gstart=null;for(const v of vars){if(gstart)break;if(/date|time|start|fecha|hora|stamp|trigger/i.test(v.name))gstart=parseDateStr(strOf(v));}
   const walk=(v,path,ctx)=>{
     if(!v)return;
     if(v.data&&v.numel>=256){
@@ -326,18 +327,49 @@ function matChannels(vars){
       if(v.dims.length===2&&r>1&&c>1){
         if(r>=c){for(let j=0;j<c;j++)out.push({label:(ctx.label||path)+'(:,'+(j+1)+')',unit:ctx.unit,fs:ctx.fs,data:v.data.subarray(j*r,(j+1)*r)});}
         else{for(let i=0;i<r;i++){const d=new Float32Array(c);for(let j=0;j<c;j++)d[j]=v.data[i+r*j];out.push({label:(ctx.label||path)+'('+(i+1)+',:)',unit:ctx.unit,fs:ctx.fs,data:d});}}
-      }else out.push({label:ctx.label||path,unit:ctx.unit,fs:ctx.fs,data:v.data});
+      }else out.push({label:ctx.label||path,unit:ctx.unit,fs:ctx.fs,data:v.data,start:ctx.start||null});
     }
     if(v.elements){v.elements.forEach((el,i)=>{
       const p=path+(v.numel>1?'('+(i+1)+')':'');
       const nm=strOf(el.names)||strOf(el.name)||strOf(el.label)||strOf(el.channel);
       const un=strOf(el.units)||strOf(el.unit);const fs=fsFrom(el)||ctx.fs;
-      for(const f of v.fields){const c=el[f];if(!c)continue;walk(c,p+'.'+f,{label:nm?nm+' · '+p:'',unit:un||ctx.unit,fs});}
+      let start=ctx.start||null;for(const f of v.fields){if(start)break;if(/date|time|start|fecha|hora|stamp|trigger/i.test(f))start=parseDateStr(strOf(el[f]));}
+      for(const f of v.fields){const c=el[f];if(!c)continue;walk(c,p+'.'+f,{label:nm?nm+' · '+p:'',unit:un||ctx.unit,fs,start});}
     });}
     if(v.cells)v.cells.forEach((c,i)=>walk(c,path+'{'+(i+1)+'}',ctx));
   };
-  vars.forEach(v=>walk(v,v.name,{fs:gfs,unit:'',label:''}));
+  vars.forEach(v=>walk(v,v.name,{fs:gfs,unit:'',label:'',start:gstart}));
   return out;
+}
+
+/* ---------- fecha/hora de inicio ---------- */
+const MES={ene:1,jan:1,feb:2,mar:3,abr:4,apr:4,may:5,jun:6,jul:7,ago:8,aug:8,sep:9,sept:9,set:9,oct:10,nov:11,dic:12,dec:12};
+function parseDateStr(str){
+  if(!str)return null;const s=String(str);let m,y,mo,d,h,mi,se;
+  if((m=s.match(/(\d{1,2})[-\s./]+([A-Za-z\u00C0-\u00FF]{3,5})\.?[-\s./]+(\d{2,4})[\sT,]+(\d{1,2}):(\d{2}):(\d{2}(?:[.,]\d+)?)/))){
+    const k=m[2].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');mo=MES[k]||MES[k.slice(0,3)];if(!mo)return null;d=+m[1];y=+m[3];h=+m[4];mi=+m[5];se=parseFloat(m[6].replace(',','.'));}
+  else if((m=s.match(/(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})[\sT,]+(\d{1,2}):(\d{2}):(\d{2}(?:[.,]\d+)?)/))){y=+m[1];mo=+m[2];d=+m[3];h=+m[4];mi=+m[5];se=parseFloat(m[6].replace(',','.'));}
+  else if((m=s.match(/(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})[\sT,]+(\d{1,2}):(\d{2}):(\d{2}(?:[.,]\d+)?)/))){d=+m[1];mo=+m[2];y=+m[3];h=+m[4];mi=+m[5];se=parseFloat(m[6].replace(',','.'));}
+  else return null;
+  if(y<100)y+=2000;if(mo<1||mo>12||d<1||d>31||h>23||mi>59||se>=61)return null;
+  return{y,mo,d,sec:h*3600+mi*60+se,str:m[0].trim()};
+}
+/* lectura rápida de números ASCII directamente de los bytes */
+const P10=[];for(let i=0;i<=40;i++)P10.push(10**i);
+function parseNumsBytes(u8,a,b,n){
+  const out=new Float32Array(n);let i=a,c=0;
+  while(i<b&&c<n){let ch=u8[i];
+    if(ch===45||ch===43||ch===46||(ch>=48&&ch<=57)){
+      let neg=false;if(ch===45||ch===43){neg=ch===45;i++;}
+      let v=0,dig=0,fr=0;while(i<b&&(ch=u8[i])>=48&&ch<=57){v=v*10+(ch-48);i++;dig++}
+      if(i<b&&u8[i]===46){i++;while(i<b&&(ch=u8[i])>=48&&ch<=57){v=v*10+(ch-48);i++;fr++;dig++}}
+      if(!dig){i++;continue}
+      let e=0;ch=u8[i];if(i<b&&(ch===69||ch===101||ch===68||ch===100)){i++;let en=false;ch=u8[i];if(ch===45||ch===43){en=ch===45;i++}while(i<b&&(ch=u8[i])>=48&&ch<=57){e=e*10+(ch-48);i++}if(en)e=-e;}
+      e-=fr;if(e>0)v*=e<=40?P10[e]:10**e;else if(e<0)v/=(-e<=40?P10[-e]:10**-e);
+      out[c++]=neg?-v:v;
+    }else i++;
+  }
+  return c<n?out.subarray(0,c):out;
 }
 
 /* ---------- UNV / UFF dataset 58 y 58b ---------- */
@@ -362,13 +394,14 @@ function parseUNV(buf,progress){
       const dv=new DataView(buf,pos,len);const m=Math.floor(len/b);vals=new Float32Array(Math.min(nv,m));
       for(let i=0;i<vals.length;i++)vals[i]=dbl?dv.getFloat64(i*8,le):dv.getFloat32(i*4,le);
       pos+=len;pos=findEnd();line();
-    }else{const e=findEnd();vals=parseNums(latin1(u8.subarray(pos,e)),nv);pos=e;line();}
+    }else{const e=findEnd();vals=parseNumsBytes(u8,pos,e,nv);pos=e;line();}
     let y;if(per===1)y=vals;else{const m=Math.floor(vals.length/per);y=new Float32Array(m);const o=even?0:1;for(let i=0;i<m;i++)y[i]=vals[i*per+o];if(!even&&m>1)dx=vals[per]-vals[0];}
     const r6=hd[5].trim().split(/\s+/);let label=hd[0].trim();
     if(!label||/^none$/i.test(label))label=(hd[1].trim()||('Canal '+(out.length+1)));
-    if(r6.length>=7)label+=' · nodo '+r6[5]+(r6[6]&&r6[6]!=='0'?' dir '+r6[6]:'');
-    let unit=(hd[8].slice(52,72)||'').trim();if(!unit){const t=hd[8].trim().split(/\s+/);unit=t.length>4?t[t.length-1]:'';}
-    out.push({label,unit,fs:dx>0?1/dx:0,data:y});progress(pos/u8.length);
+    if(r6.length>=7&&r6[5]!=='0')label+=' · nodo '+r6[5]+(r6[6]&&r6[6]!=='0'?' dir '+r6[6]:'');
+    let start=null;for(let k=0;k<5&&!start;k++)start=parseDateStr(hd[k]);
+    let unit=(hd[8].slice(47,67)||'').trim();if(!unit){const t=hd[8].trim().split(/\s+/);unit=t.length>4?t[t.length-1]:'';}
+    out.push({label,unit,fs:dx>0?1/dx:0,data:y,start});progress(pos/u8.length);
   }
   return out;
 }
@@ -401,7 +434,7 @@ function synth(m){
   const k=31.6/Math.sqrt(s2/N);
   m.depths.forEach((z,ci)=>{const d=new Float32Array(N);let sd=777+ci*91;const r2=()=>{sd=(sd*1103515245+12345)>>>0;return sd/4294967296*2-1};
     for(let i=0;i<N;i++){const t=i/fs;const x=m.v*(t-m.tc);const r=Math.sqrt(m.d*m.d+z*z+x*x);d[i]=src[i]*k/r+0.035*r2()*1.7;}
-    out.push({label:'H'+(ci+1)+' · ejemplo sintético',unit:'Pa',fs,data:d});});
+    out.push({label:'H'+(ci+1)+' · ejemplo sintético',unit:'Pa',fs,data:d,start:m.start||null});});
   return out;
 }
 
@@ -427,10 +460,15 @@ function wsetup(n){if(WCache[n])return WCache[n];const lg=Math.round(Math.log2(n
   return WCache[n]={n,rev,cs,sn,w,s2,re:new Float64Array(n),im:new Float64Array(n)};}
 function fft(re,im,W){const n=W.n,rev=W.rev;for(let i=0;i<n;i++){const j=rev[i];if(j>i){let t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t}}
   for(let size=2;size<=n;size<<=1){const half=size>>1,step=n/size;for(let i=0;i<n;i+=size){for(let j=0,k=0;j<half;j++,k+=step){const a=i+j,b=a+half;const wr=W.cs[k],wi=W.sn[k];const tr=re[b]*wr-im[b]*wi,ti=re[b]*wi+im[b]*wr;re[b]=re[a]-tr;im[b]=im[a]-ti;re[a]+=tr;im[a]+=ti}}}}
-function welch(d,start,len,f,fs,W){const n=W.n,step=n>>1;const nseg=Math.floor((len-n)/step)+1;const P=new Float64Array(n/2+1);const re=W.re,im=W.im,w=W.w;
+function welch(d,start,len,f,fs,W,geo){const n=W.n,step=n>>1;const nseg=Math.floor((len-n)/step)+1;const P=new Float64Array(n/2+1);const re=W.re,im=W.im,w=W.w;
+  let wk=null,kc=0,rmin=Infinity,rmax=0;if(geo){wk=new Float64Array(n/2+1);kc=Math.min(n/2,Math.ceil(geo.f2*n/fs));}
   for(let s=0;s<nseg;s++){const o=start+s*step;let mean=0;for(let i=0;i<n;i++)mean+=d[o+i];mean/=n;
-    for(let i=0;i<n;i++){re[i]=(d[o+i]-mean)*w[i];im[i]=0}fft(re,im,W);for(let k=0;k<=n/2;k++)P[k]+=re[k]*re[k]+im[k]*im[k];}
-  const sc=f*f/(fs*W.s2*nseg);const out=new Float32Array(n/2+1);for(let k=0;k<=n/2;k++){let v=P[k]*sc;if(k>0&&k<n/2)v*=2;out[k]=v}return{p:out,nseg}}
+    for(let i=0;i<n;i++){re[i]=(d[o+i]-mean)*w[i];im[i]=0}fft(re,im,W);
+    if(geo){const r=geo.r((o+n/2-geo.i0)/fs);if(r<rmin)rmin=r;if(r>rmax)rmax=r;const lr=Math.log(r)/10;
+      for(let k=0;k<=kc;k++)wk[k]=Math.exp(geo.Nk[k]*lr);const wc=Math.exp(geo.N2*lr);for(let k=kc+1;k<=n/2;k++)wk[k]=wc;
+      for(let k=0;k<=n/2;k++)P[k]+=(re[k]*re[k]+im[k]*im[k])*wk[k];}
+    else for(let k=0;k<=n/2;k++)P[k]+=re[k]*re[k]+im[k]*im[k];}
+  const sc=f*f/(fs*W.s2*nseg);const out=new Float32Array(n/2+1);for(let k=0;k<=n/2;k++){let v=P[k]*sc;if(k>0&&k<n/2)v*=2;out[k]=v}return{p:out,nseg,rmin,rmax}}
 function processPass(m){
   const st=store.get(m.passId);if(!st)throw new Error('NOLOAD');
   if(!m.chans.length)throw new Error('Selecciona al menos un canal (hidrófono).');
@@ -444,6 +482,7 @@ function processPass(m){
   let rms;if(st.cache&&st.cache.key===key)rms=st.cache.rms;else{rms=C.map(x=>blockRms(x.c.data,i0,nb,bl,fs,m.hp,x.f));st.cache={key,rms};}
   const comb=new Float32Array(nb);for(let k=0;k<nb;k++){let s=0;for(const r of rms)s+=r[k]*r[k];comb[k]=Math.sqrt(s/rms.length)}
   const trend=movmean(comb,Math.max(1,Math.round(m.trendWin/m.block)));
+  if(m.trendOnly)return{res:{trend:trend.slice(),dt,nb,dur,fs},tr:[]};
   let tcpa;if(m.cpaMode==='manual'&&Number.isFinite(m.tcpa))tcpa=Math.min(Math.max(0,m.tcpa),dur);else{let im=0;for(let k=1;k<nb;k++)if(trend[k]>trend[im])im=k;tcpa=im*dt;}
   const warn=[];const tdwl=m.dwlLen/m.vms;let tini=tcpa-tdwl/2,tfin=tcpa+tdwl/2;
   if(tini<0||tfin>dur)warn.push('La ventana DWL se sale del registro y queda recortada ('+Math.max(0,tini).toFixed(1)+'–'+Math.min(dur,tfin).toFixed(1)+' s).');
@@ -453,7 +492,13 @@ function processPass(m){
   if(nfft!==m.nfft)warn.push('La ventana es más corta que la FFT pedida: se usa nfft = '+nfft+' (Δf = '+(fs/nfft).toFixed(2)+' Hz).');
   if(s1-s0<nfft)throw new Error('La ventana DWL es demasiado corta: revisa la velocidad, la DWL o el CPA.');
   const W=wsetup(nfft);
-  const ps=C.map(x=>welch(x.c.data,i0+s0,s1-s0,x.f,fs,W));
+  let geoF=null;
+  if(m.geo){const g=m.geo,tt=g.tt,dh=g.dh,n=W.n;const Nk=new Float64Array(n/2+1);
+    for(let k=0;k<=n/2;k++){const f=k*fs/n;Nk[k]=f<=g.f1?g.N1:(f>=g.f2?g.N2:g.N1+(g.N2-g.N1)*(f-g.f1)/(g.f2-g.f1));}
+    const dAt=t=>{if(t<=tt[0])return dh[0];const L=tt.length-1;if(t>=tt[L])return dh[L];let a=0,b=L;while(b-a>1){const mm=(a+b)>>1;if(tt[mm]<=t)a=mm;else b=mm}return dh[a]+(dh[b]-dh[a])*(t-tt[a])/(tt[b]-tt[a])};
+    geoF=i=>({i0,Nk,N2:g.N2,f2:g.f2,r:t=>Math.max(1,Math.hypot(dAt(t),g.dz[i]))});
+    if(tini<tt[0]||tfin>tt[tt.length-1])warn.push('Parte de la ventana DWL queda fuera del GPS: allí se usa la distancia del extremo más cercano.');}
+  const ps=C.map((x,i)=>welch(x.c.data,i0+s0,s1-s0,x.f,fs,W,geoF?geoF(i):null));
   let pb=null,dfBg=fs/nfft,bgInfo=null;
   if(m.bgKey){const sb=store.get(m.bgKey);if(!sb)throw new Error('NOLOADBG');
     const B=m.chans.map(s=>{const c=sb.chans[s.bgKey];if(!c)throw new Error('El fichero de ruido de fondo no tiene el canal '+(s.bgKey+1)+'. Elige el canal de fondo en la tabla de canales.');return c});
@@ -468,7 +513,7 @@ function processPass(m){
     bgInfo={dur:bn/bfs,t0:a/bfs,t1:b/bfs,fs:bfs};
   }else{if(b1-b0>=nfft)pb=C.map(x=>welch(x.c.data,i0+b0,b1-b0,x.f,fs,W));else if(b1>b0)warn.push('La ventana de ruido de fondo es más corta que la FFT: amplíala para ver el fondo.');}
   const res={fs,nfft,df:fs/nfft,dt,nb,dur,tcpa,tini,tfin,tini_eff:s0/fs,tfin_eff:s1/fs,
-    rms:rms.map(r=>r.slice()),trend,psd:ps.map(x=>x.p),psdBg:pb?pb.map(x=>x.p):null,dfBg,bgInfo,nseg:ps[0].nseg,nsegBg:pb?pb[0].nseg:0,warn,keys:m.chans.map(s=>s.key)};
+    rms:rms.map(r=>r.slice()),trend,psd:ps.map(x=>x.p),psdBg:pb?pb.map(x=>x.p):null,dfBg,bgInfo,rcorr:!!geoF,rRange:geoF?ps.map(x=>[x.rmin,x.rmax]):null,nseg:ps[0].nseg,nsegBg:pb?pb[0].nseg:0,warn,keys:m.chans.map(s=>s.key)};
   const tr=[res.trend.buffer,...res.rms.map(r=>r.buffer),...res.psd.map(p=>p.buffer)];if(res.psdBg)tr.push(...res.psdBg.map(p=>p.buffer));
   return{res,tr};
 }
@@ -500,19 +545,19 @@ const log10=Math.log10;
    Ajustes
    ===================================================================== */
 const DEF={dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
-  showLim:true,lim:'R',lang:'en',fmin:10,fmax:50000,ymin:50,ymax:170,symin:100,symax:160,snr:3,bg0:0,bg1:5,keep:2,depth0:40};
+  showLim:true,lim:'R',tzMode:'madrid',tzH:2,lang:'en',fmin:10,fmax:50000,ymin:50,ymax:170,symin:100,symax:160,snr:3,bg0:0,bg1:5,keep:2,depth0:40};
 let S=Object.assign({},DEF,LS.get('urn.settings',{}));
 if(!LS.get('urn.settings',{}).lim)S.lim=S.showLim===false?'none':'R';
 S.showLim=S.lim!=='none';
 const saveS=()=>LS.set('urn.settings',S);
 
 const TXT={
- en:{trend:(v,s)=>`URN TREND – ${v} kn – ${s}`,time:'Time (s)',rms:'URN RMS (Pa)',fit:'Fitting',dwl:'Data window',fondo:'Background',cpa:'CPA',
+ en:{trend:(v,s)=>`URN TREND – ${v} kn – ${s}`,time:'Time (s)',rms:'URN RMS (Pa)',fit:'Fitting',dwl:'Data window',fondo:'Background',cpa:'CPA',exp:'Expected 1/r (GPS)',cpaG:'GPS CPA',rec:'Recording',
    sl:(v,s)=>`SOURCE LEVEL URN – ${v} kn – ${s}`,freq:'Frequency (Hz)',db:'dB re 1 µPa @ 1 m',nb:df=>`URN ${df} Hz`,nbB:df=>`Background ${df} Hz`,
    to:'URN 1/3 oct',toB:'Background 1/3 oct',limA:'ICES R209 = SILENT(R) > 25 Hz',limB:'SILENT(R) < 25 Hz',
    map:'TRANSIT MAP',ew:'East–West (m)',ns:'North–South (m)',track:'Ship track',buoy:'Buoy fixes',hyd:'Hydrophone',start:'Start',
    dist:'DISTANCE SHIP – HYDROPHONE',utc:'Time (UTC)',dm:'Distance (m)',sum:'COMPARATIVE SUMMARY – ALL RUNS'},
- es:{trend:(v,s)=>`TENDENCIA URN – ${v} nudos – ${s}`,time:'Tiempo (s)',rms:'URN RMS (Pa)',fit:'Tendencia',dwl:'Ventana DWL',fondo:'Ruido de fondo',cpa:'CPA',
+ es:{trend:(v,s)=>`TENDENCIA URN – ${v} nudos – ${s}`,time:'Tiempo (s)',rms:'URN RMS (Pa)',fit:'Tendencia',dwl:'Ventana DWL',fondo:'Ruido de fondo',cpa:'CPA',exp:'Esperado 1/r (GPS)',cpaG:'CPA GPS',rec:'Registro',
    sl:(v,s)=>`NIVEL DE FUENTE URN – ${v} nudos – ${s}`,freq:'Frecuencia (Hz)',db:'dB ref 1 µPa @ 1 m',nb:df=>`URN ${df} Hz`,nbB:df=>`Fondo ${df} Hz`,
    to:'URN 1/3 oct',toB:'Fondo 1/3 oct',limA:'ICES R209 = SILENT(R) > 25 Hz',limB:'SILENT(R) < 25 Hz',
    map:'MAPA DE TRÁNSITO',ew:'Este–Oeste (m)',ns:'Norte–Sur (m)',track:'Derrota del barco',buoy:'Fijos de la boya',hyd:'Hidrófono',start:'Inicio',
@@ -544,7 +589,7 @@ function guessFromName(n){
   return{speed,side};
 }
 function newPass(o={}){return Object.assign({id:nid(),name:'Pasada',speed:null,side:'STB',ship:null,hyd:null,hydMode:'auto',hydLat:null,hydLon:null,
-  gps:null,dcpa:null,dcpaSrc:'gps',file:null,fileName:'',meta:null,chans:[],trim:0,bg0:S.bg0,bg1:S.bg1,bgFile:null,bgWhole:true,bgf0:0,bgf1:10,cpaMode:'auto',tcpa:null,res:null,resKey:null,view:'avg',synth:false,err:null,busy:false},o)}
+  gps:null,dcpa:null,dcpaSrc:'gps',file:null,fileName:'',meta:null,chans:[],trim:0,bg0:S.bg0,bg1:S.bg1,bgFile:null,bgWhole:true,bgf0:0,bgf1:10,cpaMode:'auto',tcpa:null,syncMode:null,t0Manual:'',syncAdj:0,rcorr:true,sync:null,res:null,resKey:null,view:'avg',synth:false,err:null,busy:false},o)}
 
 /* =====================================================================
    NMEA
@@ -623,13 +668,50 @@ function applyMeta(p,meta){
   p.chans=meta.map((c,i)=>{if(prev[i])return prev[i];const t=template&&template[i];
     return t?{...t,fs:c.fs||0}:{use:true,depth:S.depth0,factor:1,fs:c.fs||0};});
   p.chans.forEach((c,i)=>{if(!fin(c.fs)||c.fs<=0)c.fs=meta[i].fs||0});
+  if(p.syncMode==null){p.syncMode=meta.some(m=>m.start)?'file':'none';if(p.syncMode==='file'&&p.cpaMode==='auto')p.cpaMode='gps';}
+}
+/* ---------- sincronización señal ↔ GPS ---------- */
+function tzOff(st){
+  if(S.tzMode==='utc')return 0;if(S.tzMode==='fixed')return +S.tzH||0;
+  const y=st.y,lastSun=m=>{const dt=new Date(Date.UTC(y,m,0));return dt.getUTCDate()-dt.getUTCDay()};
+  const ms=Date.UTC(y,st.mo-1,st.d)+st.sec*1000-3600e3;
+  return ms>=Date.UTC(y,2,lastSun(3),1)&&ms<Date.UTC(y,9,lastSun(10),1)?2:1;
+}
+function fileStart(p){if(!p.meta)return null;const k=p.chans.findIndex(c=>c.use);const m=p.meta[k>=0?k:0];return m&&m.start?m.start:null}
+function hmsParse(s){const m=String(s||'').trim().match(/^(\d{1,2})[:h ](\d{1,2})[:m ](\d{1,2}(?:[.,]\d+)?)/);if(!m)return NaN;return +m[1]*3600+ +m[2]*60+parseFloat(m[3].replace(',','.'))}
+function hmsStr1(t){const s=((t%86400)+86400)%86400;const f=s-Math.floor(s);return hmsStr(Math.floor(s))+(f>0.05?','+Math.round(f*10)%10:'')}
+function interpPr(pr,t){const n=pr.length;if(!n||t<pr[0].t||t>pr[n-1].t)return NaN;let a=0,b=n-1;while(b-a>1){const m=(a+b)>>1;if(pr[m].t<=t)a=m;else b=m}const A=pr[a],B=pr[b];return B.t===A.t?A.d:A.d+(B.d-A.d)*(t-A.t)/(B.t-A.t)}
+function meanDz(p){const u=p.chans.filter(c=>c.use);return u.length?u.reduce((s,c)=>s+((+c.depth||0)-S.zs),0)/u.length:0}
+function dayAlign(t0,pr){const mid=(pr[0].t+pr[pr.length-1].t)/2;while(t0<mid-43200)t0+=86400;while(t0>mid+43200)t0-=86400;return t0}
+function fitSync(p,tr){
+  const pr=p.gps&&p.gps.pr;if(!tr||!pr||pr.length<10)return null;const dz=meanDz(p);
+  const st=Math.max(1,Math.round(0.5/tr.dt)),ks=[],ys=[];for(let k=0;k<tr.nb;k+=st){const v=tr.trend[k];if(v>0){ks.push(k*tr.dt);ys.push(20*log10(v))}}
+  const g0=pr[0].t,g1=pr[pr.length-1].t,need=0.6*Math.min(tr.dur,g1-g0);let best=null;
+  const ev=t0=>{let sx=0,sy=0,sxx=0,syy=0,sxy=0,c=0;for(let i=0;i<ks.length;i++){const d=interpPr(pr,t0+ks[i]);if(!fin(d))continue;const x=-20*log10(Math.max(1,Math.hypot(d,dz))),y=ys[i];sx+=x;sy+=y;sxx+=x*x;syy+=y*y;sxy+=x*y;c++}
+    if(c<8||c*st*tr.dt<need)return-2;const cv=sxy-sx*sy/c,vx=sxx-sx*sx/c,vy=syy-sy*sy/c;return vx>0&&vy>0?cv/Math.sqrt(vx*vy):-2};
+  for(let t0=g0-tr.dur;t0<=g1;t0+=1){const c=ev(t0);if(!best||c>best.c)best={t0,c}}
+  if(!best||best.c<=-1)return null;for(let t0=best.t0-1;t0<=best.t0+1;t0+=0.1){const c=ev(t0);if(c>best.c)best={t0,c}}
+  return best;
+}
+function computeSync(p,tr){
+  const g=p.gps;if(!g||g.err||p.syncMode==='none')return null;
+  const trim=+p.trim||0,out={mode:p.syncMode,t0:NaN,warn:[],fit:null};
+  out.fit=fitSync(p,tr);
+  if(p.syncMode==='file'){const st=fileStart(p);if(!st){out.warn.push('El fichero no trae hora de inicio: elige otra forma de sincronizar.');return out}
+    out.tz=tzOff(st);out.fileStr=st.str;out.t0=dayAlign(st.sec-out.tz*3600+trim+(+p.syncAdj||0),g.pr);}
+  else if(p.syncMode==='manual'){const t=hmsParse(p.t0Manual);if(!fin(t)){out.warn.push('Escribe la hora UTC de inicio del registro (hh:mm:ss).');return out}out.t0=dayAlign(t+trim+(+p.syncAdj||0),g.pr);}
+  else if(p.syncMode==='fit'){if(!out.fit){out.warn.push('No se ha podido ajustar la tendencia acústica con la distancia del GPS (¿no se solapan en el tiempo?).');return out}out.t0=out.fit.t0;}
+  const g0=g.pr[0].t,g1=g.pr[g.pr.length-1].t;
+  if(fin(out.t0)&&tr&&(out.t0+tr.dur<g0||out.t0>g1))out.warn.push(`El registro (${hmsStr(out.t0)}–${hmsStr(out.t0+tr.dur)} UTC) no se solapa con el GPS del barco (${hmsStr(g0)}–${hmsStr(g1)}). Revisa la zona horaria en Ajustes o el emparejamiento de ficheros.`);
+  if(fin(out.t0)&&out.fit&&p.syncMode!=='fit'&&Math.abs(out.fit.t0-out.t0)>5&&out.fit.c>0.6)out.warn.push(`El ajuste automático sitúa el registro ${fmt(out.fit.t0-out.t0,1)} s ${out.fit.t0>out.t0?'más tarde':'antes'} (correlación ${fmt(out.fit.c,2)}). Revisa la hora o usa «Ajuste fino».`);
+  return out;
 }
 async function ensureBg(b,onp){const k='bg'+b.id;if(loaded.includes(k)){await touchLoaded(k);return}
   const r=await call({cmd:'load',passId:k,file:b.file},onp);b.meta=r.meta;await touchLoaded(k);}
 async function ensureLoaded(p,onp){
   if(loaded.includes(p.id)){await touchLoaded(p.id);return}
   let r;
-  if(p.synth)r=await call({cmd:'synth',passId:p.id,fs:48000,dur:120,tc:62,d:46.9,v:7*KN,depths:[20,40]});
+  if(p.synth)r=await call({cmd:'synth',passId:p.id,fs:48000,dur:120,tc:62,d:46.9,v:7*KN,depths:[20,40],start:{y:2026,mo:4,d:30,sec:12*3600+21*60+8,str:'30-abr.-26 12:21:08'}});
   else if(p.file)r=await call({cmd:'load',passId:p.id,file:p.file},onp);
   else throw new Error('Carga primero el fichero de señal de esta pasada.');
   applyMeta(p,r.meta);
@@ -644,7 +726,7 @@ function dwlLen(p){if(S.dwlMode==='deg'&&fin(p.dcpa))return 2*p.dcpa*Math.tan(S.
 function vKn(p){return fin(p.speed)&&p.speed>0?p.speed:(p.gps&&fin(p.gps.sog)?p.gps.sog:null)}
 function nfftFor(fs){return 2**Math.max(8,Math.round(Math.log2(fs/S.dfT)))}
 function procKey(p){const sel=p.chans.map((c,i)=>c.use?i+':'+c.factor+':'+c.fs+(p.bgFile?':'+c.bgCh:''):'').join(',');
-  return JSON.stringify([sel,p.bgFile,p.bgFile?[p.bgWhole,p.bgf0,p.bgf1]:0,p.trim,p.bg0,p.bg1,p.cpaMode,p.cpaMode==='manual'?p.tcpa:0,vKn(p),dwlLen(p).toFixed(2),S.block,S.trendWin,S.hp,S.dfT]);}
+  return JSON.stringify([sel,p.bgFile,p.bgFile?[p.bgWhole,p.bgf0,p.bgf1]:0,p.trim,p.bg0,p.bg1,p.cpaMode,p.cpaMode==='manual'?p.tcpa:0,p.syncMode,p.syncMode==='manual'?p.t0Manual:0,p.syncAdj,p.rcorr,S.tzMode,S.tzH,S.zs,S.N1,S.N2,S.f1,S.f2,p.gps&&!p.gps.err?[p.gps.tcpa,p.gps.dcpa]:0,vKn(p),dwlLen(p).toFixed(2),S.block,S.trendWin,S.hp,S.dfT]);}
 async function processPass(p,quiet){
   p.err=null;p.busy=true;renderList();if(p.id===curId)updProcState();
   try{
@@ -656,9 +738,20 @@ async function processPass(p,quiet){
     const fs=p.chans[sel.length?sel[0].key:0]?.fs||0;
     const msg={cmd:'process',passId:p.id,chans:sel.map(c=>({key:c.key,factor:c.factor,bgKey:c.bgKey})),bgKey:bgf?'bg'+bgf.id:null,bgWhole:!!p.bgWhole,bgf0:+p.bgf0||0,bgf1:+p.bgf1||0,trim:+p.trim||0,block:S.block,hp:S.hp,trendWin:S.trendWin,
       cpaMode:p.cpaMode,tcpa:p.tcpa,dwlLen:dwlLen(p),vms:v*KN,bg0:+p.bg0||0,bg1:+p.bg1||0,nfft:nfftFor(fs)};
-    let r;try{r=await call(msg)}catch(e){if(e.message==='NOLOAD'||e.message==='NOLOADBG'){loaded=loaded.filter(x=>x!==p.id&&x!==msg.bgKey);await ensureLoaded(p);if(bgf)await ensureBg(bgf);r=await call(msg)}else throw e}
-    p.res=r.res;p.resKey=procKey(p);
-    if(p.cpaMode==='auto')p.tcpa=+p.res.tcpa.toFixed(1);
+    const run=async m=>{try{return await call(m)}catch(e){if(e.message==='NOLOAD'||e.message==='NOLOADBG'){loaded=loaded.filter(x=>x!==p.id&&x!==m.bgKey);await ensureLoaded(p);if(bgf)await ensureBg(bgf);return await call(m)}throw e}};
+    const extra=[];let sy=null;
+    if(p.syncMode&&p.syncMode!=='none'&&p.gps&&!p.gps.err){const tr=(await run({...msg,trendOnly:true})).res;sy=computeSync(p,tr);sy.tr=tr;}
+    const synced=sy&&fin(sy.t0);
+    if(p.cpaMode==='gps'){
+      if(synced){const tc=p.gps.tcpa-sy.t0;if(tc>=0&&tc<=sy.tr.dur){msg.cpaMode='manual';msg.tcpa=tc;}
+        else{msg.cpaMode='auto';extra.push(`El CPA del GPS (${hmsStr(p.gps.tcpa)} UTC) cae fuera del registro: se centra la ventana en el máximo acústico.`);}}
+      else{msg.cpaMode='auto';extra.push('Sin sincronización con el GPS: la ventana se centra en el máximo acústico.');}}
+    if(synced&&p.rcorr){const pr=p.gps.pr;msg.geo={tt:pr.map(q=>q.t-sy.t0),dh:pr.map(q=>q.d),dz:sel.map(c=>(+p.chans[c.key].depth||0)-S.zs),N1:S.N1,f1:S.f1,N2:S.N2,f2:S.f2};}
+    const r=await run(msg);
+    p.res=r.res;p.res.warn=[...(sy?sy.warn:[]),...extra,...p.res.warn];p.res.sync=sy;p.res.cpaSrc=msg.cpaMode==='manual'&&p.cpaMode==='gps'?'gps':(msg.cpaMode==='auto'?'acoustic':'manual');
+    {let im=0;for(let k=1;k<p.res.nb;k++)if(p.res.trend[k]>p.res.trend[im])im=k;p.res.tpeak=im*p.res.dt;}
+    p.resKey=procKey(p);
+    if(p.cpaMode!=='manual')p.tcpa=+p.res.tcpa.toFixed(1);
   }catch(e){p.err=e.message;if(!quiet)toast(e.message,5000);}
   p.busy=false;renderList();if(p.id===curId)renderDetail();
 }
@@ -700,9 +793,9 @@ function bandSum(psd,df,b){const k0=Math.ceil(b.lo/df),k1=Math.min(psd.length-1,
 function levels(p){
   const R=p.res;if(!R||!fin(p.dcpa))return null;
   const ch=R.keys.map(k=>p.chans[k]||{depth:S.depth0});
-  const r=ch.map(c=>Math.sqrt(p.dcpa**2+((+c.depth||0)-S.zs)**2));
+  const r=ch.map(c=>Math.sqrt(p.dcpa**2+((+c.depth||0)-S.zs)**2));const rS=R.rcorr?r.map(()=>1):r;
   const rows=BANDS.filter(b=>b.hi<=R.fs/2).map(b=>{
-    const N=Nf(b.fc);const sl=R.psd.map((ps,i)=>{const e=bandSum(ps,R.df,b);return e>0?10*log10(e)+120+N*log10(r[i]):NaN});
+    const N=Nf(b.fc);const sl=R.psd.map((ps,i)=>{const e=bandSum(ps,R.df,b);return e>0?10*log10(e)+120+N*log10(rS[i]):NaN});
     const bg=R.psdBg?R.psdBg.map((ps,i)=>{const e=bandSum(ps,R.dfBg||R.df,b);return e>0?10*log10(e)+120+N*log10(r[i]):NaN}):null;
     const sa=eavg(sl),ba=bg?eavg(bg):NaN;return{...b,N,sl,bg,sa,ba,snr:sa-ba,lim:limVal(b.fc)};});
   const inR=rows.filter(b=>b.fc>=S.fmin&&b.fc<=S.fmax&&fin(b.sa));
@@ -710,13 +803,13 @@ function levels(p){
   let worst=null;for(const b of inR){const m=b.lim-b.sa;if(!fin(m))continue;if(!worst||m<worst.m)worst={m,fc:b.fc}}
   let ovr=null;const LL=LIM();if(LL&&LL.overall){const o=LL.overall,bb=rows.filter(b=>b.fc>=o.f0/1.12&&b.fc<=o.f1*1.12&&fin(b.sa));
     if(bb.length){const v=10*log10(bb.reduce((s,b)=>s+10**(b.sa/10),0));ovr={v,lim:o.lim,m:o.lim-v,f0:o.f0,f1:o.f1}}}
-  return{rows,r,ch,tot,worst,ovr};
+  return{rows,r,rS,ch,tot,worst,ovr};
 }
 function narrow(p,view,bg){
   const R=p.res,L=levels(p);if(!L)return null;const src=bg?R.psdBg:R.psd;if(!src)return null;
   const n=src[0].length,x=new Float32Array(n-1),y=new Float32Array(n-1);
   const idx=view==='avg'?src.map((_,i)=>i):[+view];
-  for(let k=1;k<n;k++){const f=k*(bg?(R.dfBg||R.df):R.df);x[k-1]=f;const N=Nf(f);let s=0;for(const i of idx){s+=10**((10*log10(src[i][k]||1e-30)+120+N*log10(L.r[i]))/10)}y[k-1]=10*log10(s/idx.length);}
+  for(let k=1;k<n;k++){const f=k*(bg?(R.dfBg||R.df):R.df);x[k-1]=f;const N=Nf(f);let s=0;for(const i of idx){s+=10**((10*log10(src[i][k]||1e-30)+120+N*log10((bg?L.r:L.rS)[i]))/10)}y[k-1]=10*log10(s/idx.length);}
   return{x,y};
 }
 function stale(p){return p.res&&p.resKey!==procKey(p)}
@@ -994,7 +1087,15 @@ function renderDetail(){
       <label class="fld">hasta<span class="in"><input type="number" id="p-bgf1" step="1" min="0" value="${p.bgf1}" ${p.bgWhole?'disabled':''}><span class="unit">s</span></span></label>`
       :`<label class="fld">Ruido de fondo desde<span class="in"><input type="number" id="p-bg0" step="1" min="0" value="${p.bg0}"><span class="unit">s</span></span></label>
       <label class="fld">hasta<span class="in"><input type="number" id="p-bg1" step="1" min="0" value="${p.bg1}"><span class="unit">s</span></span></label>`}
-      <label class="fld">CPA acústico<span class="in"><select id="p-cpamode"><option value="auto" ${p.cpaMode==='auto'?'selected':''}>Máximo de la tendencia</option><option value="manual" ${p.cpaMode==='manual'?'selected':''}>Manual</option></select>
+      <label class="fld">Sincronización con el GPS<span class="in"><select id="p-sync">
+        <option value="none" ${p.syncMode==='none'||!p.syncMode?'selected':''}>Sin sincronizar</option>
+        <option value="file" ${p.syncMode==='file'?'selected':''} ${fileStart(p)?'':'disabled'}>Hora de inicio del fichero</option>
+        <option value="manual" ${p.syncMode==='manual'?'selected':''}>Hora de inicio manual (UTC)</option>
+        <option value="fit" ${p.syncMode==='fit'?'selected':''}>Ajuste automático con la tendencia</option></select></span></label>
+      <label class="fld" ${p.syncMode==='manual'?'':'hidden'}>Inicio del registro (UTC)<span class="in"><input type="text" id="p-t0" placeholder="hh:mm:ss" value="${esc(p.t0Manual||'')}" style="width:96px"></span></label>
+      <label class="fld" ${p.syncMode==='file'||p.syncMode==='manual'?'':'hidden'}>Ajuste fino<span class="in"><input type="number" id="p-adj" step="0.1" value="${p.syncAdj}"><span class="unit">s</span></span></label>
+      <label class="fld" ${p.syncMode&&p.syncMode!=='none'?'':'hidden'}>Corrección de distancia<span class="in"><label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="p-rcorr" ${p.rcorr?'checked':''}>r(t) en cada segmento</label></span></label>
+      <label class="fld">Centro de la ventana<span class="in"><select id="p-cpamode"><option value="auto" ${p.cpaMode==='auto'?'selected':''}>Máximo acústico</option><option value="gps" ${p.cpaMode==='gps'?'selected':''} ${p.syncMode&&p.syncMode!=='none'?'':'disabled'}>CPA del GPS</option><option value="manual" ${p.cpaMode==='manual'?'selected':''}>Manual</option></select>
         <input type="number" id="p-tcpa" step="0.1" value="${fin(p.tcpa)?p.tcpa:''}" ${p.cpaMode==='manual'?'':'disabled'}><span class="unit">s</span></span></label>
       <button class="btn pri" id="p-run">Procesar pasada</button>
     </div>
@@ -1053,6 +1154,10 @@ function bindDetail(p){
   on('p-bg0','change',e=>{p.bg0=Math.max(0,parseFloat(e.target.value)||0);updProcInfo();renderList()});
   on('p-bg1','change',e=>{p.bg1=Math.max(0,parseFloat(e.target.value)||0);updProcInfo();renderList()});
   on('p-cpamode','change',e=>{p.cpaMode=e.target.value;$('#p-tcpa').disabled=p.cpaMode!=='manual';if(p.cpaMode==='manual'&&!fin(p.tcpa)&&p.res)p.tcpa=+p.res.tcpa.toFixed(1);$('#p-tcpa').value=fin(p.tcpa)?p.tcpa:'';updProcInfo();renderList();if(p.res)processPass(p)});
+  on('p-sync','change',e=>{p.syncMode=e.target.value;if(p.syncMode==='none'&&p.cpaMode==='gps')p.cpaMode='auto';else if(p.syncMode!=='none'&&p.cpaMode==='auto')p.cpaMode='gps';renderDetail();renderList()});
+  on('p-t0','change',e=>{p.t0Manual=e.target.value.trim();updProcInfo();renderList()});
+  on('p-adj','change',e=>{p.syncAdj=parseFloat(e.target.value)||0;updProcInfo();renderList()});
+  on('p-rcorr','change',e=>{p.rcorr=e.target.checked;updProcInfo();renderList()});
   on('p-tcpa','change',e=>{const v=parseFloat(e.target.value);p.tcpa=fin(v)?v:null;if(p.res)processPass(p);else updProcInfo()});
   on('p-run','click',()=>processPass(p));
 }
@@ -1088,7 +1193,8 @@ function updGPS(){
   charts.dist.set({title:t.dist,xlabel:t.utc,ylabel:t.dm,xtime:true,xname:'UTC',series:[
     {type:'line',x:g.pr.map(q=>q.t),y:g.pr.map(q=>q.d),color:'track',w:2,label:t.dm},
     {type:'pts',x:[g.tcpa],y:[g.dcpa],color:'cpa',marker:'O',size:5,label:`CPA ${fmt(g.dcpa,1)} m · ${hmsStr(g.tcpa)}`}],
-    vlines:[{x:g.tcpa,color:'cpa',w:1.5,dash:[4,3]}]});
+    vlines:[{x:g.tcpa,color:'cpa',w:1.5,dash:[4,3]}],
+    shades:p.res&&p.res.sync&&fin(p.res.sync.t0)?[{x0:p.res.sync.t0,x1:p.res.sync.t0+p.res.dur,color:'fondo',label:t.rec},{x0:p.res.sync.t0+p.res.tini_eff,x1:p.res.sync.t0+p.res.tfin_eff,color:'dwl',label:t.dwl}]:[]});
 }
 function updBgInfo(){const p=cur(),el=$('#bg-info');if(!el)return;const b=bgGet(p.bgFile);
   if(!b){el.textContent='Sin fichero: el fondo se toma del tramo inicial del registro de la pasada (paso 3).';return}
@@ -1122,6 +1228,10 @@ function updProcInfo(){
     <div class="k"><span>Duración ventana</span><b>${fin(v)?fmt(L/(v*KN),1)+' s':'—'}</b></div>
     ${r.map((x,i)=>`<div class="k"><span>r inclinada H${p.chans.map((c,j)=>c.use?j+1:0).filter(Boolean)[i]}</span><b>${fmt(x,1)} m</b></div>`).join('')}
   </div>`;
+  const fst=fileStart(p);
+  if(fst&&p.syncMode==='file'){const tz=tzOff(fst);h+=`<div class="note">Inicio en el fichero: <b>${esc(fst.str)}</b> (hora local, UTC${tz>=0?'+':''}${tz}) → <b>${hmsStr1(fst.sec-tz*3600)} UTC</b>${+p.trim?` · tras recortar ${p.trim} s: ${hmsStr1(fst.sec-tz*3600+(+p.trim))} UTC`:''}. La zona horaria se cambia en Ajustes.</div>`;}
+  else if(p.meta&&!fst&&p.syncMode==='none')h+=`<div class="note">El fichero no trae hora de inicio. Puedes sincronizar con una hora manual o con el ajuste automático.</div>`;
+  if(p.meta){const ss=p.meta.filter((m,i)=>p.chans[i]&&p.chans[i].use&&m.start).map(m=>m.start.sec);if(ss.length>1&&Math.max(...ss)-Math.min(...ss)>1)h+=`<div class="warn">Los canales seleccionados tienen horas de inicio distintas; se usa la del primero.</div>`;}
   if(stale(p))h+=`<div class="warn stale">Has cambiado parámetros que afectan a la ventana o al espectro. <button class="btn sm pri" id="p-run2">Volver a procesar</button></div>`;
   if(p.busy)h+=`<div class="note">Calculando…</div>`;
   if(p.err&&p.meta)h+=`<div class="err">${esc(p.err)}</div>`;
@@ -1143,6 +1253,12 @@ function updResults(){
     <div class="k"><span>COMEX</span><b>−${fmt(comex,0)} m</b></div>
     <div class="k"><span>FINEX</span><b>+${fmt(finex,0)} m</b></div>
     <div class="k"><span>Promedios Welch</span><b>${R.nseg}</b></div>
+    ${R.sync&&fin(R.sync.t0)?`<div class="k"><span>Inicio registro (UTC)</span><b>${hmsStr1(R.sync.t0)}</b></div>
+    <div class="k"><span>Centro de la ventana</span><b>${R.cpaSrc==='gps'?'CPA GPS':R.cpaSrc==='acoustic'?'máx. acústico':'manual'} · ${hmsStr1(R.sync.t0+R.tcpa)}</b></div>
+    ${p.gps&&!p.gps.err?`<div class="k"><span>Pico acústico − CPA GPS</span><b>${fmt(R.tpeak-(p.gps.tcpa-R.sync.t0),1)} s</b></div>`:''}
+    ${R.sync.fit&&R.sync.mode!=='fit'?`<div class="k" title="Desfase que da el ajuste automático de la tendencia con la distancia del GPS (correlación ${fmt(R.sync.fit.c,2)})"><span>Comprobación: ajuste automático</span><b>${R.sync.fit.t0-R.sync.t0>=0?'+':''}${fmt(R.sync.fit.t0-R.sync.t0,1)} s · ρ ${fmt(R.sync.fit.c,2)}</b></div>`:''}
+    ${R.sync.mode==='fit'&&R.sync.fit?`<div class="k"><span>Correlación del ajuste</span><b>${fmt(R.sync.fit.c,2)}</b></div>`:''}
+    ${R.rcorr&&R.rRange?R.rRange.map((x,i)=>`<div class="k"><span>r(t) en la ventana H${R.keys[i]+1}</span><b>${fmt(x[0],1)}–${fmt(x[1],1)} m</b></div>`).join(''):''}`:''}
     ${R.bgInfo?`<div class="k" title="${esc(bgGet(p.bgFile)?.name||'')}"><span>Fondo: fichero aparte</span><b>${fmt(R.bgInfo.t0,1)}–${fmt(R.bgInfo.t1,1)} s</b></div>`:''}
     <div class="k"><span>Δf · nfft</span><b>${fmtDf(R.df)} Hz · ${R.nfft}</b></div>
     ${L?`<div class="k hi"><span>SL total ${fmtLog(S.fmin)}–${fmtLog(S.fmax)} Hz</span><b>${fmt(L.tot,1)} dB</b></div>
@@ -1162,10 +1278,15 @@ function drawTrend(p){
   ser.push({type:'line',x:tx,y:R.trend,color:'fit',w:2.5,label:t.fit});
   let mx=0;for(const v of R.trend)if(v>mx)mx=v;
   const v=vKn(p),vms=(v||0)*KN,L=dwlLen(p);
+  const sy=R.sync,vl=[{x:R.tcpa,color:'cpa',w:2,label:t.cpa+(R.cpaSrc==='gps'?' (GPS)':'')}];
+  if(sy&&fin(sy.t0)&&p.gps&&!p.gps.err){const pr=p.gps.pr,dz=meanDz(p);const ex=new Float32Array(R.nb);let rmin=Infinity;
+    for(let k=0;k<R.nb;k++){const d=interpPr(pr,sy.t0+k*R.dt);ex[k]=fin(d)?Math.max(1,Math.hypot(d,dz)):NaN;if(ex[k]<rmin)rmin=ex[k]}
+    if(fin(rmin)){for(let k=0;k<R.nb;k++)ex[k]=fin(ex[k])?mx*rmin/ex[k]:NaN;ser.push({type:'line',x:tx,y:ex,color:'track',w:1.8,dash:[6,4],label:t.exp});}
+    const tg=p.gps.tcpa-sy.t0;if(R.cpaSrc!=='gps'&&tg>=0&&tg<=R.dur)vl.push({x:tg,color:'track',w:1.5,dash:[3,3],label:t.cpaG});}
   charts.trend=mkChart('c-trend',{onClick:(x)=>{if(x<0||x>R.dur)return;p.cpaMode='manual';p.tcpa=+x.toFixed(1);const s=$('#p-cpamode');if(s){s.value='manual';$('#p-tcpa').disabled=false;$('#p-tcpa').value=p.tcpa}processPass(p)}});
   charts.trend.set({title:t.trend(fmt(v,1),p.side),xlabel:t.time,ylabel:t.rms,xname:'t (s)',ydec:3,xlim:[0,R.dur],ylim:[0,mx*2||1],series:ser,
     shades:[...(R.bgInfo?[]:[{x0:p.bg0,x1:Math.min(p.bg1,R.dur),color:'fondo',label:t.fondo}]),{x0:R.tini_eff,x1:R.tfin_eff,color:'dwl',label:t.dwl}],
-    vlines:[{x:R.tcpa,color:'cpa',w:2,label:t.cpa}],
+    vlines:vl,
     box:[`DWL = ${fmt(L,0)} m`,`COMEX: −${fmt(R.tcpa*vms,0)} m`,`FINEX: +${fmt((R.dur-R.tcpa)*vms,0)} m`]});
 }
 function drawSpec(p){
@@ -1249,6 +1370,13 @@ function renderSettings(){
     ${num('bg0','Fondo por defecto: desde','s','1','0')}
     ${num('bg1','Fondo por defecto: hasta','s','1','0')}
   </div><div class="note">Los valores de fondo se aplican a las pasadas nuevas; cada pasada puede cambiarlos.</div></section>
+  <section class="blk"><h2>Sincronización</h2><div class="form2">
+    <label for="s-tzMode">Hora guardada en los ficheros</label><span class="in"><select id="s-tzMode" data-s="tzMode">
+      <option value="madrid" ${S.tzMode==='madrid'?'selected':''}>Hora de España (CET/CEST)</option>
+      <option value="utc" ${S.tzMode==='utc'?'selected':''}>UTC</option>
+      <option value="fixed" ${S.tzMode==='fixed'?'selected':''}>Desfase fijo respecto a UTC</option></select></span>
+    ${num('tzH','Desfase fijo (hora fichero − UTC)','h','0.5')}
+  </div><div class="note">Los NMEA van en UTC. Con «Hora de España» se aplica +1 h en invierno y +2 h en verano según la fecha del fichero.</div></section>
   <section class="blk"><h2>Tendencia y CPA</h2><div class="form2">
     ${num('block','Bloque RMS','s','0.01','0.01')}
     ${num('trendWin','Media móvil de la tendencia','s','1','0.1')}
@@ -1288,6 +1416,7 @@ function renderSettings(){
   <section class="blk how" style="grid-column:1/-1"><h2>Cómo se calcula</h2>
     <p>1 · <b>Distancia.</b> Las posiciones NMEA se proyectan en un plano local centrado en el hidrófono. d<sub>CPA</sub> es la mínima distancia horizontal barco–hidrófono.</p>
     <p>2 · <b>CPA acústico.</b> Señal filtrada paso alto, RMS por bloques y media móvil; el CPA es el máximo de esa tendencia (media cuadrática de los hidrófonos seleccionados) o el instante que fijes a mano.</p>
+    <p>2b · <b>Sincronización.</b> La hora de inicio del registro (cabecera UNV o .mat, manual, o ajuste de la tendencia acústica con −20·log r(t) del GPS) sitúa cada instante de la señal en hora UTC. Así la ventana puede centrarse en el CPA geométrico y cada segmento de Welch se corrige con su propia distancia r(t) antes de promediar.</p>
     <p>3 · <b>Ventana.</b> Se promedia el espectro de Welch de la señal sin filtrar dentro de la DWL centrada en el CPA. El ruido de fondo sale del tramo indicado del propio registro o de un fichero aparte (completo o un tramo), con el mismo factor de calibración y la misma corrección N·log<sub>10</sub>(r) que la pasada.</p>
     <p>4 · <b>Nivel de fuente</b> en cada hidrófono y media energética entre hidrófonos:</p>
     <div class="formula">r   = √( d_CPA² + (z_h − z_s)² )

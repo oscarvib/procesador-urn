@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.2.1**
+**Versión 1.3.0**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -12,13 +12,18 @@ Todo el cálculo se hace en el navegador: los ficheros no salen del equipo.
 
 1. **GPS**: NMEA del barco y de la boya del hidrófono (`$GxGGA` / `$GxRMC`). Calcula la distancia horizontal en el CPA, la hora del CPA, la velocidad sobre el fondo (SOG), el rumbo y la deriva de la boya. Muestra el mapa de tránsito y la distancia frente al tiempo.
 2. **Señal de presión**: `.mat` v5/v7 (p. ej. `recorded_data(k).data` con `names`, `units` y `sampling`), UNV dataset 58/58b o WAV. Para cada hidrófono se indica la profundidad y el factor de calibración.
-3. **Ruido de fondo**: un tramo del propio registro o un **fichero aparte** (completo o un tramo), con la asignación de canales que elijas.
-4. **Procesado**:
+3. **Sincronización con el GPS**: hora de inicio leída de la cabecera UNV (p. ej. `30-abr.-26 10:26:48`) o de un campo de fecha del `.mat`, hora manual, o ajuste automático de la tendencia acústica con −20·log r(t). La hora del fichero se pasa a UTC (por defecto, hora de España CET/CEST). Con la señal sincronizada:
+   - la ventana DWL se centra en el **CPA geométrico del GPS**;
+   - cada segmento de Welch se corrige con su **distancia real r(t)** antes de promediar;
+   - en la tendencia RMS se dibuja la curva esperada 1/r del GPS, y en la gráfica de distancia, el tramo grabado y la ventana;
+   - con hora del fichero o manual, el ajuste automático sirve de comprobación del desfase.
+4. **Ruido de fondo**: un tramo del propio registro o un **fichero aparte** (completo o un tramo), con la asignación de canales que elijas.
+5. **Procesado**:
    - paso alto Butterworth de 4º orden, RMS por bloques y media móvil → CPA acústico (o CPA manual con un clic);
    - ventana DWL de longitud fija o ±θ respecto al CPA, con COMEX y FINEX;
    - espectro de Welch con ventana Hann y 50 % de solape;
    - corrección a 1 m con `N(f)·log10(r)`, donde `r = √(d_CPA² + (z_h − z_s)²)` y N varía linealmente entre N₁ y N₂ (por defecto 11 → 20 entre 10 y 100 Hz).
-5. **Resultados**: tendencia, nivel de fuente en banda estrecha y en tercios de octava, ruido de fondo, S/N y margen frente a la curva límite elegida.
+6. **Resultados**: tendencia, nivel de fuente en banda estrecha y en tercios de octava, ruido de fondo, S/N y margen frente a la curva límite elegida.
 
 ## Curvas límite
 
@@ -50,6 +55,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.3.0**: sincronización señal–GPS (hora de cabecera UNV/.mat, manual o ajuste automático), ventana centrada en el CPA del GPS, corrección r(t) por segmento, lectura UNV ASCII más rápida.
 - **1.2.1**: se quita la curva Silent(S) (sísmica).
 - **1.2.0**: curvas límite DNV Silent R, E (tránsito y crucero silencioso), F (búsqueda ligera y arrastre pesado), A (prospección ligera y hélices de maniobra) y S (por tercio y global), seleccionables en Ajustes.
 - **1.1.2**: iconos en más tamaños (48–512 px) y favicon.ico para el acceso directo del escritorio en Windows.
