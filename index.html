@@ -1,0 +1,1283 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Procesador URN</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+[hidden]{display:none!important}
+body{margin:0}
+/* Layout: instrument-panel workbench. Sidebar list of runs (pasadas) + stacked numbered blocks for the selected run; summary and settings as separate views. */
+:root{
+  --bg:#e9eef0; --panel:#ffffff; --panel2:#f5f8f9; --ink:#122028; --ink2:#4b5c67; --line:#d0dadf;
+  --accent:#0c6a80; --accent-ink:#ffffff; --accent-soft:#d6eaef;
+  --good:#1c7a4e; --warn:#a85a07; --bad:#b42318; --chip:#e1e9ec;
+  --f-disp:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  /* chart tokens */
+  --c-plotbg:#ffffff; --c-ink:#122028; --c-ink2:#5b6b75; --c-grid:#e4eaed; --c-grid2:#f1f4f6;
+  --c-urn:#1d4ed8; --c-urnN:#b9c1c8; --c-bg:#6d63c4; --c-bgN:#d3cff3; --c-lim:#c81e1e; --c-lim2:#122028;
+  --c-fit:#d62828; --c-raw:#3b82b8; --c-dwl:rgba(226,184,30,.28); --c-fondo:rgba(109,99,196,.14); --c-cpa:#119a52; --c-track:#1d4ed8;
+  --c-series:#1d4ed8,#d1495b,#16857a,#d18f1b,#7c4dd1,#3d7f2f,#c2410c,#0e7490,#a21caf,#475569;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1418; --panel:#131f26; --panel2:#18262e; --ink:#dae5ea; --ink2:#93a6b0; --line:#25363f;
+  --accent:#55b6cc; --accent-ink:#04202a; --accent-soft:#163a45;
+  --good:#5cc191; --warn:#e3a04f; --bad:#f2877b; --chip:#1c2c34;
+  --c-plotbg:#131f26; --c-ink:#dae5ea; --c-ink2:#93a6b0; --c-grid:#22333c; --c-grid2:#1a2a32;
+  --c-urn:#7ea6ff; --c-urnN:#3e4c56; --c-bg:#a99ef5; --c-bgN:#38345d; --c-lim:#ff6f6f; --c-lim2:#dae5ea;
+  --c-fit:#ff6b6b; --c-raw:#6aaedc; --c-dwl:rgba(240,200,60,.22); --c-fondo:rgba(169,158,245,.16); --c-cpa:#4fd38c; --c-track:#7ea6ff;
+  --c-series:#7ea6ff,#ff8a9a,#5fd3c4,#f2c26b,#b39bff,#8fd16f,#ff9a5c,#5cc8e6,#e58bf0,#b8c4d2;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1418; --panel:#131f26; --panel2:#18262e; --ink:#dae5ea; --ink2:#93a6b0; --line:#25363f;
+  --accent:#55b6cc; --accent-ink:#04202a; --accent-soft:#163a45;
+  --good:#5cc191; --warn:#e3a04f; --bad:#f2877b; --chip:#1c2c34;
+  --c-plotbg:#131f26; --c-ink:#dae5ea; --c-ink2:#93a6b0; --c-grid:#22333c; --c-grid2:#1a2a32;
+  --c-urn:#7ea6ff; --c-urnN:#3e4c56; --c-bg:#a99ef5; --c-bgN:#38345d; --c-lim:#ff6f6f; --c-lim2:#dae5ea;
+  --c-fit:#ff6b6b; --c-raw:#6aaedc; --c-dwl:rgba(240,200,60,.22); --c-fondo:rgba(169,158,245,.16); --c-cpa:#4fd38c; --c-track:#7ea6ff;
+  --c-series:#7ea6ff,#ff8a9a,#5fd3c4,#f2c26b,#b39bff,#8fd16f,#ff9a5c,#5cc8e6,#e58bf0,#b8c4d2;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--panel);border-bottom:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--panel)}
+.brand{font-family:var(--f-disp);font-weight:700;font-size:22px;letter-spacing:.02em;display:flex;align-items:baseline;gap:10px}
+.brand small{font-family:var(--f-body);font-weight:400;font-size:13px;color:var(--ink2);letter-spacing:0}
+.brand .mark{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);position:relative;top:1px}
+.brand .mark::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
+.tabs{display:flex;gap:4px;margin-left:auto}
+.tabs button{font:600 14px var(--f-body);background:none;border:1px solid transparent;color:var(--ink2);padding:6px 14px;border-radius:6px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent-soft);color:var(--ink);border-color:var(--line)}
+main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 40px;max-width:1500px;margin:0 auto}
+.view-p{display:grid;grid-template-columns:270px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.view-p{grid-template-columns:minmax(0,1fr)}}
+.side{display:flex;flex-direction:column;gap:10px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px)}
+@media (max-width:900px){.side{position:static}}
+.side h3,.blk h2,.vh{font-family:var(--f-disp);font-weight:600;letter-spacing:.03em;text-transform:uppercase;font-size:14px;color:var(--ink2);margin:0}
+.plist{display:flex;flex-direction:column;gap:6px}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 10px;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:2px 8px;text-align:left;font:inherit;color:inherit;width:100%}
+.pcard[aria-current="true"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.pcard .nm{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.pcard .sub{grid-column:1/-1;font-size:13px;color:var(--ink2);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.dot{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:1px 7px;border-radius:10px;background:var(--chip);color:var(--ink2)}
+.dot.ok{color:var(--good)} .dot.st{color:var(--warn)}
+.dot.ok::before,.dot.st::before,.dot.no::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.del{background:none;border:none;color:var(--ink2);cursor:pointer;font-size:13px;padding:0 2px}
+.del.arm{color:var(--bad);font-weight:600}
+.btn{font:600 14px var(--f-body);display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 13px;border-radius:7px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.sm{font-size:13px;padding:4px 9px}
+.btn:disabled{opacity:.5;cursor:default}
+.btn input[type=file]{display:none}
+button:focus-visible,input:focus-visible,select:focus-visible,.btn:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.batch{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px}
+.batch summary{cursor:pointer;font-weight:600}
+.batch .bi{display:flex;flex-direction:column;gap:8px;margin-top:10px;font-size:13px}
+.batch label{display:flex;flex-direction:column;gap:3px;color:var(--ink2)}
+.detail{display:flex;flex-direction:column;gap:14px;min-width:0}
+.blk{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.blk h2{display:flex;align-items:center;gap:10px}
+.blk h2 .n{font-family:var(--f-mono);font-size:12px;width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;background:var(--accent);color:var(--accent-ink)}
+.blk h2 .aside{margin-left:auto;text-transform:none;letter-spacing:0;font-family:var(--f-body);font-weight:400;font-size:13px}
+.phead{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:end}
+.phead .pname{font:700 24px var(--f-disp);border:1px solid transparent;background:transparent;color:var(--ink);padding:2px 6px;border-radius:6px;min-width:0;flex:1 1 260px}
+.phead .pname:hover,.phead .pname:focus{border-color:var(--line);background:var(--panel)}
+.fld{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--ink2)}
+.fld .in{display:flex;align-items:center;gap:6px;color:var(--ink)}
+input[type=number],input[type=text],select{font:15px var(--f-body);color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:5px 8px;min-width:0}
+input[type=number]{width:92px;font-family:var(--f-mono);font-size:14px}
+.unit{font-family:var(--f-mono);font-size:12px;color:var(--ink2)}
+.grid-f{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.slot{border:1px dashed var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px;background:var(--panel2);min-width:0}
+.slot.drag{border-color:var(--accent);background:var(--accent-soft)}
+.slot .lab{font-weight:600;font-size:13px}
+.slot .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.slot select{flex:1 1 140px;max-width:100%}
+.fname{font-family:var(--f-mono);font-size:12px;color:var(--ink2);overflow-wrap:anywhere}
+.kv{display:flex;flex-wrap:wrap;gap:8px}
+.kv .k{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:6px 10px;display:flex;flex-direction:column;min-width:96px}
+.kv .k span{font-size:12px;color:var(--ink2)}
+.kv .k b{font-family:var(--f-mono);font-weight:600;font-size:15px;font-variant-numeric:tabular-nums}
+.kv .k.hi{border-color:var(--accent)}
+.note{font-size:13px;color:var(--ink2)}
+.warn{font-size:13px;color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:6px;padding:6px 10px}
+.err{font-size:13px;color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,transparent);border-radius:6px;padding:6px 10px}
+.charts2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:12px}
+@media (max-width:1100px){.charts2{grid-template-columns:minmax(0,1fr)}}
+.cbox{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ctool{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--ink2)}
+.ctool .t{font-weight:600;color:var(--ink);margin-right:auto}
+.chart{position:relative;height:340px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--c-plotbg);touch-action:pan-y}
+.chart.tall{height:470px} .chart.sq{height:380px} .chart.short{height:300px}
+.chart canvas{display:block}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;max-height:460px}
+table{border-collapse:collapse;font-size:13px;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:4px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{position:sticky;top:0;background:var(--panel2);font-weight:600;color:var(--ink2);z-index:1}
+td{font-family:var(--f-mono);font-size:12.5px}
+td.l,th.l{text-align:left;font-family:var(--f-body)}
+td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
+.ctab input[type=number]{width:78px}
+.ctab td{vertical-align:middle}
+.stale{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.prog{height:4px;background:var(--chip);border-radius:3px;overflow:hidden;flex:1 1 120px;min-width:80px}
+.prog i{display:block;height:100%;background:var(--accent);width:0}
+.empty{background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:30px;text-align:center;color:var(--ink2)}
+.sets{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.sets .blk{gap:10px}
+.form2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;font-size:14px}
+.form2 label{color:var(--ink)}
+.form2 .in{display:flex;gap:6px;align-items:center;justify-content:flex-end}
+.formula{font-family:var(--f-mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-x:auto;white-space:pre}
+.how p{margin:0 0 6px;max-width:72ch}
+#toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:14px;z-index:50;max-width:min(90vw,560px);box-shadow:0 6px 24px rgba(0,0,0,.25)}
+#ovl{position:fixed;inset:0;z-index:60;background:rgba(5,12,16,.6);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+#ovl .box{background:var(--panel);border-radius:10px;padding:14px;max-width:min(1200px,100%);max-height:100%;overflow:auto;display:flex;flex-direction:column;gap:10px}
+#ovl img{max-width:100%;border:1px solid var(--line)}
+#ovl textarea{width:min(900px,80vw);height:50vh;font:12px var(--f-mono);background:var(--panel2);color:var(--ink);border:1px solid var(--line)}
+.sum-sel{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px}
+.sum-sel label{display:flex;gap:5px;align-items:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="brand"><span class="mark" aria-hidden="true"></span>Procesador URN <small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-view="p" aria-selected="true" id="tab-p">Pasadas</button>
+    <button role="tab" data-view="r" aria-selected="false" id="tab-r">Resumen</button>
+    <button role="tab" data-view="a" aria-selected="false" id="tab-a">Ajustes</button>
+  </nav>
+</header>
+
+<main>
+  <section id="view-p" class="view-p">
+    <aside class="side">
+      <h3>Pasadas</h3>
+      <div class="plist" id="plist"></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn" id="b-add">+ Pasada</button>
+        <button class="btn pri" id="b-all">Procesar todas</button>
+      </div>
+      <div class="prog" id="allprog" hidden><i></i></div>
+      <details class="batch" id="batch">
+        <summary>Carga por lotes</summary>
+        <div class="bi">
+          <span class="note">Crea una pasada por cada fichero de señal (orden por nombre) y empareja los GPS por hora, velocidad y costado.</span>
+          <label>Señales (.mat, .unv, .wav)<input type="file" id="bf-sig" multiple accept=".mat,.unv,.uff,.wav"></label>
+          <label>GPS del barco (NMEA)<input type="file" id="bf-ship" multiple accept=".txt,.nmea,.log,.csv"></label>
+          <label>GPS del hidrófono / boya (NMEA)<input type="file" id="bf-hyd" multiple accept=".txt,.nmea,.log,.csv"></label>
+          <label>Ruido de fondo (opcional: uno para todas, o uno por señal)<input type="file" id="bf-bg" multiple accept=".mat,.unv,.uff,.wav"></label>
+          <button class="btn pri" id="bf-go">Crear pasadas</button>
+        </div>
+      </details>
+    </aside>
+    <div class="detail" id="detail"></div>
+  </section>
+
+  <section id="view-r" hidden>
+    <div class="detail" id="summary"></div>
+  </section>
+
+  <section id="view-a" hidden>
+    <div class="sets" id="settings"></div>
+  </section>
+</main>
+<div id="toast" hidden></div>
+<div id="ovl" hidden><div class="box" id="ovlbox"></div></div>
+
+<script>
+'use strict';
+/* =====================================================================
+   WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
+   RMS por bloques, tendencia, CPA y espectros de Welch.
+   ===================================================================== */
+const WORKER_SRC = String.raw`
+'use strict';
+const store=new Map();
+const post=(m,tr)=>self.postMessage(m,tr||[]);
+self.onmessage=async(e)=>{const m=e.data;try{
+  if(m.cmd==='load'){
+    const buf=await m.file.arrayBuffer();
+    const chans=await parseAny(buf,m.file.name,p=>post({id:m.id,progress:p}));
+    if(!chans.length) throw new Error('No se han encontrado canales de datos (vectores numéricos) en el fichero.');
+    store.set(m.passId,{chans,cache:null});
+    post({id:m.id,ok:true,meta:chans.map((c,i)=>({key:i,label:c.label,unit:c.unit||'',fs:c.fs||0,n:c.data.length,rms:rmsOf(c.data)}))});
+  }else if(m.cmd==='synth'){
+    const chans=synth(m); store.set(m.passId,{chans,cache:null});
+    post({id:m.id,ok:true,meta:chans.map((c,i)=>({key:i,label:c.label,unit:c.unit,fs:c.fs,n:c.data.length,rms:rmsOf(c.data)}))});
+  }else if(m.cmd==='setfs'){
+    const st=store.get(m.passId); if(st){st.chans[m.key].fs=m.fs; st.cache=null;} post({id:m.id,ok:true});
+  }else if(m.cmd==='free'){store.delete(m.passId);post({id:m.id,ok:true});
+  }else if(m.cmd==='process'){
+    const r=processPass(m); post({id:m.id,ok:true,res:r.res},r.tr);
+  }
+}catch(err){post({id:m.id,error:String(err&&err.message||err)})}};
+
+function rmsOf(d){const n=d.length;const step=Math.max(1,Math.floor(n/2e6));let s=0,c=0;for(let i=0;i<n;i+=step){s+=d[i]*d[i];c++}return Math.sqrt(s/Math.max(1,c))}
+const lat1=new TextDecoder('latin1');
+function latin1(u8){return lat1.decode(u8)}
+
+async function parseAny(buf,name,progress){
+  const u8=new Uint8Array(buf);
+  const head=latin1(u8.subarray(0,Math.min(2048,u8.length)));
+  if(head.startsWith('MATLAB')){
+    if(/MATLAB 7\.3/.test(head)||(u8.length>520&&latin1(u8.subarray(513,516))==='HDF'))
+      throw new Error('El .mat está en formato v7.3 (HDF5). Guárdalo como v7: save("fichero.mat","recorded_data","-v7").');
+    const vars=await parseMat(buf,progress); return matChannels(vars);
+  }
+  if(head.startsWith('Octave-1-')) throw new Error('Fichero binario nativo de Octave. Guárdalo como MAT: save -v7 fichero.mat recorded_data');
+  if(head.startsWith('# Created by Octave')) throw new Error('Fichero de texto de Octave. Guárdalo en binario: save -v7 fichero.mat recorded_data');
+  if(head.startsWith('RIFF')&&head.slice(8,12)==='WAVE') return parseWav(buf);
+  if(/^\s*-1\s*$/m.test(head)) return parseUNV(buf,progress);
+  throw new Error('Formato no reconocido. Usa .mat (v5/v7), UNV/UFF dataset 58 o 58b, o WAV.');
+}
+
+/* ---------- MAT v5 / v7 ---------- */
+async function inflate(ab){
+  const ds=new DecompressionStream('deflate');
+  const w=ds.writable.getWriter(); w.write(new Uint8Array(ab)).catch(()=>{}); w.close().catch(()=>{});
+  const r=ds.readable.getReader(); const parts=[]; let tot=0;
+  try{for(;;){const {done,value}=await r.read(); if(done)break; parts.push(value); tot+=value.length;}}
+  catch(e){ if(!tot) throw new Error('No se pudo descomprimir un bloque del .mat'); }
+  const out=new Uint8Array(tot); let o=0; for(const p of parts){out.set(p,o);o+=p.length} return out.buffer;
+}
+const pad8=n=>Math.ceil(n/8)*8;
+function tag(dv,off,le){const w=dv.getUint32(off,le);const hi=w>>>16;if(hi){return{type:w&0xffff,size:hi,d:off+4,next:off+8}}const size=dv.getUint32(off+4,le);return{type:w,size,d:off+8,next:off+8+pad8(size)}}
+async function parseMat(buf,progress){
+  const dv=new DataView(buf),u8=new Uint8Array(buf);const le=String.fromCharCode(u8[126],u8[127])==='IM';
+  const vars=[];let off=128;
+  while(off+8<=buf.byteLength){
+    const type=dv.getUint32(off,le),size=dv.getUint32(off+4,le);
+    if(type===15){const raw=await inflate(buf.slice(off+8,off+8+size));const v=readMatEl(raw,0,le);if(v.value)vars.push(v.value);off+=8+size;}
+    else if(type===14){const v=readMatEl(buf,off,le);if(v.value)vars.push(v.value);off=v.next;}
+    else off+=8+pad8(size);
+    progress(Math.min(1,off/buf.byteLength));
+  }
+  return vars;
+}
+function readMatEl(buf,off,le){const dv=new DataView(buf);const t=tag(dv,off,le);if(t.type!==14||t.size===0)return{value:null,next:t.next};return{value:parseMatrix(buf,dv,t.d,le),next:t.next}}
+const TY={1:[Int8Array,1,'getInt8'],2:[Uint8Array,1,'getUint8'],3:[Int16Array,2,'getInt16'],4:[Uint16Array,2,'getUint16'],5:[Int32Array,4,'getInt32'],6:[Uint32Array,4,'getUint32'],7:[Float32Array,4,'getFloat32'],9:[Float64Array,8,'getFloat64'],12:[null,8,'i64'],13:[null,8,'u64']};
+function readNum(buf,dv,t,le){
+  const ty=TY[t.type]; if(!ty) return new Float64Array(0);
+  const [C,b,g]=ty; const n=Math.floor(t.size/b); const out=n>4096?new Float32Array(n):new Float64Array(n);
+  if(C&&le){const src=(t.d%b===0)?new C(buf,t.d,n):new C(buf.slice(t.d,t.d+n*b)); out.set(src);}
+  else if(C){for(let i=0;i<n;i++)out[i]=dv[g](t.d+i*b,le);}
+  else{for(let i=0;i<n;i++)out[i]=Number(g==='i64'?dv.getBigInt64(t.d+i*8,le):dv.getBigUint64(t.d+i*8,le));}
+  return out;
+}
+function readChars(buf,dv,t,le,dims){
+  let codes=[];
+  if(t.type===4||t.type===17){for(let i=0;i<t.size/2;i++)codes.push(dv.getUint16(t.d+2*i,le));}
+  else if(t.type===16){return new TextDecoder('utf-8').decode(new Uint8Array(buf,t.d,t.size)).trim();}
+  else if(t.type===1||t.type===2){for(let i=0;i<t.size;i++)codes.push(dv.getUint8(t.d+i));}
+  else return '';
+  const r=dims[0]||1,c=Math.floor(codes.length/r); if(r<=1) return String.fromCharCode(...codes.slice(0,4096)).trim();
+  const rows=[];for(let i=0;i<r;i++){let s='';for(let j=0;j<c;j++)s+=String.fromCharCode(codes[i+r*j]);rows.push(s.trim())}return rows.join(' / ');
+}
+function parseMatrix(buf,dv,p,le){
+  const tf=tag(dv,p,le);const flags=dv.getUint32(tf.d,le);const cls=flags&0xff;p=tf.next;
+  const td=tag(dv,p,le);const dims=[];for(let i=0;i<td.size/4;i++)dims.push(dv.getInt32(td.d+4*i,le));p=td.next;
+  const tn=tag(dv,p,le);const name=latin1(new Uint8Array(buf,tn.d,tn.size));p=tn.next;
+  const numel=dims.reduce((a,b)=>a*b,1);const v={name,cls,dims,numel};
+  if(cls>=6&&cls<=15){const tr=tag(dv,p,le);v.data=readNum(buf,dv,tr,le);}
+  else if(cls===4){const tr=tag(dv,p,le);v.str=readChars(buf,dv,tr,le,dims);}
+  else if(cls===2||cls===3){
+    if(cls===3){const tc=tag(dv,p,le);p=tc.next;}
+    const tl=tag(dv,p,le);const flen=dv.getInt32(tl.d,le);p=tl.next;
+    const tm=tag(dv,p,le);const nf=flen?Math.floor(tm.size/flen):0;const fields=[];
+    for(let i=0;i<nf;i++){fields.push(latin1(new Uint8Array(buf,tm.d+i*flen,flen)).replace(/\0[\s\S]*$/,''));}
+    p=tm.next;v.fields=fields;v.elements=[];
+    for(let i=0;i<numel;i++){const el={};for(const f of fields){const r=readMatEl(buf,p,le);el[f]=r.value;p=r.next;}v.elements.push(el);}
+  }else if(cls===1){v.cells=[];for(let i=0;i<numel;i++){const r=readMatEl(buf,p,le);v.cells.push(r.value);p=r.next;}}
+  return v;
+}
+const FSK=['sampling','fs','Fs','FS','sample_rate','samplerate','sampling_rate','SampleRate','frec_muestreo','sr','dt','sampling_interval','SamplingRate'];
+const scal=v=>v&&v.data&&v.data.length===1?v.data[0]:null;
+const strOf=v=>{if(!v)return null;if(v.str!=null)return v.str;if(v.cells&&v.cells[0]&&v.cells[0].str!=null)return v.cells[0].str;return null};
+function fsFrom(o){for(const k of FSK){const s=scal(o[k]);if(s>0)return s<1?1/s:s}return 0}
+function matChannels(vars){
+  const top={};vars.forEach(v=>top[v.name]=v);const gfs=fsFrom(top);const out=[];
+  const walk=(v,path,ctx)=>{
+    if(!v)return;
+    if(v.data&&v.numel>=256){
+      const r=v.dims[0],c=v.dims[1]||1;
+      if(v.dims.length===2&&r>1&&c>1){
+        if(r>=c){for(let j=0;j<c;j++)out.push({label:(ctx.label||path)+'(:,'+(j+1)+')',unit:ctx.unit,fs:ctx.fs,data:v.data.subarray(j*r,(j+1)*r)});}
+        else{for(let i=0;i<r;i++){const d=new Float32Array(c);for(let j=0;j<c;j++)d[j]=v.data[i+r*j];out.push({label:(ctx.label||path)+'('+(i+1)+',:)',unit:ctx.unit,fs:ctx.fs,data:d});}}
+      }else out.push({label:ctx.label||path,unit:ctx.unit,fs:ctx.fs,data:v.data});
+    }
+    if(v.elements){v.elements.forEach((el,i)=>{
+      const p=path+(v.numel>1?'('+(i+1)+')':'');
+      const nm=strOf(el.names)||strOf(el.name)||strOf(el.label)||strOf(el.channel);
+      const un=strOf(el.units)||strOf(el.unit);const fs=fsFrom(el)||ctx.fs;
+      for(const f of v.fields){const c=el[f];if(!c)continue;walk(c,p+'.'+f,{label:nm?nm+' · '+p:'',unit:un||ctx.unit,fs});}
+    });}
+    if(v.cells)v.cells.forEach((c,i)=>walk(c,path+'{'+(i+1)+'}',ctx));
+  };
+  vars.forEach(v=>walk(v,v.name,{fs:gfs,unit:'',label:''}));
+  return out;
+}
+
+/* ---------- UNV / UFF dataset 58 y 58b ---------- */
+const ff=s=>parseFloat(String(s).replace(/[Dd]/,'E'));
+function parseNums(txt,n){const out=new Float32Array(n);const re=/[-+]?(?:\d+\.?\d*|\.\d+)(?:[EeDd][-+]?\d+)?/g;let m,i=0;
+  while(i<n&&(m=re.exec(txt))){let s=m[0];const c=s.charCodeAt(s.length-1);if(s.indexOf('D')>0||s.indexOf('d')>0)s=s.replace(/[Dd]/,'E');out[i++]=+s;}
+  return i<n?out.subarray(0,i):out;}
+function parseUNV(buf,progress){
+  const u8=new Uint8Array(buf);let pos=0;const out=[];
+  const line=()=>{if(pos>=u8.length)return null;let e=u8.indexOf(10,pos);if(e<0)e=u8.length;const s=latin1(u8.subarray(pos,e)).replace(/\r$/,'');pos=e+1;return s};
+  const findEnd=()=>{let i=pos;for(;;){let e=u8.indexOf(10,i);if(e<0)e=u8.length;if(e-i<=9){if(latin1(u8.subarray(i,e)).trim()==='-1')return i;}if(e>=u8.length)return u8.length;i=e+1;}};
+  for(;;){
+    const l=line();if(l===null)break;if(l.trim()!=='-1')continue;
+    const h=line();if(h===null)break;const ht=h.trim().split(/\s+/);const id=ht[0];
+    if(id!=='58'&&id!=='58b'){pos=findEnd();line();continue;}
+    const hd=[];for(let k=0;k<11;k++)hd.push(line()||'');
+    const r7=hd[6];let ot=parseInt(r7.slice(0,10)),n=parseInt(r7.slice(10,20)),even=parseInt(r7.slice(20,30)),dx=ff(r7.slice(43,56));
+    if(![ot,n,even,dx].every(Number.isFinite)){const t=r7.trim().split(/\s+/);ot=+t[0];n=+t[1];even=+t[2];dx=ff(t[4]);}
+    const cplx=ot===5||ot===6,dbl=ot===4||ot===6;const per=(cplx?2:1)+(even?0:1);const nv=n*per;let vals;
+    if(id==='58b'){
+      const le=(+ht[1]||1)===1;const nb=+ht[4]||0;const b=dbl?8:4;const len=Math.min(nb||nv*b,u8.length-pos);
+      const dv=new DataView(buf,pos,len);const m=Math.floor(len/b);vals=new Float32Array(Math.min(nv,m));
+      for(let i=0;i<vals.length;i++)vals[i]=dbl?dv.getFloat64(i*8,le):dv.getFloat32(i*4,le);
+      pos+=len;pos=findEnd();line();
+    }else{const e=findEnd();vals=parseNums(latin1(u8.subarray(pos,e)),nv);pos=e;line();}
+    let y;if(per===1)y=vals;else{const m=Math.floor(vals.length/per);y=new Float32Array(m);const o=even?0:1;for(let i=0;i<m;i++)y[i]=vals[i*per+o];if(!even&&m>1)dx=vals[per]-vals[0];}
+    const r6=hd[5].trim().split(/\s+/);let label=hd[0].trim();
+    if(!label||/^none$/i.test(label))label=(hd[1].trim()||('Canal '+(out.length+1)));
+    if(r6.length>=7)label+=' · nodo '+r6[5]+(r6[6]&&r6[6]!=='0'?' dir '+r6[6]:'');
+    let unit=(hd[8].slice(52,72)||'').trim();if(!unit){const t=hd[8].trim().split(/\s+/);unit=t.length>4?t[t.length-1]:'';}
+    out.push({label,unit,fs:dx>0?1/dx:0,data:y});progress(pos/u8.length);
+  }
+  return out;
+}
+
+/* ---------- WAV ---------- */
+function parseWav(buf){
+  const dv=new DataView(buf);let p=12,f=null,dO=0,dL=0;
+  while(p+8<=buf.byteLength){const id=String.fromCharCode(dv.getUint8(p),dv.getUint8(p+1),dv.getUint8(p+2),dv.getUint8(p+3));const sz=dv.getUint32(p+4,true);
+    if(id==='fmt '){f={af:dv.getUint16(p+8,true),ch:dv.getUint16(p+10,true),sr:dv.getUint32(p+12,true),bits:dv.getUint16(p+22,true)};if(f.af===0xFFFE)f.af=dv.getUint16(p+32,true);}
+    else if(id==='data'){dO=p+8;dL=Math.min(sz,buf.byteLength-dO);break;}
+    p+=8+sz+(sz&1);}
+  if(!f||!dO)throw new Error('WAV sin cabecera fmt o bloque data.');
+  const B=f.bits/8,fr=Math.floor(dL/(B*f.ch));const out=[];
+  for(let c=0;c<f.ch;c++){const d=new Float32Array(fr);
+    for(let i=0;i<fr;i++){const o=dO+(i*f.ch+c)*B;let v;
+      if(f.af===3)v=B===8?dv.getFloat64(o,true):dv.getFloat32(o,true);
+      else if(B===2)v=dv.getInt16(o,true)/32768;else if(B===3){let x=dv.getUint8(o)|(dv.getUint8(o+1)<<8)|(dv.getInt8(o+2)<<16);v=x/8388608;}
+      else if(B===4)v=dv.getInt32(o,true)/2147483648;else v=(dv.getUint8(o)-128)/128;d[i]=v;}
+    out.push({label:'WAV canal '+(c+1),unit:'FS',fs:f.sr,data:d});}
+  return out;
+}
+
+/* ---------- señal sintética de ejemplo ---------- */
+function synth(m){
+  const fs=m.fs,N=Math.round(m.dur*fs),out=[];
+  let seed=12345;const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296*2-1};
+  const src=new Float32Array(N);let lp=0,s2=0;const a=Math.exp(-2*Math.PI*350/fs);
+  for(let i=0;i<N;i++){const w=rnd();lp=a*lp+(1-a)*w;const t=i/fs;
+    src[i]=lp*3+0.25*w+0.9*Math.sin(2*Math.PI*49.5*t)+0.5*Math.sin(2*Math.PI*146*t+1)+0.35*Math.sin(2*Math.PI*292*t)+0.12*Math.sin(2*Math.PI*1180*t);s2+=src[i]*src[i];}
+  const k=31.6/Math.sqrt(s2/N);
+  m.depths.forEach((z,ci)=>{const d=new Float32Array(N);let sd=777+ci*91;const r2=()=>{sd=(sd*1103515245+12345)>>>0;return sd/4294967296*2-1};
+    for(let i=0;i<N;i++){const t=i/fs;const x=m.v*(t-m.tc);const r=Math.sqrt(m.d*m.d+z*z+x*x);d[i]=src[i]*k/r+0.035*r2()*1.7;}
+    out.push({label:'H'+(ci+1)+' · ejemplo sintético',unit:'Pa',fs,data:d});});
+  return out;
+}
+
+/* ---------- procesado ---------- */
+function hpCoefs(fc,fs){return[0.5411961001461969,1.3065629648763766].map(Q=>{const w0=2*Math.PI*fc/fs,cs=Math.cos(w0),al=Math.sin(w0)/(2*Q),a0=1+al;return[(1+cs)/2/a0,-(1+cs)/a0,(1+cs)/2/a0,-2*cs/a0,(1-al)/a0]})}
+function blockRms(d,i0,nb,bl,fs,hp,f){
+  const out=new Float32Array(nb);const use=hp>0&&hp<fs/2;const q=use?hpCoefs(hp,fs):null;
+  let z1=0,z2=0,y1=0,y2=0;
+  for(let b=0;b<nb;b++){let s=0;const o=i0+b*bl;
+    for(let i=0;i<bl;i++){let x=d[o+i]*f;
+      if(use){const c=q[0];const y=c[0]*x+z1;z1=c[1]*x-c[3]*y+z2;z2=c[2]*x-c[4]*y;const c2=q[1];const yy=c2[0]*y+y1;y1=c2[1]*y-c2[3]*yy+y2;y2=c2[2]*y-c2[4]*yy;x=yy;}
+      s+=x*x;}
+    out[b]=Math.sqrt(s/bl);}
+  return out;
+}
+function movmean(x,k){const n=x.length,o=new Float32Array(n),cs=new Float64Array(n+1);for(let i=0;i<n;i++)cs[i+1]=cs[i]+x[i];
+  const kb=Math.floor(k/2),kf=k%2?kb:kb-1;for(let i=0;i<n;i++){const a=Math.max(0,i-kb),b=Math.min(n-1,i+kf);o[i]=(cs[b+1]-cs[a])/(b-a+1)}return o}
+const WCache={};
+function wsetup(n){if(WCache[n])return WCache[n];const lg=Math.round(Math.log2(n));const rev=new Uint32Array(n);
+  for(let i=0;i<n;i++){let r=0,x=i;for(let b=0;b<lg;b++){r=(r<<1)|(x&1);x>>=1}rev[i]=r}
+  const cs=new Float64Array(n/2),sn=new Float64Array(n/2);for(let i=0;i<n/2;i++){cs[i]=Math.cos(2*Math.PI*i/n);sn[i]=-Math.sin(2*Math.PI*i/n)}
+  const w=new Float64Array(n);let s2=0;for(let i=0;i<n;i++){w[i]=0.5-0.5*Math.cos(2*Math.PI*i/(n-1));s2+=w[i]*w[i]}
+  return WCache[n]={n,rev,cs,sn,w,s2,re:new Float64Array(n),im:new Float64Array(n)};}
+function fft(re,im,W){const n=W.n,rev=W.rev;for(let i=0;i<n;i++){const j=rev[i];if(j>i){let t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t}}
+  for(let size=2;size<=n;size<<=1){const half=size>>1,step=n/size;for(let i=0;i<n;i+=size){for(let j=0,k=0;j<half;j++,k+=step){const a=i+j,b=a+half;const wr=W.cs[k],wi=W.sn[k];const tr=re[b]*wr-im[b]*wi,ti=re[b]*wi+im[b]*wr;re[b]=re[a]-tr;im[b]=im[a]-ti;re[a]+=tr;im[a]+=ti}}}}
+function welch(d,start,len,f,fs,W){const n=W.n,step=n>>1;const nseg=Math.floor((len-n)/step)+1;const P=new Float64Array(n/2+1);const re=W.re,im=W.im,w=W.w;
+  for(let s=0;s<nseg;s++){const o=start+s*step;let mean=0;for(let i=0;i<n;i++)mean+=d[o+i];mean/=n;
+    for(let i=0;i<n;i++){re[i]=(d[o+i]-mean)*w[i];im[i]=0}fft(re,im,W);for(let k=0;k<=n/2;k++)P[k]+=re[k]*re[k]+im[k]*im[k];}
+  const sc=f*f/(fs*W.s2*nseg);const out=new Float32Array(n/2+1);for(let k=0;k<=n/2;k++){let v=P[k]*sc;if(k>0&&k<n/2)v*=2;out[k]=v}return{p:out,nseg}}
+function processPass(m){
+  const st=store.get(m.passId);if(!st)throw new Error('NOLOAD');
+  if(!m.chans.length)throw new Error('Selecciona al menos un canal (hidrófono).');
+  const C=m.chans.map(s=>({c:st.chans[s.key],f:s.factor}));
+  const fs=C[0].c.fs;if(!(fs>0))throw new Error('Frecuencia de muestreo desconocida: indícala en la tabla de canales.');
+  for(const x of C)if(Math.abs(x.c.fs-fs)>1e-6*fs)throw new Error('Los canales seleccionados tienen distinta frecuencia de muestreo.');
+  const i0=Math.max(0,Math.round(m.trim*fs));const N=Math.min(...C.map(x=>x.c.data.length))-i0;
+  if(N<fs*2)throw new Error('El registro es demasiado corto tras el recorte inicial.');
+  const bl=Math.max(1,Math.round(m.block*fs)),nb=Math.floor(N/bl),dt=bl/fs,dur=N/fs;
+  const key=[m.trim,m.block,m.hp,m.chans.map(s=>s.key+':'+s.factor).join(',')].join('|');
+  let rms;if(st.cache&&st.cache.key===key)rms=st.cache.rms;else{rms=C.map(x=>blockRms(x.c.data,i0,nb,bl,fs,m.hp,x.f));st.cache={key,rms};}
+  const comb=new Float32Array(nb);for(let k=0;k<nb;k++){let s=0;for(const r of rms)s+=r[k]*r[k];comb[k]=Math.sqrt(s/rms.length)}
+  const trend=movmean(comb,Math.max(1,Math.round(m.trendWin/m.block)));
+  let tcpa;if(m.cpaMode==='manual'&&Number.isFinite(m.tcpa))tcpa=Math.min(Math.max(0,m.tcpa),dur);else{let im=0;for(let k=1;k<nb;k++)if(trend[k]>trend[im])im=k;tcpa=im*dt;}
+  const warn=[];const tdwl=m.dwlLen/m.vms;let tini=tcpa-tdwl/2,tfin=tcpa+tdwl/2;
+  if(tini<0||tfin>dur)warn.push('La ventana DWL se sale del registro y queda recortada ('+Math.max(0,tini).toFixed(1)+'–'+Math.min(dur,tfin).toFixed(1)+' s).');
+  const s0=Math.max(0,Math.round(tini*fs)),s1=Math.min(N,Math.round(tfin*fs));
+  const b0=Math.max(0,Math.round(m.bg0*fs)),b1=Math.min(N,Math.round(m.bg1*fs));
+  let nfft=m.nfft;while(nfft>256&&nfft>s1-s0)nfft/=2;
+  if(nfft!==m.nfft)warn.push('La ventana es más corta que la FFT pedida: se usa nfft = '+nfft+' (Δf = '+(fs/nfft).toFixed(2)+' Hz).');
+  if(s1-s0<nfft)throw new Error('La ventana DWL es demasiado corta: revisa la velocidad, la DWL o el CPA.');
+  const W=wsetup(nfft);
+  const ps=C.map(x=>welch(x.c.data,i0+s0,s1-s0,x.f,fs,W));
+  let pb=null,dfBg=fs/nfft,bgInfo=null;
+  if(m.bgKey){const sb=store.get(m.bgKey);if(!sb)throw new Error('NOLOADBG');
+    const B=m.chans.map(s=>{const c=sb.chans[s.bgKey];if(!c)throw new Error('El fichero de ruido de fondo no tiene el canal '+(s.bgKey+1)+'. Elige el canal de fondo en la tabla de canales.');return c});
+    const bfs=B[0].fs;if(!(bfs>0))throw new Error('Frecuencia de muestreo desconocida en el fichero de ruido de fondo.');
+    for(const c of B)if(Math.abs(c.fs-bfs)>1e-6*bfs)throw new Error('Los canales del fichero de ruido de fondo tienen distinta frecuencia de muestreo.');
+    const bn=Math.min(...B.map(c=>c.data.length));let a=0,b=bn;
+    if(!m.bgWhole){a=Math.max(0,Math.round(m.bgf0*bfs));b=Math.min(bn,Math.round(m.bgf1*bfs));}
+    let nb2=2**Math.max(8,Math.round(Math.log2(bfs*nfft/fs)));while(nb2>256&&nb2>b-a)nb2/=2;
+    if(b-a>=nb2){const W2=wsetup(nb2);pb=B.map((c,i)=>welch(c.data,a,b-a,m.chans[i].factor,bfs,W2));dfBg=bfs/nb2;
+      if(Math.abs(bfs-fs)>1e-6*fs)warn.push('El fichero de fondo tiene otra frecuencia de muestreo ('+bfs+' Hz): su espectro se calcula con Δf = '+dfBg.toFixed(2)+' Hz.');}
+    else warn.push('El tramo elegido del fichero de ruido de fondo es demasiado corto o está fuera del registro ('+(bn/bfs).toFixed(1)+' s).');
+    bgInfo={dur:bn/bfs,t0:a/bfs,t1:b/bfs,fs:bfs};
+  }else{if(b1-b0>=nfft)pb=C.map(x=>welch(x.c.data,i0+b0,b1-b0,x.f,fs,W));else if(b1>b0)warn.push('La ventana de ruido de fondo es más corta que la FFT: amplíala para ver el fondo.');}
+  const res={fs,nfft,df:fs/nfft,dt,nb,dur,tcpa,tini,tfin,tini_eff:s0/fs,tfin_eff:s1/fs,
+    rms:rms.map(r=>r.slice()),trend,psd:ps.map(x=>x.p),psdBg:pb?pb.map(x=>x.p):null,dfBg,bgInfo,nseg:ps[0].nseg,nsegBg:pb?pb[0].nseg:0,warn,keys:m.chans.map(s=>s.key)};
+  const tr=[res.trend.buffer,...res.rms.map(r=>r.buffer),...res.psd.map(p=>p.buffer)];if(res.psdBg)tr.push(...res.psdBg.map(p=>p.buffer));
+  return{res,tr};
+}
+`;
+
+/* =====================================================================
+   Datos de ejemplo: trayectoria GPS sintética (barco a 7 kn, boya con deriva)
+   ===================================================================== */
+const EX_SHIP = "102000,3629.7606,00645.1044;102001,3629.7620,00645.1033;102002,3629.7638,00645.1026;102003,3629.7658,00645.1007;102004,3629.7675,00645.0998;102005,3629.7692,00645.0990;102006,3629.7712,00645.0988;102007,3629.7729,00645.0969;102008,3629.7739,00645.0968;102009,3629.7761,00645.0954;102010,3629.7780,00645.0939;102011,3629.7795,00645.0928;102012,3629.7816,00645.0919;102013,3629.7838,00645.0912;102014,3629.7854,00645.0897;102015,3629.7866,00645.0892;102016,3629.7885,00645.0881;102017,3629.7904,00645.0866;102018,3629.7918,00645.0861;102019,3629.7942,00645.0851;102020,3629.7957,00645.0842;102021,3629.7969,00645.0826;102022,3629.7995,00645.0818;102023,3629.8008,00645.0816;102024,3629.8024,00645.0798;102025,3629.8044,00645.0785;102026,3629.8064,00645.0783;102027,3629.8082,00645.0764;102028,3629.8098,00645.0751;102029,3629.8110,00645.0746;102030,3629.8130,00645.0734;102031,3629.8146,00645.0728;102032,3629.8166,00645.0720;102033,3629.8178,00645.0700;102034,3629.8203,00645.0701;102035,3629.8222,00645.0679;102036,3629.8230,00645.0683;102037,3629.8253,00645.0663;102038,3629.8276,00645.0659;102039,3629.8291,00645.0640;102040,3629.8310,00645.0633;102041,3629.8328,00645.0617;102042,3629.8345,00645.0612;102043,3629.8365,00645.0610;102044,3629.8380,00645.0589;102045,3629.8394,00645.0591;102046,3629.8408,00645.0569;102047,3629.8435,00645.0563;102048,3629.8454,00645.0558;102049,3629.8466,00645.0540;102050,3629.8486,00645.0531;102051,3629.8506,00645.0521;102052,3629.8518,00645.0514;102053,3629.8537,00645.0497;102054,3629.8558,00645.0495;102055,3629.8571,00645.0475;102056,3629.8590,00645.0476;102057,3629.8607,00645.0461;102058,3629.8622,00645.0444;102059,3629.8639,00645.0435;102100,3629.8662,00645.0433;102101,3629.8681,00645.0415;102102,3629.8696,00645.0408;102103,3629.8715,00645.0398;102104,3629.8732,00645.0390;102105,3629.8748,00645.0376;102106,3629.8768,00645.0365;102107,3629.8785,00645.0350;102108,3629.8800,00645.0350;102109,3629.8822,00645.0338;102110,3629.8838,00645.0329;102111,3629.8846,00645.0310;102112,3629.8873,00645.0312;102113,3629.8890,00645.0295;102114,3629.8909,00645.0288;102115,3629.8923,00645.0275;102116,3629.8943,00645.0256;102117,3629.8959,00645.0258;102118,3629.8977,00645.0247;102119,3629.8993,00645.0247;102120,3629.9009,00645.0221;102121,3629.9033,00645.0215;102122,3629.9053,00645.0202;102123,3629.9064,00645.0202;102124,3629.9085,00645.0186;102125,3629.9092,00645.0170;102126,3629.9114,00645.0160;102127,3629.9131,00645.0151;102128,3629.9157,00645.0143;102129,3629.9172,00645.0134;102130,3629.9189,00645.0120;102131,3629.9211,00645.0113;102132,3629.9223,00645.0099;102133,3629.9238,00645.0082;102134,3629.9258,00645.0079;102135,3629.9279,00645.0072;102136,3629.9296,00645.0061;102137,3629.9307,00645.0058;102138,3629.9326,00645.0039;102139,3629.9342,00645.0035;102140,3629.9367,00645.0016;102141,3629.9379,00645.0005;102142,3629.9396,00645.0001;102143,3629.9423,00644.9987;102144,3629.9440,00644.9984;102145,3629.9452,00644.9966;102146,3629.9475,00644.9968;102147,3629.9486,00644.9950;102148,3629.9507,00644.9938;102149,3629.9520,00644.9923;102150,3629.9546,00644.9914;102151,3629.9558,00644.9903;102152,3629.9579,00644.9902;102153,3629.9594,00644.9888;102154,3629.9610,00644.9872;102155,3629.9628,00644.9877;102156,3629.9649,00644.9865;102157,3629.9662,00644.9846;102158,3629.9684,00644.9837;102159,3629.9704,00644.9827;102200,3629.9720,00644.9817;102201,3629.9740,00644.9801;102202,3629.9755,00644.9799;102203,3629.9766,00644.9794;102204,3629.9791,00644.9784;102205,3629.9805,00644.9771;102206,3629.9823,00644.9756;102207,3629.9841,00644.9748;102208,3629.9858,00644.9728;102209,3629.9879,00644.9723;102210,3629.9889,00644.9715;102211,3629.9914,00644.9707;102212,3629.9926,00644.9701;102213,3629.9948,00644.9680;102214,3629.9966,00644.9674;102215,3629.9977,00644.9663;102216,3629.9997,00644.9660;102217,3630.0014,00644.9639;102218,3630.0031,00644.9637;102219,3630.0051,00644.9629;102220,3630.0070,00644.9617;102221,3630.0088,00644.9612;102222,3630.0098,00644.9595;102223,3630.0121,00644.9579;102224,3630.0137,00644.9581;102225,3630.0156,00644.9560;102226,3630.0177,00644.9548;102227,3630.0193,00644.9538;102228,3630.0212,00644.9525;102229,3630.0221,00644.9519;102230,3630.0249,00644.9507;102231,3630.0261,00644.9501;102232,3630.0275,00644.9482;102233,3630.0306,00644.9478;102234,3630.0318,00644.9473;102235,3630.0333,00644.9452;102236,3630.0354,00644.9447;102237,3630.0368,00644.9443;102238,3630.0389,00644.9427;102239,3630.0403,00644.9419;102240,3630.0420,00644.9412;102241,3630.0439,00644.9394;102242,3630.0454,00644.9391;102243,3630.0478,00644.9367;102244,3630.0483,00644.9365;102245,3630.0511,00644.9355;102246,3630.0528,00644.9340;102247,3630.0546,00644.9337;102248,3630.0566,00644.9334;102249,3630.0578,00644.9315;102250,3630.0603,00644.9301;102251,3630.0613,00644.9302;102252,3630.0633,00644.9284;102253,3630.0647,00644.9277;102254,3630.0671,00644.9257;102255,3630.0681,00644.9260;102256,3630.0706,00644.9238;102257,3630.0723,00644.9227;102258,3630.0739,00644.9228;102259,3630.0753,00644.9223;102300,3630.0775,00644.9204;102301,3630.0791,00644.9197;102302,3630.0810,00644.9182;102303,3630.0827,00644.9171;102304,3630.0847,00644.9164;102305,3630.0859,00644.9153;102306,3630.0879,00644.9145;102307,3630.0897,00644.9133;102308,3630.0915,00644.9122;102309,3630.0928,00644.9113;102310,3630.0953,00644.9100;102311,3630.0967,00644.9090;102312,3630.0982,00644.9080;102313,3630.1003,00644.9079;102314,3630.1022,00644.9065;102315,3630.1029,00644.9055;102316,3630.1060,00644.9045;102317,3630.1068,00644.9032;102318,3630.1092,00644.9023;102319,3630.1109,00644.9008;102320,3630.1128,00644.8994;102321,3630.1145,00644.8990;102322,3630.1164,00644.8973;102323,3630.1175,00644.8965;102324,3630.1198,00644.8959;102325,3630.1217,00644.8950;102326,3630.1234,00644.8936;102327,3630.1257,00644.8929;102328,3630.1266,00644.8913;102329,3630.1293,00644.8907;102330,3630.1305,00644.8899;102331,3630.1319,00644.8883;102332,3630.1338,00644.8882;102333,3630.1358,00644.8865;102334,3630.1372,00644.8853;102335,3630.1392,00644.8843;102336,3630.1408,00644.8835;102337,3630.1427,00644.8827;102338,3630.1441,00644.8820;102339,3630.1456,00644.8806;102340,3630.1471,00644.8797;102341,3630.1497,00644.8788;102342,3630.1513,00644.8773;102343,3630.1526,00644.8766;102344,3630.1550,00644.8747;102345,3630.1563,00644.8740;102346,3630.1578,00644.8735;102347,3630.1604,00644.8721;102348,3630.1619,00644.8721;102349,3630.1631,00644.8701;102350,3630.1651,00644.8701;102351,3630.1667,00644.8686;102352,3630.1690,00644.8673;102353,3630.1709,00644.8660;102354,3630.1728,00644.8646;102355,3630.1740,00644.8647;102356,3630.1756,00644.8636;102357,3630.1777,00644.8622;102358,3630.1790,00644.8609;102359,3630.1812,00644.8606;102400,3630.1829,00644.8592;102401,3630.1845,00644.8581;102402,3630.1866,00644.8568;102403,3630.1881,00644.8561;102404,3630.1892,00644.8551;102405,3630.1918,00644.8544;102406,3630.1936,00644.8536;102407,3630.1949,00644.8519;102408,3630.1970,00644.8510;102409,3630.1991,00644.8497;102410,3630.2003,00644.8489;102411,3630.2024,00644.8479;102412,3630.2042,00644.8465;102413,3630.2055,00644.8461;102414,3630.2074,00644.8450;102415,3630.2094,00644.8442;102416,3630.2112,00644.8430;102417,3630.2128,00644.8415;102418,3630.2146,00644.8398;102419,3630.2165,00644.8393;102420,3630.2175,00644.8382;102421,3630.2201,00644.8380;102422,3630.2225,00644.8364;102423,3630.2239,00644.8355;102424,3630.2256,00644.8343";
+const EX_HYD  = "101940,3629.9995,00644.9997;101941,3630.0009,00644.9998;101942,3630.0000,00644.9993;101943,3630.0003,00644.9997;101944,3630.0000,00644.9991;101945,3629.9997,00644.9992;101946,3630.0003,00645.0003;101947,3630.0003,00645.0003;101948,3630.0005,00644.9991;101949,3630.0004,00644.9999;101950,3630.0008,00645.0009;101951,3629.9993,00645.0007;101952,3629.9999,00644.9999;101953,3629.9994,00644.9998;101954,3629.9999,00644.9996;101955,3630.0007,00645.0001;101956,3629.9997,00645.0001;101957,3630.0002,00644.9997;101958,3630.0001,00645.0002;101959,3630.0001,00645.0000;102000,3630.0002,00644.9999;102001,3629.9996,00645.0008;102002,3630.0003,00645.0003;102003,3630.0002,00644.9994;102004,3630.0000,00645.0005;102005,3630.0003,00644.9998;102006,3629.9998,00644.9988;102007,3630.0002,00644.9989;102008,3630.0000,00644.9997;102009,3629.9993,00644.9993;102010,3630.0002,00644.9995;102011,3629.9998,00644.9990;102012,3630.0001,00645.0005;102013,3630.0010,00644.9996;102014,3630.0002,00644.9995;102015,3630.0001,00644.9997;102016,3630.0001,00645.0001;102017,3630.0004,00645.0000;102018,3629.9996,00644.9993;102019,3629.9998,00644.9990;102020,3630.0000,00645.0006;102021,3629.9991,00645.0004;102022,3630.0004,00645.0001;102023,3629.9993,00644.9996;102024,3629.9999,00644.9994;102025,3630.0007,00644.9997;102026,3630.0000,00645.0002;102027,3629.9991,00645.0005;102028,3630.0012,00644.9995;102029,3630.0002,00644.9993;102030,3629.9985,00644.9999;102031,3630.0009,00644.9992;102032,3629.9997,00645.0000;102033,3630.0001,00644.9997;102034,3630.0000,00644.9995;102035,3630.0007,00645.0003;102036,3630.0002,00644.9991;102037,3630.0005,00644.9996;102038,3630.0005,00645.0006;102039,3630.0001,00644.9995;102040,3629.9991,00644.9997;102041,3629.9999,00644.9990;102042,3630.0004,00644.9999;102043,3629.9998,00644.9990;102044,3630.0006,00644.9996;102045,3630.0003,00644.9999;102046,3630.0000,00644.9993;102047,3629.9994,00644.9992;102048,3630.0004,00644.9998;102049,3630.0007,00644.9993;102050,3630.0002,00644.9989;102051,3629.9993,00644.9984;102052,3630.0004,00644.9991;102053,3630.0005,00644.9996;102054,3629.9992,00644.9997;102055,3629.9998,00644.9994;102056,3629.9998,00644.9997;102057,3630.0008,00644.9991;102058,3630.0009,00645.0011;102059,3629.9995,00644.9995;102100,3630.0002,00645.0007;102101,3630.0001,00644.9992;102102,3629.9999,00644.9990;102103,3629.9996,00644.9992;102104,3630.0000,00644.9994;102105,3630.0004,00644.9996;102106,3630.0006,00644.9997;102107,3630.0001,00644.9992;102108,3630.0003,00644.9998;102109,3630.0001,00644.9994;102110,3629.9999,00644.9998;102111,3630.0002,00645.0000;102112,3630.0006,00644.9999;102113,3629.9990,00644.9985;102114,3629.9998,00644.9998;102115,3630.0005,00645.0005;102116,3630.0002,00645.0000;102117,3629.9994,00645.0004;102118,3630.0006,00645.0000;102119,3630.0001,00645.0008;102120,3629.9992,00644.9991;102121,3629.9998,00644.9982;102122,3630.0000,00644.9991;102123,3630.0000,00644.9994;102124,3630.0007,00645.0004;102125,3630.0006,00644.9994;102126,3630.0004,00644.9992;102127,3630.0003,00644.9989;102128,3629.9999,00644.9994;102129,3629.9998,00644.9999;102130,3630.0004,00645.0003;102131,3630.0002,00644.9989;102132,3629.9994,00644.9996;102133,3630.0002,00644.9999;102134,3630.0004,00644.9992;102135,3630.0000,00644.9998;102136,3630.0001,00644.9998;102137,3630.0000,00644.9994;102138,3629.9992,00644.9997;102139,3630.0002,00645.0009;102140,3629.9991,00644.9993;102141,3629.9999,00644.9995;102142,3629.9999,00644.9994;102143,3630.0004,00644.9995;102144,3630.0002,00644.9993;102145,3629.9993,00645.0000;102146,3630.0005,00644.9990;102147,3629.9998,00644.9991;102148,3630.0010,00644.9983;102149,3629.9998,00644.9995;102150,3630.0007,00645.0002;102151,3630.0000,00644.9996;102152,3629.9992,00645.0006;102153,3630.0001,00644.9996;102154,3629.9998,00645.0000;102155,3630.0003,00644.9994;102156,3630.0001,00644.9992;102157,3630.0007,00644.9995;102158,3629.9997,00645.0001;102159,3630.0004,00644.9996;102200,3629.9996,00644.9989;102201,3630.0002,00644.9988;102202,3629.9998,00645.0000;102203,3630.0011,00644.9995;102204,3630.0003,00644.9998;102205,3630.0002,00644.9988;102206,3630.0007,00644.9992;102207,3629.9999,00644.9993;102208,3630.0005,00644.9984;102209,3630.0002,00644.9984;102210,3629.9996,00644.9995;102211,3630.0002,00644.9994;102212,3629.9994,00644.9998;102213,3630.0000,00645.0000;102214,3630.0007,00644.9995;102215,3630.0001,00644.9994;102216,3629.9991,00644.9995;102217,3629.9998,00644.9991;102218,3629.9997,00645.0000;102219,3630.0002,00645.0005;102220,3630.0003,00645.0003;102221,3630.0006,00644.9993;102222,3630.0001,00644.9994;102223,3630.0003,00644.9996;102224,3629.9995,00644.9996;102225,3630.0003,00644.9987;102226,3629.9993,00644.9990;102227,3629.9996,00644.9983;102228,3630.0002,00644.9992;102229,3629.9995,00645.0000;102230,3630.0002,00644.9991;102231,3630.0005,00644.9996;102232,3630.0007,00644.9995;102233,3630.0000,00644.9987;102234,3630.0001,00644.9987;102235,3630.0006,00644.9998;102236,3629.9999,00644.9992;102237,3630.0000,00644.9990;102238,3630.0000,00644.9987;102239,3630.0004,00644.9991;102240,3630.0010,00644.9995;102241,3629.9995,00644.9996;102242,3630.0004,00644.9986;102243,3629.9997,00644.9998;102244,3629.9999,00644.9993;102245,3630.0003,00644.9993;102246,3630.0006,00645.0002;102247,3629.9999,00645.0003;102248,3630.0003,00644.9996;102249,3629.9994,00644.9998;102250,3629.9995,00644.9992;102251,3629.9999,00644.9990;102252,3629.9993,00644.9996;102253,3630.0005,00644.9993;102254,3630.0004,00644.9994;102255,3630.0008,00644.9981;102256,3630.0000,00644.9982;102257,3630.0007,00644.9989;102258,3630.0002,00644.9993;102259,3629.9997,00644.9994;102300,3630.0006,00644.9988;102301,3629.9999,00644.9988;102302,3630.0003,00644.9997;102303,3629.9994,00644.9992;102304,3629.9997,00644.9997;102305,3630.0003,00644.9989;102306,3629.9998,00644.9996;102307,3629.9997,00644.9997;102308,3630.0006,00644.9990;102309,3630.0000,00645.0008;102310,3630.0006,00644.9988;102311,3630.0003,00644.9987;102312,3629.9999,00645.0001;102313,3630.0005,00645.0004;102314,3630.0004,00645.0000;102315,3630.0001,00644.9993;102316,3630.0001,00644.9987;102317,3630.0003,00644.9995;102318,3629.9999,00644.9986;102319,3630.0003,00644.9995;102320,3629.9996,00644.9989;102321,3630.0013,00644.9990;102322,3629.9995,00644.9988;102323,3630.0002,00644.9995;102324,3629.9999,00644.9990;102325,3630.0003,00644.9996;102326,3630.0005,00644.9993;102327,3630.0005,00644.9999;102328,3629.9999,00644.9983;102329,3629.9998,00644.9984;102330,3630.0002,00644.9992;102331,3630.0000,00644.9993;102332,3630.0010,00644.9989;102333,3629.9999,00644.9983;102334,3629.9999,00644.9997;102335,3629.9995,00644.9988;102336,3630.0002,00644.9999;102337,3630.0003,00644.9995;102338,3630.0004,00644.9993;102339,3630.0004,00644.9997;102340,3630.0004,00644.9981;102341,3629.9997,00644.9997;102342,3630.0004,00644.9990;102343,3630.0005,00644.9985;102344,3630.0014,00645.0000;102345,3630.0002,00644.9992;102346,3630.0010,00644.9999;102347,3630.0002,00645.0003;102348,3630.0006,00644.9999;102349,3629.9999,00644.9991;102350,3630.0003,00645.0008;102351,3630.0006,00644.9996;102352,3629.9997,00645.0000;102353,3630.0000,00644.9988;102354,3630.0003,00644.9989;102355,3629.9997,00644.9998;102356,3629.9999,00644.9998;102357,3630.0000,00644.9994;102358,3630.0000,00644.9992;102359,3629.9993,00644.9991";
+
+/* =====================================================================
+   Utilidades
+   ===================================================================== */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const fin=v=>typeof v==='number'&&Number.isFinite(v);
+const fmt=(v,d=1)=>fin(v)?v.toFixed(d):'—';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const KN=0.5144;
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let toastT=0;
+function toast(msg,ms=3200){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,ms)}
+const hmsStr=t=>{t=((t%86400)+86400)%86400;const h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=Math.floor(t%60);return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')};
+const natSort=(a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:'base'});
+const log10=Math.log10;
+
+/* =====================================================================
+   Ajustes
+   ===================================================================== */
+const DEF={dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
+  showLim:true,lang:'en',fmin:10,fmax:50000,ymin:50,ymax:170,symin:100,symax:160,snr:3,bg0:0,bg1:5,keep:2,depth0:40};
+let S=Object.assign({},DEF,LS.get('urn.settings',{}));
+const saveS=()=>LS.set('urn.settings',S);
+
+const TXT={
+ en:{trend:(v,s)=>`URN TREND – ${v} kn – ${s}`,time:'Time (s)',rms:'URN RMS (Pa)',fit:'Fitting',dwl:'Data window',fondo:'Background',cpa:'CPA',
+   sl:(v,s)=>`SOURCE LEVEL URN – ${v} kn – ${s}`,freq:'Frequency (Hz)',db:'dB re 1 µPa @ 1 m',nb:df=>`URN ${df} Hz`,nbB:df=>`Background ${df} Hz`,
+   to:'URN 1/3 oct',toB:'Background 1/3 oct',limA:'ICES R209 = SILENT(R) > 25 Hz',limB:'SILENT(R) < 25 Hz',
+   map:'TRANSIT MAP',ew:'East–West (m)',ns:'North–South (m)',track:'Ship track',buoy:'Buoy fixes',hyd:'Hydrophone',start:'Start',
+   dist:'DISTANCE SHIP – HYDROPHONE',utc:'Time (UTC)',dm:'Distance (m)',sum:'COMPARATIVE SUMMARY – ALL RUNS'},
+ es:{trend:(v,s)=>`TENDENCIA URN – ${v} nudos – ${s}`,time:'Tiempo (s)',rms:'URN RMS (Pa)',fit:'Tendencia',dwl:'Ventana DWL',fondo:'Ruido de fondo',cpa:'CPA',
+   sl:(v,s)=>`NIVEL DE FUENTE URN – ${v} nudos – ${s}`,freq:'Frecuencia (Hz)',db:'dB ref 1 µPa @ 1 m',nb:df=>`URN ${df} Hz`,nbB:df=>`Fondo ${df} Hz`,
+   to:'URN 1/3 oct',toB:'Fondo 1/3 oct',limA:'ICES R209 = SILENT(R) > 25 Hz',limB:'SILENT(R) < 25 Hz',
+   map:'MAPA DE TRÁNSITO',ew:'Este–Oeste (m)',ns:'Norte–Sur (m)',track:'Derrota del barco',buoy:'Fijos de la boya',hyd:'Hidrófono',start:'Inicio',
+   dist:'DISTANCIA BARCO – HIDRÓFONO',utc:'Hora (UTC)',dm:'Distancia (m)',sum:'RESUMEN COMPARATIVO – TODAS LAS PASADAS'}};
+const T=()=>TXT[S.lang]||TXT.en;
+
+/* =====================================================================
+   Modelo
+   ===================================================================== */
+let pool=[];    // ficheros GPS
+let passes=[];
+let curId=null;
+let uid=1;
+const nid=()=>uid++;
+const cur=()=>passes.find(p=>p.id===curId)||null;
+const poolGet=id=>pool.find(g=>g.id===id)||null;
+let bgPool=[];
+const bgGet=id=>bgPool.find(b=>b.id===id)||null;
+function addBg(file){const b={id:nid(),name:file.name,file,meta:null};bgPool.push(b);return b}
+let template=LS.get('urn.template',null); // [{use,depth,factor}] por índice de canal
+
+function guessFromName(n){
+  const s=n.toUpperCase();let speed=null;
+  const m=s.match(/(\d+(?:[.,]\d+)?)\s*(KN|NUDOS|KNOTS|KTS|NUDO)/);
+  if(m){speed=parseFloat(m[1].replace(',','.'));if(speed>=30)speed/=10;}
+  let side=null;
+  if(/ESTRIBOR|STARBOARD|(^|[^A-Z])(SB|STB|STBD)([^A-Z]|$)/.test(s))side='STB';
+  else if(/BABOR|PORT|(^|[^A-Z])(PS|PT|BB)([^A-Z]|$)/.test(s))side='PS';
+  return{speed,side};
+}
+function newPass(o={}){return Object.assign({id:nid(),name:'Pasada',speed:null,side:'STB',ship:null,hyd:null,hydMode:'auto',hydLat:null,hydLon:null,
+  gps:null,dcpa:null,dcpaSrc:'gps',file:null,fileName:'',meta:null,chans:[],trim:0,bg0:S.bg0,bg1:S.bg1,bgFile:null,bgWhole:true,bgf0:0,bgf1:10,cpaMode:'auto',tcpa:null,res:null,resKey:null,view:'avg',synth:false,err:null,busy:false},o)}
+
+/* =====================================================================
+   NMEA
+   ===================================================================== */
+function parseNMEA(text){
+  const map=new Map();const get=t=>{const k=Math.round(t*100);let g=map.get(k);if(!g){g={t};map.set(k,g)}return g};
+  const ll=(v,h)=>{const x=parseFloat(v);if(!fin(x))return NaN;const d=Math.floor(x/100);let r=d+(x-d*100)/60;if(h==='S'||h==='W')r=-r;return r};
+  const hms=s=>{const x=parseFloat(s);const h=Math.floor(x/10000),m=Math.floor(x/100)%100;return h*3600+m*60+(x-h*10000-m*100)};
+  for(const raw of text.split(/\r?\n/)){
+    const i=raw.lastIndexOf('$');if(i<0)continue;const s=raw.slice(i).trim();const st=s.indexOf('*');
+    if(st>0){const cs=parseInt(s.slice(st+1,st+3),16);let c=0;for(let k=1;k<st;k++)c^=s.charCodeAt(k);if(c!==cs)continue;}
+    const f=(st>0?s.slice(1,st):s.slice(1)).split(',');const ty=f[0].slice(2);
+    if(ty==='GGA'){if(!f[1]||!f[2]||!f[4]||f[6]==='0')continue;const g=get(hms(f[1]));g.lat=ll(f[2],f[3]);g.lon=ll(f[4],f[5]);}
+    else if(ty==='RMC'){if(f[2]!=='A'||!f[1])continue;const g=get(hms(f[1]));if(g.lat==null){g.lat=ll(f[3],f[4]);g.lon=ll(f[5],f[6]);}g.sog=parseFloat(f[7]);g.cog=parseFloat(f[8]);}
+  }
+  const fx=[...map.values()].filter(g=>fin(g.lat)&&fin(g.lon)).sort((a,b)=>a.t-b.t);
+  for(let i=1;i<fx.length;i++)if(fx[i].t<fx[i-1].t-43200)fx[i].t+=86400;
+  return fx;
+}
+function addPool(name,role,fixes){
+  const sog=fixes.filter(f=>fin(f.sog)).map(f=>f.sog);sog.sort((a,b)=>a-b);
+  const g={id:nid(),name,role,fixes,t0:fixes.length?fixes[0].t:0,t1:fixes.length?fixes[fixes.length-1].t:0,sog:sog.length?sog[Math.floor(sog.length/2)]:null,...guessFromName(name)};
+  pool.push(g);return g;
+}
+async function loadGPSFile(file,role){
+  const fx=parseNMEA(await file.text());
+  if(!fx.length)throw new Error(file.name+': no contiene frases $GxGGA / $GxRMC válidas.');
+  return addPool(file.name,role,fx);
+}
+const overlap=(a,b)=>Math.max(0,Math.min(a.t1,b.t1)-Math.max(a.t0,b.t0));
+
+function computeGPS(p){
+  const Sh=poolGet(p.ship),H=poolGet(p.hyd);if(!Sh)return null;
+  const R=6371000,D=Math.PI/180;const warn=[];
+  let ref=null;
+  if(p.hydMode==='manual'&&fin(p.hydLat)&&fin(p.hydLon))ref={lat:p.hydLat,lon:p.hydLon};
+  else if(H){let a=0,b=0;for(const f of H.fixes){a+=f.lat;b+=f.lon}ref={lat:a/H.fixes.length,lon:b/H.fixes.length};}
+  if(!ref)return{err:'Falta la posición del hidrófono: carga su GPS o indica latitud y longitud.'};
+  const kx=Math.cos(ref.lat*D)*R*D,ky=R*D;const X=lon=>(lon-ref.lon)*kx,Y=lat=>(lat-ref.lat)*ky;
+  const Hm=new Map();let ov=0;if(H){for(const f of H.fixes)Hm.set(Math.round(f.t),f);for(const s of Sh.fixes)if(Hm.has(Math.round(s.t)))ov++;}
+  let mode=p.hydMode;
+  if(mode==='auto')mode=H&&ov>=10?'sync':(H?'mean':'manual');
+  if(mode==='manual'&&!(fin(p.hydLat)&&fin(p.hydLon)))mode=H?'mean':'manual';
+  if(mode==='sync'&&ov<10){warn.push('Los GPS del barco ('+hmsStr(Sh.t0)+'–'+hmsStr(Sh.t1)+') y de la boya ('+(H?hmsStr(H.t0)+'–'+hmsStr(H.t1):'—')+') no coinciden en hora: se usa la posición media de la boya.');mode='mean';}
+  else if(p.hydMode==='auto'&&mode==='mean')warn.push('Sin coincidencia horaria con la boya ('+hmsStr(H.t0)+'–'+hmsStr(H.t1)+'): se usa su posición media.');
+  const pr=[];
+  for(const s of Sh.fixes){let xh=0,yh=0;if(mode==='sync'){const h=Hm.get(Math.round(s.t));if(!h)continue;xh=X(h.lon);yh=Y(h.lat);}
+    const xs=X(s.lon),ys=Y(s.lat);pr.push({t:s.t,xs,ys,xh,yh,d:Math.hypot(xs-xh,ys-yh),sog:s.sog});}
+  if(!pr.length)return{err:'No hay posiciones del barco utilizables.'};
+  let im=0;for(let i=1;i<pr.length;i++)if(pr[i].d<pr[im].d)im=i;
+  const c=pr[im];const j0=pr.findIndex(q=>q.t>=c.t-10);let j1=im;for(let i=im;i<pr.length&&pr[i].t<=c.t+10;i++)j1=i;
+  let sog=null,cog=null;if(j1>j0){const a=pr[j0],b=pr[j1];const dd=Math.hypot(b.xs-a.xs,b.ys-a.ys);sog=dd/(b.t-a.t)/KN;cog=(Math.atan2(b.xs-a.xs,b.ys-a.ys)/D+360)%360;}
+  let drift=null,buoy=[];if(H){buoy=H.fixes.map(f=>[X(f.lon),Y(f.lat)]);drift=Math.max(...buoy.map(b=>Math.hypot(b[0],b[1])));}
+  const near=pr.filter(q=>Math.abs(q.t-c.t)<=10&&fin(q.sog)).map(q=>q.sog);
+  return{mode,dcpa:c.d,tcpa:c.t,im,sog,sogRmc:near.length?near.reduce((a,b)=>a+b,0)/near.length:null,cog,n:pr.length,ov,pr,buoy,drift,warn,ref};
+}
+function refreshGPS(p){
+  p.gps=computeGPS(p);
+  if(p.gps&&!p.gps.err&&(p.dcpaSrc==='gps'||!fin(p.dcpa))){p.dcpa=+p.gps.dcpa.toFixed(1);p.dcpaSrc='gps';}
+  if(p.gps&&!p.gps.err&&!fin(p.speed)&&fin(p.gps.sog))p.speed=+p.gps.sog.toFixed(1);
+}
+
+/* =====================================================================
+   Worker RPC
+   ===================================================================== */
+const worker=new Worker(URL.createObjectURL(new Blob([WORKER_SRC],{type:'text/javascript'})));
+let rid=0;const pend=new Map();
+worker.onmessage=e=>{const m=e.data;const p=pend.get(m.id);if(!p)return;if(m.progress!=null){p.onp&&p.onp(m.progress);return}pend.delete(m.id);m.error?p.rej(new Error(m.error)):p.res(m)};
+worker.onerror=e=>{toast('Error en el proceso de cálculo: '+(e.message||'desconocido'))};
+const call=(msg,onp)=>new Promise((res,rej)=>{const id=++rid;pend.set(id,{res,rej,onp});worker.postMessage({...msg,id})});
+let loaded=[];
+async function touchLoaded(id){loaded=loaded.filter(x=>x!==id);loaded.push(id);
+  while(loaded.length>Math.max(2,S.keep)){const old=loaded.shift();await call({cmd:'free',passId:old});}}
+function applyMeta(p,meta){
+  const prev=p.chans;p.meta=meta;
+  p.chans=meta.map((c,i)=>{if(prev[i])return prev[i];const t=template&&template[i];
+    return t?{...t,fs:c.fs||0}:{use:true,depth:S.depth0,factor:1,fs:c.fs||0};});
+  p.chans.forEach((c,i)=>{if(!fin(c.fs)||c.fs<=0)c.fs=meta[i].fs||0});
+}
+async function ensureBg(b,onp){const k='bg'+b.id;if(loaded.includes(k)){await touchLoaded(k);return}
+  const r=await call({cmd:'load',passId:k,file:b.file},onp);b.meta=r.meta;await touchLoaded(k);}
+async function ensureLoaded(p,onp){
+  if(loaded.includes(p.id)){await touchLoaded(p.id);return}
+  let r;
+  if(p.synth)r=await call({cmd:'synth',passId:p.id,fs:48000,dur:120,tc:62,d:46.9,v:7*KN,depths:[20,40]});
+  else if(p.file)r=await call({cmd:'load',passId:p.id,file:p.file},onp);
+  else throw new Error('Carga primero el fichero de señal de esta pasada.');
+  applyMeta(p,r.meta);
+  for(let i=0;i<p.chans.length;i++)if(p.chans[i].fs&&p.chans[i].fs!==r.meta[i].fs)await call({cmd:'setfs',passId:p.id,key:i,fs:p.chans[i].fs});
+  await touchLoaded(p.id);
+}
+
+/* =====================================================================
+   Parámetros, procesado y niveles
+   ===================================================================== */
+function dwlLen(p){if(S.dwlMode==='deg'&&fin(p.dcpa))return 2*p.dcpa*Math.tan(S.dwlAng*Math.PI/180);return S.dwl}
+function vKn(p){return fin(p.speed)&&p.speed>0?p.speed:(p.gps&&fin(p.gps.sog)?p.gps.sog:null)}
+function nfftFor(fs){return 2**Math.max(8,Math.round(Math.log2(fs/S.dfT)))}
+function procKey(p){const sel=p.chans.map((c,i)=>c.use?i+':'+c.factor+':'+c.fs+(p.bgFile?':'+c.bgCh:''):'').join(',');
+  return JSON.stringify([sel,p.bgFile,p.bgFile?[p.bgWhole,p.bgf0,p.bgf1]:0,p.trim,p.bg0,p.bg1,p.cpaMode,p.cpaMode==='manual'?p.tcpa:0,vKn(p),dwlLen(p).toFixed(2),S.block,S.trendWin,S.hp,S.dfT]);}
+async function processPass(p,quiet){
+  p.err=null;p.busy=true;renderList();if(p.id===curId)updProcState();
+  try{
+    await ensureLoaded(p,f=>{const b=$('#sigprog i');if(b)b.style.width=(f*100).toFixed(0)+'%'});
+    const v=vKn(p);if(!fin(v))throw new Error('Indica la velocidad de la pasada (nudos) para calcular la ventana DWL.');
+    const bgf=bgGet(p.bgFile);
+    if(bgf){await ensureBg(bgf);const nb=bgf.meta.length;p.chans.forEach((c,i)=>{if(!fin(c.bgCh)||c.bgCh>=nb)c.bgCh=Math.min(i,nb-1)});}
+    const sel=p.chans.map((c,i)=>({key:i,factor:+c.factor||1,use:c.use,bgKey:fin(c.bgCh)?c.bgCh:i})).filter(c=>c.use);
+    const fs=p.chans[sel.length?sel[0].key:0]?.fs||0;
+    const msg={cmd:'process',passId:p.id,chans:sel.map(c=>({key:c.key,factor:c.factor,bgKey:c.bgKey})),bgKey:bgf?'bg'+bgf.id:null,bgWhole:!!p.bgWhole,bgf0:+p.bgf0||0,bgf1:+p.bgf1||0,trim:+p.trim||0,block:S.block,hp:S.hp,trendWin:S.trendWin,
+      cpaMode:p.cpaMode,tcpa:p.tcpa,dwlLen:dwlLen(p),vms:v*KN,bg0:+p.bg0||0,bg1:+p.bg1||0,nfft:nfftFor(fs)};
+    let r;try{r=await call(msg)}catch(e){if(e.message==='NOLOAD'||e.message==='NOLOADBG'){loaded=loaded.filter(x=>x!==p.id&&x!==msg.bgKey);await ensureLoaded(p);if(bgf)await ensureBg(bgf);r=await call(msg)}else throw e}
+    p.res=r.res;p.resKey=procKey(p);
+    if(p.cpaMode==='auto')p.tcpa=+p.res.tcpa.toFixed(1);
+  }catch(e){p.err=e.message;if(!quiet)toast(e.message,5000);}
+  p.busy=false;renderList();if(p.id===curId)renderDetail();
+}
+
+const BANDS=[];for(let k=1;k<=47;k++){const fc=2**(k/3),lo=fc/2**(1/6);BANDS.push({fc,lo,hi:lo*2**(1/3)})}
+const Nf=f=>f<=S.f1?S.N1:(f>=S.f2?S.N2:S.N1+(S.N2-S.N1)*(f-S.f1)/(S.f2-S.f1));
+const limA=f=>f<=1000?128.7+8.3*log10(f):153.6-12*log10(f/1000);
+const limB=f=>171.8-22.5*log10(f);
+const limR=f=>f<=25.5?limB(f):limA(f);
+const eavg=a=>{const v=a.filter(fin);return v.length?10*log10(v.reduce((s,x)=>s+10**(x/10),0)/v.length):NaN};
+function bandSum(psd,df,b){const k0=Math.ceil(b.lo/df),k1=Math.min(psd.length-1,Math.floor(b.hi/df));if(k1<k0||k0<1)return NaN;let s=0;for(let k=k0;k<=k1;k++)s+=psd[k];return s*df}
+function levels(p){
+  const R=p.res;if(!R||!fin(p.dcpa))return null;
+  const ch=R.keys.map(k=>p.chans[k]||{depth:S.depth0});
+  const r=ch.map(c=>Math.sqrt(p.dcpa**2+((+c.depth||0)-S.zs)**2));
+  const rows=BANDS.filter(b=>b.hi<=R.fs/2).map(b=>{
+    const N=Nf(b.fc);const sl=R.psd.map((ps,i)=>{const e=bandSum(ps,R.df,b);return e>0?10*log10(e)+120+N*log10(r[i]):NaN});
+    const bg=R.psdBg?R.psdBg.map((ps,i)=>{const e=bandSum(ps,R.dfBg||R.df,b);return e>0?10*log10(e)+120+N*log10(r[i]):NaN}):null;
+    const sa=eavg(sl),ba=bg?eavg(bg):NaN;return{...b,N,sl,bg,sa,ba,snr:sa-ba,lim:limR(b.fc)};});
+  const inR=rows.filter(b=>b.fc>=S.fmin&&b.fc<=S.fmax&&fin(b.sa));
+  const tot=inR.length?10*log10(inR.reduce((s,b)=>s+10**(b.sa/10),0)):NaN;
+  let worst=null;for(const b of inR){const m=b.lim-b.sa;if(!worst||m<worst.m)worst={m,fc:b.fc}}
+  return{rows,r,ch,tot,worst};
+}
+function narrow(p,view,bg){
+  const R=p.res,L=levels(p);if(!L)return null;const src=bg?R.psdBg:R.psd;if(!src)return null;
+  const n=src[0].length,x=new Float32Array(n-1),y=new Float32Array(n-1);
+  const idx=view==='avg'?src.map((_,i)=>i):[+view];
+  for(let k=1;k<n;k++){const f=k*(bg?(R.dfBg||R.df):R.df);x[k-1]=f;const N=Nf(f);let s=0;for(const i of idx){s+=10**((10*log10(src[i][k]||1e-30)+120+N*log10(L.r[i]))/10)}y[k-1]=10*log10(s/idx.length);}
+  return{x,y};
+}
+function stale(p){return p.res&&p.resKey!==procKey(p)}
+function fmtDf(df){return df>=1?df.toFixed(df<10?2:1).replace(/\.?0+$/,''):df.toFixed(2)}
+
+/* =====================================================================
+   Gráficas (canvas)
+   ===================================================================== */
+const EXPORT_PAL={plotbg:'#ffffff',ink:'#111111',ink2:'#444444',grid:'#dcdcdc',grid2:'#efefef',urn:'#0000ff',urnN:'#b8b8b8',bg:'#6666cc',bgN:'#ccccff',lim:'#e00000',lim2:'#000000',
+  fit:'#e00000',raw:'#0072bd',dwl:'rgba(230,204,51,.32)',fondo:'rgba(102,102,204,.14)',cpa:'#00cc00',track:'#0000ff',
+  series:['#0000ff','#d1495b','#16857a','#d18f1b','#7c4dd1','#3d7f2f','#c2410c','#0e7490','#a21caf','#475569']};
+function livePal(){const cs=getComputedStyle(document.documentElement);const o={};
+  for(const k of ['plotbg','ink','ink2','grid','grid2','urn','urnN','bg','bgN','lim','lim2','fit','raw','dwl','fondo','cpa','track'])o[k]=cs.getPropertyValue('--c-'+k).trim();
+  o.series=cs.getPropertyValue('--c-series').split(',').map(s=>s.trim());return o}
+const FONT=(px,w=400)=>`${w} ${px}px "Source Sans 3","Segoe UI",system-ui,sans-serif`;
+function niceStep(span,n){const raw=span/n;const mag=10**Math.floor(log10(raw));const r=raw/mag;return(r<1.5?1:r<3?2:r<7?5:10)*mag}
+function linTicks(a,b,n){const st=niceStep(b-a,n);const t=[];for(let v=Math.ceil(a/st-1e-9)*st;v<=b+st*1e-9;v+=st)t.push(Math.abs(v)<st*1e-9?0:v);return{t,st}}
+function timeTicks(a,b,n){const steps=[1,2,5,10,15,30,60,120,300,600,900,1800,3600];const raw=(b-a)/n;const st=steps.find(s=>s>=raw)||3600;const t=[];for(let v=Math.ceil(a/st)*st;v<=b;v+=st)t.push(v);return{t,st}}
+const fmtLog=v=>v>=1000?(v/1000)+'k':String(+v.toPrecision(3));
+function fmtTick(v,st){const d=Math.max(0,-Math.floor(log10(st)+1e-9));return v.toFixed(Math.min(d,4))}
+
+const ALLCH=new Set();
+class Chart{
+  constructor(el,opt={}){this.el=el;this.opt=opt;this.cv=document.createElement('canvas');el.appendChild(this.cv);this.ctx=this.cv.getContext('2d');
+    this.d=null;this.view=null;this.hov=null;this.drag=null;this.raf=0;
+    this.ro=new ResizeObserver(()=>this.draw());this.ro.observe(el);
+    const pos=e=>{const r=this.cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+    this.cv.addEventListener('pointermove',e=>{const [x,y]=pos(e);this.hov=[x,y];if(this.drag)this.drag[1]=x;this.req()});
+    this.cv.addEventListener('pointerleave',()=>{this.hov=null;if(!this.drag)this.req()});
+    this.cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;const [x]=pos(e);if(this.g&&x>=this.g.pl&&x<=this.g.pl+this.g.pw){this.drag=[x,x];try{this.cv.setPointerCapture(e.pointerId)}catch(_){}}});
+    this.cv.addEventListener('pointerup',e=>{if(!this.drag)return;const [a,b]=this.drag;this.drag=null;const g=this.g;if(!g){return}
+      if(Math.abs(b-a)>6&&this.opt.zoom!==false){const u=g.invX(Math.min(a,b)),v=g.invX(Math.max(a,b));this.view={x:[u,v]};this.req()}
+      else if(Math.abs(b-a)<=6&&this.opt.onClick){const [px,py]=pos(e);if(py>=g.pt&&py<=g.pt+g.ph){const xv=g.invX(px),yv=g.invY(py);clearTimeout(this.ct);this.ct=setTimeout(()=>this.opt.onClick(xv,yv),280)}}
+      else this.req();});
+    this.cv.addEventListener('pointercancel',()=>{this.drag=null;this.req()});
+    this.cv.addEventListener('dblclick',()=>{clearTimeout(this.ct);this.view=null;this.req()});
+    ALLCH.add(this);
+  }
+  destroy(){this.ro.disconnect();clearTimeout(this.ct);ALLCH.delete(this);this.d=null;
+  }
+  set(d){this.d=d;if(!d||!this.keepView)this.view=null;this.draw()}
+  req(){if(this.raf)return;this.raf=requestAnimationFrame(()=>{this.raf=0;this.draw()})}
+  draw(){const r=this.el.getBoundingClientRect();const W=Math.max(10,r.width),H=Math.max(10,r.height);const dpr=window.devicePixelRatio||1;
+    if(this.cv.width!==Math.round(W*dpr)||this.cv.height!==Math.round(H*dpr)){this.cv.width=Math.round(W*dpr);this.cv.height=Math.round(H*dpr);this.cv.style.width=W+'px';this.cv.style.height=H+'px'}
+    const c=this.ctx;c.setTransform(dpr,0,0,dpr,0,0);this.g=this.render(c,W,H,livePal(),true)}
+  exportCanvas(){const r=this.el.getBoundingClientRect();const EW=1100,EH=Math.round(Math.min(900,Math.max(460,EW*r.height/Math.max(1,r.width))));
+    const cv=document.createElement('canvas');cv.width=EW*2;cv.height=EH*2;const c=cv.getContext('2d');c.scale(2,2);const v=this.view;this.render(c,EW,EH,EXPORT_PAL,false);this.view=v;return cv}
+  render(c,W,H,P,live){
+    const d=this.d;c.save();c.fillStyle=P.plotbg;c.fillRect(0,0,W,H);
+    if(!d){c.fillStyle=P.ink2;c.font=FONT(14);c.textAlign='center';c.fillText(this.opt.empty||'Sin datos',W/2,H/2);c.restore();return null}
+    const col=k=>k==null?P.ink:(P[k]||(typeof k==='number'?P.series[k%P.series.length]:k));
+    const leg=[];for(const s of d.series||[])if(s.label)leg.push({k:s.type==='pts'?'pt':'ln',s});
+    for(const s of d.shades||[])if(s.label)leg.push({k:'sh',s});for(const s of d.vlines||[])if(s.label)leg.push({k:'ln',s});
+    c.font=FONT(12);const rows=[];let rw=0,row=[];const maxW=W-24;
+    for(const e of leg){const w=26+c.measureText(e.s.label).width+16;if(rw+w>maxW&&row.length){rows.push(row);row=[];rw=0}row.push({...e,w});rw+=w}if(row.length)rows.push(row);
+    const legH=rows.length?rows.length*18+8:0;
+    const pl=62,pr=18,pt=d.title?34:14,pb=44+legH;const pw=W-pl-pr,ph=H-pt-pb;if(pw<40||ph<30){c.restore();return null}
+    const allX=[],allY=[];
+    for(const s of d.series||[]){const xs=s.x||s.lo,ys=s.y;if(!xs)continue;const n=xs.length;const st=Math.max(1,Math.floor(n/4000));
+      for(let i=0;i<n;i+=st){const xv=xs[i],yv=ys[i];if(fin(xv)&&fin(yv)&&(!d.xlog||xv>0)){allX.push(xv);allY.push(yv)}}
+      if(s.hi){const h=s.hi[s.hi.length-1];if(fin(h))allX.push(h)}}
+    const ext=a=>a.length?[Math.min(...a),Math.max(...a)]:[0,1];
+    let [x0,x1]=(this.view&&this.view.x)||d.xlim||ext(allX);let [y0,y1]=d.ylim||ext(allY);
+    if(!d.ylim){const m=(y1-y0)*0.06||1;y0-=m;y1+=m}
+    if(!(x1>x0)){x1=x0+1}if(!(y1>y0)){y1=y0+1}
+    if(d.equal){if(!this.view){const m=(x1-x0)*0.06;x0-=m;x1+=m}const ux=(x1-x0)/pw,uy=(y1-y0)/ph;if(ux>uy){const cc=(y0+y1)/2,h=ux*ph/2;y0=cc-h;y1=cc+h}else{const cc=(x0+x1)/2,w=uy*pw/2;x0=cc-w;x1=cc+w}}
+    const lx=!!d.xlog,lx0=lx?log10(x0):0,lx1=lx?log10(x1):0;
+    const X=v=>pl+(lx?(log10(v)-lx0)/(lx1-lx0):(v-x0)/(x1-x0))*pw;const Y=v=>pt+(1-(v-y0)/(y1-y0))*ph;
+    const invX=px=>{const t=(px-pl)/pw;return lx?10**(lx0+t*(lx1-lx0)):x0+t*(x1-x0)};const invY=py=>y0+(1-(py-pt)/ph)*(y1-y0);
+    // rejilla
+    c.lineWidth=1;c.font=FONT(12);c.fillStyle=P.ink2;
+    let xt;
+    if(lx){c.strokeStyle=P.grid2;const tk=[];for(let e=Math.floor(lx0);e<=Math.ceil(lx1);e++)for(let m=1;m<10;m++){const v=m*10**e;if(v<x0||v>x1)continue;
+        const px=Math.round(X(v))+.5;c.strokeStyle=m===1?P.grid:P.grid2;c.beginPath();c.moveTo(px,pt);c.lineTo(px,pt+ph);c.stroke();
+        if(m===1||(lx1-lx0<1.3&&(m===2||m===5)))tk.push(v);}
+      c.textAlign='center';for(const v of tk)c.fillText(fmtLog(v),X(v),pt+ph+16);}
+    else{xt=d.xtime?timeTicks(x0,x1,Math.max(3,pw/110)):linTicks(x0,x1,Math.max(3,pw/90));c.strokeStyle=P.grid;c.textAlign='center';
+      for(const v of xt.t){const px=Math.round(X(v))+.5;c.beginPath();c.moveTo(px,pt);c.lineTo(px,pt+ph);c.stroke();c.fillText(d.xtime?hmsStr(v):fmtTick(v,xt.st),px,pt+ph+16)}}
+    const yt=linTicks(y0,y1,Math.max(3,ph/45));c.textAlign='right';c.strokeStyle=P.grid;
+    for(const v of yt.t){const py=Math.round(Y(v))+.5;c.beginPath();c.moveTo(pl,py);c.lineTo(pl+pw,py);c.stroke();c.fillText(fmtTick(v,yt.st),pl-6,py+4)}
+    // contenido
+    c.save();c.beginPath();c.rect(pl,pt,pw,ph);c.clip();
+    for(const s of d.shades||[]){const a=X(Math.max(s.x0,lx?x0:-1e300)),b=X(Math.min(s.x1,x1));c.fillStyle=col(s.color);c.fillRect(a,pt,b-a,ph)}
+    for(const s of d.series||[]){c.strokeStyle=col(s.color);c.fillStyle=col(s.color);c.lineWidth=s.w||1.5;c.setLineDash(s.dash||[]);
+      if(s.type==='stairs')this.stairs(c,s,X,Y,x0,x1,lx);else if(s.type==='pts')this.pts(c,s,X,Y);else this.line(c,s,X,Y,x0,x1,pw,lx);}
+    c.setLineDash([]);
+    for(const v of d.vlines||[]){if(v.x<x0||v.x>x1)continue;c.strokeStyle=col(v.color);c.lineWidth=v.w||2;c.setLineDash(v.dash||[]);const px=X(v.x);c.beginPath();c.moveTo(px,pt);c.lineTo(px,pt+ph);c.stroke();c.setLineDash([])}
+    if(live&&this.drag&&Math.abs(this.drag[1]-this.drag[0])>2){c.fillStyle='rgba(120,140,160,.18)';c.fillRect(Math.min(...this.drag),pt,Math.abs(this.drag[1]-this.drag[0]),ph)}
+    c.restore();
+    c.strokeStyle=P.ink2;c.lineWidth=1;c.strokeRect(pl+.5,pt+.5,pw,ph);
+    c.fillStyle=P.ink;c.textAlign='center';
+    if(d.title){c.font=FONT(15,700);c.fillText(d.title,pl+pw/2,21)}
+    c.font=FONT(13,600);if(d.xlabel)c.fillText(d.xlabel,pl+pw/2,pt+ph+34);
+    if(d.ylabel){c.save();c.translate(16,pt+ph/2);c.rotate(-Math.PI/2);c.fillText(d.ylabel,0,0);c.restore()}
+    if(d.box&&d.box.length){c.font=FONT(13);const bw=Math.max(...d.box.map(t=>c.measureText(t).width))+16,bh=d.box.length*18+8;
+      const bx=pl+10,by=pt+10;c.fillStyle=P.plotbg;c.fillRect(bx,by,bw,bh);c.strokeStyle=P.ink2;c.strokeRect(bx+.5,by+.5,bw,bh);c.fillStyle=P.ink;c.textAlign='left';
+      d.box.forEach((t,i)=>c.fillText(t,bx+8,by+19+i*18));}
+    // leyenda
+    c.font=FONT(12);c.textAlign='left';let ly=pt+ph+44+12;
+    for(const r of rows){let tw=r.reduce((a,e)=>a+e.w,0);let lxp=Math.max(8,pl+pw/2-tw/2);
+      for(const e of r){const s=e.s;c.strokeStyle=col(s.color);c.fillStyle=col(s.color);
+        if(e.k==='sh'){c.fillRect(lxp,ly-6,22,10)}else if(e.k==='pt'){this.mark(c,s.marker||'o',lxp+11,ly-1,s.size||4,s)}else{c.lineWidth=Math.min(3,s.w||1.5);c.setLineDash(s.dash||[]);c.beginPath();c.moveTo(lxp,ly-1);c.lineTo(lxp+22,ly-1);c.stroke();c.setLineDash([])}
+        c.fillStyle=P.ink;c.fillText(s.label,lxp+26,ly+3);lxp+=e.w}ly+=18}
+    const g={pl,pt,pw,ph,x0,x1,y0,y1,X,Y,invX,invY};
+    // cursor
+    if(live&&this.hov&&!this.drag){const [hx,hy]=this.hov;if(hx>=pl&&hx<=pl+pw&&hy>=pt&&hy<=pt+ph){
+      const xv=invX(hx);c.strokeStyle=P.ink2;c.setLineDash([3,3]);c.beginPath();c.moveTo(hx+.5,pt);c.lineTo(hx+.5,pt+ph);c.stroke();c.setLineDash([]);
+      const lines=[(d.xname||'x')+': '+(d.xtime?hmsStr(xv):lx?(xv<100?xv.toFixed(1):xv.toFixed(0)):xv.toFixed(Math.max(0,2-Math.floor(log10(Math.abs(x1-x0)||1)))))];
+      if(d.equal)lines.push('y: '+invY(hy).toFixed(1));
+      for(const s of d.series||[]){if(!s.label||s.hover===false||s.type==='pts')continue;let yv=NaN;
+        if(s.type==='stairs'){for(let i=0;i<s.lo.length;i++)if(xv>=s.lo[i]&&xv<s.hi[i]){yv=s.y[i];break}}
+        else if(s.sorted!==false&&s.x.length){let a=0,b=s.x.length-1;while(b-a>1){const m=(a+b)>>1;if(s.x[m]<xv)a=m;else b=m}yv=Math.abs(s.x[a]-xv)<Math.abs(s.x[b]-xv)?s.y[a]:s.y[b]}
+        if(fin(yv))lines.push({t:s.label+': '+yv.toFixed(d.ydec??1),c:col(s.color)});}
+      c.font=FONT(12);const tw=Math.max(...lines.map(l=>c.measureText(typeof l==='string'?l:l.t).width))+18,th=lines.length*16+8;
+      let bx=hx+12,by=hy+12;if(bx+tw>pl+pw)bx=hx-12-tw;if(by+th>pt+ph)by=Math.max(pt,hy-12-th);
+      c.fillStyle=P.plotbg;c.globalAlpha=.94;c.fillRect(bx,by,tw,th);c.globalAlpha=1;c.strokeStyle=P.ink2;c.strokeRect(bx+.5,by+.5,tw,th);
+      lines.forEach((l,i)=>{if(typeof l!=='string'){c.fillStyle=l.c;c.fillRect(bx+6,by+10+i*16,6,6)}c.fillStyle=P.ink;c.fillText(typeof l==='string'?l:l.t,bx+(typeof l==='string'?6:15),by+17+i*16)});}}
+    c.restore();return g;
+  }
+  line(c,s,X,Y,x0,x1,pw,lx){const xs=s.x,ys=s.y,n=xs.length;c.beginPath();let on=false;
+    if(s.sorted!==false&&n>pw*3){let cp=null,mn=0,mx=0;const flush=()=>{if(cp==null)return;if(!on){c.moveTo(cp,Y(mn));on=true}else c.lineTo(cp,Y(mn));c.lineTo(cp,Y(mx))};
+      for(let i=0;i<n;i++){const xv=xs[i],yv=ys[i];if(xv<x0||xv>x1||(lx&&xv<=0))continue;if(!fin(yv)){flush();cp=null;on=false;continue}const px=Math.round(X(xv));
+        if(px!==cp){flush();cp=px;mn=mx=yv}else{if(yv<mn)mn=yv;if(yv>mx)mx=yv}}flush();}
+    else{for(let i=0;i<n;i++){const xv=xs[i],yv=ys[i];if(!fin(yv)||!fin(xv)||(lx&&xv<=0)){on=false;continue}const px=X(xv),py=Y(yv);if(!on){c.moveTo(px,py);on=true}else c.lineTo(px,py)}}
+    c.stroke()}
+  stairs(c,s,X,Y,x0,x1,lx){c.beginPath();let on=false;for(let i=0;i<s.y.length;i++){const yv=s.y[i];if(!fin(yv)){on=false;continue}const a=X(s.lo[i]),b=X(s.hi[i]),py=Y(yv);if(!on){c.moveTo(a,py);on=true}else c.lineTo(a,py);c.lineTo(b,py)}c.stroke()}
+  pts(c,s,X,Y){for(let i=0;i<s.x.length;i++)if(fin(s.x[i])&&fin(s.y[i]))this.mark(c,s.marker||'o',X(s.x[i]),Y(s.y[i]),s.size||4,s)}
+  mark(c,m,x,y,r,s){c.lineWidth=s.w||1.5;c.beginPath();if(m==='x'){c.moveTo(x-r,y-r);c.lineTo(x+r,y+r);c.moveTo(x+r,y-r);c.lineTo(x-r,y+r);c.stroke()}
+    else if(m==='O'){c.arc(x,y,r,0,7);c.save();c.fillStyle=s.fill||'#fff';c.fill();c.restore();c.stroke()}else{c.arc(x,y,r,0,7);c.fill()}}
+}
+
+/* exportar imagen / tabla */
+function copyChart(ch){
+  if(!ch||!ch.d){toast('No hay gráfica que copiar');return}
+  const cv=ch.exportCanvas();
+  try{
+    const blob=new Promise(r=>cv.toBlob(r,'image/png'));
+    navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(()=>toast('Imagen copiada: pégala en Word con Ctrl+V'),()=>showImg(cv));
+  }catch(e){showImg(cv)}
+}
+function showImg(cv){const b=$('#ovlbox');b.innerHTML=`<div class="ctool"><span class="t">Imagen para el informe</span><button class="btn sm" id="ov-x">Cerrar</button></div>
+  <div class="note">Clic derecho sobre la imagen → «Copiar imagen» o «Guardar imagen como…».</div><img alt="Gráfica exportada" src="${cv.toDataURL('image/png')}">`;$('#ovl').hidden=false;$('#ov-x').onclick=()=>$('#ovl').hidden=true}
+function copyText(txt,what){
+  const fb=()=>{const b=$('#ovlbox');b.innerHTML=`<div class="ctool"><span class="t">${esc(what)}</span><button class="btn sm" id="ov-x">Cerrar</button></div><div class="note">Selecciona todo (Ctrl+A) y copia (Ctrl+C); se pega en Excel en columnas.</div><textarea id="ov-t" readonly></textarea>`;
+    $('#ov-t').value=txt;$('#ovl').hidden=false;$('#ov-t').select();$('#ov-x').onclick=()=>$('#ovl').hidden=true};
+  try{navigator.clipboard.writeText(txt).then(()=>toast(what+' copiada: pégala en Excel'),fb)}catch(e){fb()}
+}
+$('#ovl').addEventListener('click',e=>{if(e.target.id==='ovl')$('#ovl').hidden=true});
+
+/* =====================================================================
+   Lista lateral
+   ===================================================================== */
+function sideLbl(s){return s==='PS'?'PS':'STB'}
+function renderList(){
+  const el=$('#plist');
+  if(!passes.length){el.innerHTML='<div class="note">Sin pasadas. Añade una o usa la carga por lotes.</div>';return}
+  el.innerHTML=passes.map(p=>{
+    const g=p.gps&&!p.gps.err,sg=!!(p.file||p.synth),r=!!p.res;const st=stale(p);
+    return `<div class="pcard" role="button" tabindex="0" data-id="${p.id}" aria-current="${p.id===curId}">
+      <span class="nm">${esc(p.name)}</span><button class="del" data-del="${p.id}" title="Eliminar pasada" aria-label="Eliminar pasada">✕</button>
+      <span class="sub">${fin(vKn(p))?fmt(vKn(p),1)+' kn':'— kn'} · ${sideLbl(p.side)}
+        <span class="dot ${g?'ok':'no'}">GPS</span><span class="dot ${sg?'ok':'no'}">Señal</span>
+        <span class="dot ${p.busy?'st':r?(st?'st':'ok'):'no'}">${p.busy?'Calculando':r?(st?'Desfasado':'SL'):'SL'}</span></span></div>`}).join('');
+}
+$('#plist').addEventListener('click',e=>{
+  const d=e.target.closest('[data-del]');
+  if(d){e.stopPropagation();if(!d.classList.contains('arm')){d.classList.add('arm');d.textContent='¿Eliminar?';setTimeout(()=>{if(d.isConnected){d.classList.remove('arm');d.textContent='✕'}},2500);return}
+    const id=+d.dataset.del;passes=passes.filter(p=>p.id!==id);if(loaded.includes(id)){call({cmd:'free',passId:id});loaded=loaded.filter(x=>x!==id)}
+    if(curId===id)curId=passes[0]?.id??null;renderList();renderDetail();return}
+  const c=e.target.closest('.pcard');if(c){curId=+c.dataset.id;renderList();renderDetail();window.scrollTo({top:0})}
+});
+$('#plist').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList.contains('pcard'))e.target.click()});
+$('#b-add').onclick=()=>{const p=newPass({name:'Pasada '+(passes.length+1)});passes.push(p);curId=p.id;renderList();renderDetail()};
+$('#b-all').onclick=async()=>{
+  const todo=passes.filter(p=>p.file||p.synth);if(!todo.length){toast('No hay pasadas con señal cargada');return}
+  const pg=$('#allprog');pg.hidden=false;let i=0;
+  for(const p of todo){await processPass(p,true);i++;pg.firstElementChild.style.width=(100*i/todo.length)+'%';}
+  pg.hidden=true;const bad=todo.filter(p=>p.err);toast(bad.length?`${todo.length-bad.length} pasadas procesadas; ${bad.length} con error (revísalas en la lista)`:`${todo.length} pasadas procesadas`,4500);
+  if(!$('#view-r').hidden)renderSummary();
+};
+
+/* carga por lotes */
+$('#bf-go').onclick=async()=>{
+  const sig=[...$('#bf-sig').files].sort((a,b)=>natSort(a.name,b.name));
+  const sh=[...$('#bf-ship').files].sort((a,b)=>natSort(a.name,b.name)),hy=[...$('#bf-hyd').files].sort((a,b)=>natSort(a.name,b.name));
+  if(!sig.length&&!sh.length){toast('Selecciona al menos ficheros de señal o GPS del barco');return}
+  const ships=[],hyds=[];
+  try{for(const f of sh)ships.push(await loadGPSFile(f,'ship'));for(const f of hy)hyds.push(await loadGPSFile(f,'hyd'));}catch(e){toast(e.message,5000);return}
+  // emparejar barco ↔ boya por solape horario (o el más cercano en el tiempo)
+  for(const s of ships){let best=null,bo=-1;for(const h of hyds){const o=overlap(s,h);if(o>bo){bo=o;best=h}}
+    if(bo<=0){best=null;let gap=1e9;for(const h of hyds){const g=Math.min(Math.abs(h.t0-s.t1),Math.abs(s.t0-h.t1));if(g<gap){gap=g;best=h}}if(gap>1800)best=null}
+    s.pairHyd=best?best.id:null;}
+  const created=[];
+  const base=sig.length?sig.map(f=>({name:f.name.replace(/\.[^.]+$/,''),file:f})):ships.map(s=>({name:s.name.replace(/\.[^.]+$/,''),ship:s}));
+  for(const b of base){const g=guessFromName(b.name);const p=newPass({name:b.name,file:b.file||null,fileName:b.file?b.file.name:'',speed:g.speed,side:g.side||'STB'});
+    if(b.ship){p.ship=b.ship.id;p.hyd=b.ship.pairHyd;}created.push(p);}
+  if(sig.length&&ships.length){const used=new Set();
+    const spd=s=>fin(s.speed)?s.speed:s.sog;
+    for(const p of created){let c=ships.find(s=>!used.has(s.id)&&(!s.side||s.side===p.side)&&fin(p.speed)&&fin(spd(s))&&Math.abs(spd(s)-p.speed)<0.8);
+      if(!c)c=ships.find(s=>!used.has(s.id));if(c){used.add(c.id);p.ship=c.id;p.hyd=c.pairHyd;}}}
+  const bgs=[...$('#bf-bg').files].sort((a,b)=>natSort(a.name,b.name)).map(addBg);
+  if(bgs.length)created.forEach((p,i)=>p.bgFile=(bgs.length===created.length?bgs[i]:bgs[0]).id);
+  created.forEach(p=>{refreshGPS(p)});passes.push(...created);curId=created[0]?.id??curId;
+  ['#bf-sig','#bf-ship','#bf-hyd','#bf-bg'].forEach(s=>$(s).value='');$('#batch').open=false;
+  renderList();renderDetail();toast(`${created.length} pasadas creadas. Revisa los emparejamientos GPS y configura los canales en la primera.`,5500);
+};
+
+/* =====================================================================
+   Detalle de la pasada
+   ===================================================================== */
+let charts={};
+$('#detail').addEventListener('click',e=>{const b=e.target.closest('[data-copy]');if(!b)return;e.preventDefault();const k=b.dataset.copy;
+  if(k==='tbl')copyText(tableTSV(cur()),'Tabla de tercios de octava');else copyChart(charts[k]);});
+function mkChart(id,opt){for(const c of [...ALLCH])if(!c.el.isConnected||c.el.id===id)c.destroy();const el=document.getElementById(id);if(!el)return null;el.innerHTML='';return new Chart(el,opt)}
+function poolOpts(role,sel){const list=pool.filter(g=>g.role===role);
+  return `<option value="">— sin fichero —</option>`+list.map(g=>`<option value="${g.id}" ${g.id===sel?'selected':''}>${esc(g.name)} · ${hmsStr(g.t0)}–${hmsStr(g.t1)}</option>`).join('')}
+function renderDetail(){
+  const el=$('#detail');const p=cur();charts={};
+  if(!p){el.innerHTML=`<div class="empty">Añade una pasada con «+ Pasada» o crea varias con la carga por lotes.</div>`;return}
+  const g=p.gps;
+  el.innerHTML=`
+  <div class="phead">
+    <input class="pname" id="p-name" type="text" value="${esc(p.name)}" aria-label="Nombre de la pasada">
+    <label class="fld">Velocidad<span class="in"><input type="number" id="p-speed" step="0.1" min="0" value="${fin(p.speed)?p.speed:''}"><span class="unit">kn</span></span></label>
+    <label class="fld">Costado expuesto<span class="in"><select id="p-side"><option value="STB" ${p.side!=='PS'?'selected':''}>Estribor (STB)</option><option value="PS" ${p.side==='PS'?'selected':''}>Babor (PS)</option></select></span></label>
+  </div>
+
+  <section class="blk" id="sec-gps">
+    <h2><span class="n">1</span>Posiciones GPS y CPA<span class="aside note">NMEA $GxGGA / $GxRMC · hora UTC</span></h2>
+    <div class="slots">
+      <div class="slot" data-drop="ship"><span class="lab">GPS del barco</span>
+        <div class="row"><select id="p-ship" aria-label="Fichero GPS del barco">${poolOpts('ship',p.ship)}</select><label class="btn sm">Cargar…<input type="file" id="f-ship" accept=".txt,.nmea,.log,.csv"></label></div></div>
+      <div class="slot" data-drop="hyd"><span class="lab">GPS del hidrófono (boya)</span>
+        <div class="row"><select id="p-hyd" aria-label="Fichero GPS del hidrófono">${poolOpts('hyd',p.hyd)}</select><label class="btn sm">Cargar…<input type="file" id="f-hyd" accept=".txt,.nmea,.log,.csv"></label></div></div>
+    </div>
+    <div class="grid-f">
+      <label class="fld">Posición del hidrófono<span class="in"><select id="p-hydmode">
+        <option value="auto" ${p.hydMode==='auto'?'selected':''}>Automática</option>
+        <option value="sync" ${p.hydMode==='sync'?'selected':''}>Sincronizada por hora</option>
+        <option value="mean" ${p.hydMode==='mean'?'selected':''}>Posición media de la boya</option>
+        <option value="manual" ${p.hydMode==='manual'?'selected':''}>Manual (lat / lon)</option></select></span></label>
+      <label class="fld" ${p.hydMode==='manual'?'':'hidden'} id="ll1">Latitud (°)<span class="in"><input type="number" step="0.000001" id="p-lat" value="${fin(p.hydLat)?p.hydLat:''}" style="width:130px"></span></label>
+      <label class="fld" ${p.hydMode==='manual'?'':'hidden'} id="ll2">Longitud (°, W negativa)<span class="in"><input type="number" step="0.000001" id="p-lon" value="${fin(p.hydLon)?p.hydLon:''}" style="width:130px"></span></label>
+    </div>
+    <div id="gps-info"></div>
+    <div class="charts2" id="gps-charts" ${g&&!g.err?'':'hidden'}>
+      <div class="cbox"><div class="ctool"><span class="t">Mapa de tránsito</span><button class="btn sm" data-copy="map">Copiar imagen</button></div><div class="chart sq" id="c-map"></div></div>
+      <div class="cbox"><div class="ctool"><span class="t">Distancia horizontal al hidrófono</span><button class="btn sm" data-copy="dist">Copiar imagen</button></div><div class="chart sq" id="c-dist"></div></div>
+    </div>
+  </section>
+
+  <section class="blk" id="sec-sig">
+    <h2><span class="n">2</span>Señal de presión<span class="aside note">.mat v5/v7 · UNV 58/58b · WAV</span></h2>
+    <div class="slot" data-drop="sig"><span class="lab">Fichero de los hidrófonos</span>
+      <div class="row"><label class="btn sm">Elegir fichero…<input type="file" id="f-sig" accept=".mat,.unv,.uff,.wav"></label>
+      <span class="fname" id="sig-name">${p.synth?'Señal sintética de ejemplo (2 hidrófonos, 48 kHz, 120 s)':esc(p.fileName||'Ningún fichero. También puedes arrastrarlo aquí.')}</span></div>
+      <div class="prog" id="sigprog" hidden><i></i></div></div>
+    <div class="slot" data-drop="bg"><span class="lab">Ruido de fondo</span>
+      <div class="row"><select id="p-bgsrc" aria-label="Origen del ruido de fondo"><option value="">Tramo del propio registro (paso 3)</option>${bgPool.map(b=>`<option value="${b.id}" ${b.id===p.bgFile?'selected':''}>Fichero: ${esc(b.name)}</option>`).join('')}</select>
+      <label class="btn sm">Cargar fichero…<input type="file" id="f-bg" accept=".mat,.unv,.uff,.wav"></label></div>
+      <span class="fname" id="bg-info"></span>
+      <div class="prog" id="bgprog" hidden><i></i></div>
+      <div class="row"><button class="btn sm" id="bg-all" ${p.bgFile&&passes.length>1?'':'hidden'}>Usar este fondo en todas las pasadas</button></div></div>
+    <div id="chan-box"></div>
+  </section>
+
+  <section class="blk" id="sec-proc">
+    <h2><span class="n">3</span>Procesado</h2>
+    <div class="grid-f">
+      <label class="fld">d<sub>CPA</sub> horizontal<span class="in"><input type="number" id="p-dcpa" step="0.1" min="0" value="${fin(p.dcpa)?p.dcpa:''}"><span class="unit">m</span>
+        <button class="btn sm" id="p-dcpa-gps" ${p.gps&&!p.gps.err&&p.dcpaSrc!=='gps'?'':'hidden'}>Usar GPS</button></span></label>
+      <label class="fld">Recorte inicial<span class="in"><input type="number" id="p-trim" step="1" min="0" value="${p.trim}"><span class="unit">s</span></span></label>
+      ${p.bgFile?`<label class="fld">Fondo (fichero aparte)<span class="in"><label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="p-bgwhole" ${p.bgWhole?'checked':''}>Fichero completo</label></span></label>
+      <label class="fld">Fondo desde<span class="in"><input type="number" id="p-bgf0" step="1" min="0" value="${p.bgf0}" ${p.bgWhole?'disabled':''}><span class="unit">s</span></span></label>
+      <label class="fld">hasta<span class="in"><input type="number" id="p-bgf1" step="1" min="0" value="${p.bgf1}" ${p.bgWhole?'disabled':''}><span class="unit">s</span></span></label>`
+      :`<label class="fld">Ruido de fondo desde<span class="in"><input type="number" id="p-bg0" step="1" min="0" value="${p.bg0}"><span class="unit">s</span></span></label>
+      <label class="fld">hasta<span class="in"><input type="number" id="p-bg1" step="1" min="0" value="${p.bg1}"><span class="unit">s</span></span></label>`}
+      <label class="fld">CPA acústico<span class="in"><select id="p-cpamode"><option value="auto" ${p.cpaMode==='auto'?'selected':''}>Máximo de la tendencia</option><option value="manual" ${p.cpaMode==='manual'?'selected':''}>Manual</option></select>
+        <input type="number" id="p-tcpa" step="0.1" value="${fin(p.tcpa)?p.tcpa:''}" ${p.cpaMode==='manual'?'':'disabled'}><span class="unit">s</span></span></label>
+      <button class="btn pri" id="p-run">Procesar pasada</button>
+    </div>
+    <div id="proc-info"></div>
+  </section>
+
+  <section class="blk" id="sec-res">
+    <h2><span class="n">4</span>Resultados</h2>
+    <div id="res-box"></div>
+  </section>`;
+  bindDetail(p);updBgInfo();updGPS();updChans();updProcInfo();updResults();
+}
+function bindDetail(p){
+  const on=(id,ev,fn)=>{const e=document.getElementById(id);if(e)e.addEventListener(ev,fn)};
+  on('p-name','change',e=>{p.name=e.target.value.trim()||'Pasada';renderList()});
+  on('p-speed','change',e=>{const v=parseFloat(e.target.value);p.speed=fin(v)?v:null;renderList();updProcInfo();updResults()});
+  on('p-side','change',e=>{p.side=e.target.value;renderList();updResults()});
+  on('p-ship','change',e=>{p.ship=+e.target.value||null;const s=poolGet(p.ship);if(s&&s.pairHyd&&!p.hyd){p.hyd=s.pairHyd;$('#p-hyd').innerHTML=poolOpts('hyd',p.hyd)}refreshGPS(p);afterGPS()});
+  on('p-hyd','change',e=>{p.hyd=+e.target.value||null;refreshGPS(p);afterGPS()});
+  on('p-hydmode','change',e=>{p.hydMode=e.target.value;$('#ll1').hidden=$('#ll2').hidden=p.hydMode!=='manual';refreshGPS(p);afterGPS()});
+  on('p-lat','change',e=>{p.hydLat=parseFloat(e.target.value);refreshGPS(p);afterGPS()});
+  on('p-lon','change',e=>{p.hydLon=parseFloat(e.target.value);refreshGPS(p);afterGPS()});
+  const gpsFile=async(f,role)=>{try{const g=await loadGPSFile(f,role);if(role==='ship'){p.ship=g.id;const sp=guessFromName(f.name);if(!fin(p.speed)&&fin(sp.speed))p.speed=sp.speed;if(sp.side)p.side=sp.side;}else p.hyd=g.id;refreshGPS(p);renderList();renderDetail();}catch(e){toast(e.message,5000)}};
+  on('f-ship','change',e=>{if(e.target.files[0])gpsFile(e.target.files[0],'ship')});
+  on('f-hyd','change',e=>{if(e.target.files[0])gpsFile(e.target.files[0],'hyd')});
+  const sigFile=async f=>{
+    if(loaded.includes(p.id)){await call({cmd:'free',passId:p.id});loaded=loaded.filter(x=>x!==p.id)}
+    p.file=f;p.fileName=f.name;p.synth=false;p.err=null;p.meta=null;p.res=null;p.chans=[];
+    const g=guessFromName(f.name);if(fin(g.speed)&&!fin(p.speed))p.speed=g.speed;if(g.side)p.side=g.side;
+    if(/^Pasada( \d+)?$/.test(p.name))p.name=f.name.replace(/\.[^.]+$/,'');
+    $('#sig-name').textContent=f.name+' · leyendo…';$('#sigprog').hidden=false;
+    try{await ensureLoaded(p,x=>{$('#sigprog i').style.width=(x*100).toFixed(0)+'%'});toast('Señal cargada: '+p.meta.length+' canal(es)');}
+    catch(e){p.err=e.message;toast(e.message,6000)}
+    renderList();renderDetail();};
+  on('f-sig','change',e=>{if(e.target.files[0])sigFile(e.target.files[0])});
+  $$('[data-drop]').forEach(z=>{
+    z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('drag')});
+    z.addEventListener('dragleave',()=>z.classList.remove('drag'));
+    z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('drag');const f=e.dataTransfer.files[0];if(!f)return;
+      if(z.dataset.drop==='sig')sigFile(f);else if(z.dataset.drop==='bg')bgFileIn(f);else gpsFile(f,z.dataset.drop)});});
+  const bgSel=async id=>{p.bgFile=id;const b=bgGet(id);
+    if(b&&!b.meta){$('#bgprog').hidden=false;$('#bg-info').textContent=b.name+' · leyendo…';
+      try{await ensureBg(b,x=>{const i=$('#bgprog i');if(i)i.style.width=(x*100).toFixed(0)+'%'})}catch(e){toast(e.message,6000);bgPool=bgPool.filter(x=>x!==b);passes.forEach(q=>{if(q.bgFile===b.id)q.bgFile=null})}}
+    if(b&&b.meta)p.chans.forEach((c,i)=>{if(!fin(c.bgCh)||c.bgCh>=b.meta.length)c.bgCh=Math.min(i,b.meta.length-1)});
+    renderList();renderDetail();};
+  const bgFileIn=f=>bgSel(addBg(f).id);
+  on('f-bg','change',e=>{if(e.target.files[0])bgFileIn(e.target.files[0])});
+  on('p-bgsrc','change',e=>bgSel(+e.target.value||null));
+  on('bg-all','click',()=>{passes.forEach(q=>q.bgFile=p.bgFile);renderList();toast('Fondo asignado a '+passes.length+' pasadas. Pulsa «Procesar todas» para recalcular.')});
+  on('p-bgwhole','change',e=>{p.bgWhole=e.target.checked;$('#p-bgf0').disabled=$('#p-bgf1').disabled=p.bgWhole;updProcInfo();renderList()});
+  on('p-bgf0','change',e=>{p.bgf0=Math.max(0,parseFloat(e.target.value)||0);updProcInfo();renderList()});
+  on('p-bgf1','change',e=>{p.bgf1=Math.max(0,parseFloat(e.target.value)||0);updProcInfo();renderList()});
+  on('p-dcpa','change',e=>{const v=parseFloat(e.target.value);p.dcpa=fin(v)?v:null;p.dcpaSrc='manual';$('#p-dcpa-gps').hidden=!(p.gps&&!p.gps.err);updProcInfo();updResults();renderList()});
+  on('p-dcpa-gps','click',()=>{p.dcpaSrc='gps';refreshGPS(p);$('#p-dcpa').value=p.dcpa;$('#p-dcpa-gps').hidden=true;updProcInfo();updResults()});
+  on('p-trim','change',e=>{p.trim=Math.max(0,parseFloat(e.target.value)||0);updProcInfo();renderList()});
+  on('p-bg0','change',e=>{p.bg0=Math.max(0,parseFloat(e.target.value)||0);updProcInfo();renderList()});
+  on('p-bg1','change',e=>{p.bg1=Math.max(0,parseFloat(e.target.value)||0);updProcInfo();renderList()});
+  on('p-cpamode','change',e=>{p.cpaMode=e.target.value;$('#p-tcpa').disabled=p.cpaMode!=='manual';if(p.cpaMode==='manual'&&!fin(p.tcpa)&&p.res)p.tcpa=+p.res.tcpa.toFixed(1);$('#p-tcpa').value=fin(p.tcpa)?p.tcpa:'';updProcInfo();renderList();if(p.res)processPass(p)});
+  on('p-tcpa','change',e=>{const v=parseFloat(e.target.value);p.tcpa=fin(v)?v:null;if(p.res)processPass(p);else updProcInfo()});
+  on('p-run','click',()=>processPass(p));
+}
+function afterGPS(){const p=cur();renderList();updGPS();const i=$('#p-dcpa');if(i)i.value=fin(p.dcpa)?p.dcpa:'';const s=$('#p-speed');if(s&&fin(p.speed))s.value=p.speed;updProcInfo();updResults()}
+
+function updGPS(){
+  const p=cur(),g=p.gps,box=$('#gps-info');
+  if(!poolGet(p.ship)){box.innerHTML='<div class="note">Carga el NMEA del barco y el de la boya del hidrófono para obtener la distancia en el CPA. Si no tienes GPS, escribe d<sub>CPA</sub> a mano en el paso 3.</div>';$('#gps-charts').hidden=true;return}
+  if(!g||g.err){box.innerHTML=`<div class="err">${esc(g?g.err:'Sin datos')}</div>`;$('#gps-charts').hidden=true;return}
+  const modeTxt={sync:'sincronizada por hora',mean:'posición media de la boya',manual:'posición manual'}[g.mode];
+  const ang=S.dwlMode==='deg'?S.dwlAng:Math.atan(dwlLen(p)/2/g.dcpa)*180/Math.PI;
+  box.innerHTML=`${g.warn.map(w=>`<div class="warn">${esc(w)}</div>`).join('')}
+   <div class="kv">
+    <div class="k hi"><span>d<sub>CPA</sub> horizontal</span><b>${fmt(g.dcpa,1)} m</b></div>
+    <div class="k"><span>Hora del CPA</span><b>${hmsStr(g.tcpa)}</b></div>
+    <div class="k"><span>SOG en CPA (±10 s)</span><b>${fmt(g.sog,2)} kn</b></div>
+    <div class="k"><span>Rumbo (COG)</span><b>${fmt(g.cog,0)}°</b></div>
+    <div class="k"><span>Fijos usados</span><b>${g.n}</b></div>
+    <div class="k"><span>Deriva máx. boya</span><b>${fmt(g.drift,1)} m</b></div>
+    <div class="k"><span>Ángulo DWL ±</span><b>${fmt(ang,1)}°</b></div>
+   </div><div class="note">Hidrófono: ${modeTxt}. ISO 17208-1 toma una ventana de ±30° respecto al CPA; con DWL fijo el ángulo depende de d<sub>CPA</sub>.</div>`;
+  $('#gps-charts').hidden=false;
+  const t=T();
+  charts.map=mkChart('c-map',{zoom:false});charts.dist=mkChart('c-dist',{});
+  const xs=g.pr.map(q=>q.xs),ys=g.pr.map(q=>q.ys),c=g.pr[g.im];
+  const ser=[];
+  if(g.buoy.length)ser.push({type:'pts',x:g.buoy.map(b=>b[0]),y:g.buoy.map(b=>b[1]),color:'bg',size:1.6,label:t.buoy});
+  ser.push({type:'line',x:xs,y:ys,color:'track',w:2.5,label:t.track,sorted:false,hover:false});
+  ser.push({type:'line',x:[c.xs,c.xh],y:[c.ys,c.yh],color:'ink',w:1.8,dash:[3,4],label:`CPA ${fmt(g.dcpa,1)} m`,sorted:false,hover:false});
+  ser.push({type:'pts',x:[xs[0]],y:[ys[0]],color:'track',marker:'O',size:5,label:t.start});
+  ser.push({type:'pts',x:[0],y:[0],color:'lim',marker:'x',size:8,w:3,label:t.hyd});
+  charts.map.set({title:t.map,xlabel:t.ew,ylabel:t.ns,equal:true,series:ser,xname:'x'});
+  charts.dist.set({title:t.dist,xlabel:t.utc,ylabel:t.dm,xtime:true,xname:'UTC',series:[
+    {type:'line',x:g.pr.map(q=>q.t),y:g.pr.map(q=>q.d),color:'track',w:2,label:t.dm},
+    {type:'pts',x:[g.tcpa],y:[g.dcpa],color:'cpa',marker:'O',size:5,label:`CPA ${fmt(g.dcpa,1)} m · ${hmsStr(g.tcpa)}`}],
+    vlines:[{x:g.tcpa,color:'cpa',w:1.5,dash:[4,3]}]});
+}
+function updBgInfo(){const p=cur(),el=$('#bg-info');if(!el)return;const b=bgGet(p.bgFile);
+  if(!b){el.textContent='Sin fichero: el fondo se toma del tramo inicial del registro de la pasada (paso 3).';return}
+  el.textContent=b.meta?`${b.name} · ${b.meta.length} canal(es) · ${b.meta[0].fs||'?'} Hz · ${b.meta[0].fs?(b.meta[0].n/b.meta[0].fs).toFixed(1)+' s':''}`:`${b.name} · se leerá al procesar`;}
+function updChans(){
+  const p=cur(),box=$('#chan-box');
+  if(p.err&&!p.meta){box.innerHTML=`<div class="err">${esc(p.err)}</div>`;return}
+  if(!p.meta){box.innerHTML=`<div class="note">${p.file?'La señal se leerá al procesar.':''} Para .mat se buscan vectores numéricos (p. ej. <code>recorded_data(k).data</code>); la frecuencia de muestreo se toma de un campo <code>sampling</code>/<code>fs</code> si existe.</div>`;return}
+  const bgf=bgGet(p.bgFile),bgm=bgf&&bgf.meta;
+  box.innerHTML=`<div class="tw"><table class="ctab"><thead><tr><th class="l">Usar</th><th class="l">Canal</th><th>Muestras</th><th>f<sub>s</sub> (Hz)</th><th>Duración</th><th>RMS</th><th>Prof. hidrófono (m)</th><th>Factor (Pa/unidad)</th>${bgm?'<th class="l">Canal de fondo</th>':''}</tr></thead><tbody>
+  ${p.meta.map((m,i)=>{const c=p.chans[i];return `<tr><td class="l"><input type="checkbox" data-ch="${i}" data-f="use" ${c.use?'checked':''} aria-label="Usar canal ${i+1}"></td>
+    <td class="l" title="${esc(m.label)}"><b>H${i+1}</b> · ${esc(m.label.length>60?m.label.slice(0,58)+'…':m.label)}</td>
+    <td>${m.n.toLocaleString('es-ES')}</td><td><input type="number" data-ch="${i}" data-f="fs" value="${c.fs||''}" step="1" style="width:96px"></td>
+    <td>${c.fs?(m.n/c.fs).toFixed(1)+' s':'—'}</td><td>${m.rms.toPrecision(3)} ${esc(m.unit)}</td>
+    <td><input type="number" data-ch="${i}" data-f="depth" value="${c.depth}" step="0.5" min="0"></td>
+    <td><input type="number" data-ch="${i}" data-f="factor" value="${c.factor}" step="any"></td>
+    ${bgm?`<td class="l"><select data-ch="${i}" data-f="bgCh" aria-label="Canal de fondo para H${i+1}">${bgm.map((b,j)=>`<option value="${j}" ${j===c.bgCh?'selected':''}>${j+1} · ${esc(b.label.length>34?b.label.slice(0,32)+'…':b.label)}</option>`).join('')}</select></td>`:''}</tr>`}).join('')}
+  </tbody></table></div><div class="note">Profundidad, factor y selección se recuerdan como plantilla para las pasadas siguientes. Si la señal ya está en Pa, el factor es 1.${bgm?' El canal de fondo usa el mismo factor que su hidrófono.':''}</div>`;
+  box.querySelectorAll('[data-ch]').forEach(inp=>inp.addEventListener('change',async e=>{
+    const i=+inp.dataset.ch,f=inp.dataset.f,c=p.chans[i];
+    if(f==='use')c.use=inp.checked;else{const v=parseFloat(inp.value);if(!fin(v))return;c[f]=v;}
+    template=p.chans.map(c=>({use:c.use,depth:c.depth,factor:c.factor,bgCh:c.bgCh}));LS.set('urn.template',template);
+    if(f==='fs'&&loaded.includes(p.id)){await call({cmd:'setfs',passId:p.id,key:i,fs:c.fs});updChans();}
+    updProcInfo();updResults();renderList();}));
+}
+function updProcInfo(){
+  const p=cur(),box=$('#proc-info');if(!box)return;const v=vKn(p),L=dwlLen(p);
+  const r=p.chans.filter(c=>c.use).map((c,i)=>fin(p.dcpa)?Math.sqrt(p.dcpa**2+((+c.depth||0)-S.zs)**2):NaN);
+  let h=`<div class="kv">
+    <div class="k"><span>DWL ${S.dwlMode==='deg'?'(±'+S.dwlAng+'°)':''}</span><b>${fmt(L,1)} m</b></div>
+    <div class="k"><span>Duración ventana</span><b>${fin(v)?fmt(L/(v*KN),1)+' s':'—'}</b></div>
+    ${r.map((x,i)=>`<div class="k"><span>r inclinada H${p.chans.map((c,j)=>c.use?j+1:0).filter(Boolean)[i]}</span><b>${fmt(x,1)} m</b></div>`).join('')}
+  </div>`;
+  if(stale(p))h+=`<div class="warn stale">Has cambiado parámetros que afectan a la ventana o al espectro. <button class="btn sm pri" id="p-run2">Volver a procesar</button></div>`;
+  if(p.busy)h+=`<div class="note">Calculando…</div>`;
+  if(p.err&&p.meta)h+=`<div class="err">${esc(p.err)}</div>`;
+  box.innerHTML=h;const b=$('#p-run2');if(b)b.onclick=()=>processPass(p);
+}
+function updProcState(){updProcInfo();const b=$('#p-run');if(b)b.disabled=cur().busy}
+
+function updResults(){
+  const p=cur(),box=$('#res-box');if(!box)return;const R=p.res;
+  if(!R){box.innerHTML=`<div class="note">${p.busy?'Calculando…':'Pulsa «Procesar pasada». Se calcula la tendencia RMS, se localiza el CPA, se promedia el espectro en la ventana DWL y se extrapola a 1 m.'}</div>`;return}
+  const L=levels(p);const t=T();const v=vKn(p);const vms=(v||0)*KN;
+  const comex=R.tcpa*vms,finex=(R.dur-R.tcpa)*vms;
+  const nCh=R.keys.length;
+  const viewOpts=`<option value="avg" ${p.view==='avg'?'selected':''}>${nCh>1?'Media energética de hidrófonos':'H'+(R.keys[0]+1)}</option>`+(nCh>1?R.keys.map((k,i)=>`<option value="${i}" ${p.view===String(i)?'selected':''}>Solo H${k+1}</option>`).join(''):'');
+  box.innerHTML=`${R.warn.map(w=>`<div class="warn">${esc(w)}</div>`).join('')}
+   ${!L?'<div class="err">Falta d<sub>CPA</sub>: cárgalo desde el GPS o escríbelo en el paso 3.</div>':''}
+   <div class="kv">
+    <div class="k"><span>t CPA (desde inicio)</span><b>${fmt(R.tcpa,1)} s</b></div>
+    <div class="k"><span>COMEX</span><b>−${fmt(comex,0)} m</b></div>
+    <div class="k"><span>FINEX</span><b>+${fmt(finex,0)} m</b></div>
+    <div class="k"><span>Promedios Welch</span><b>${R.nseg}</b></div>
+    ${R.bgInfo?`<div class="k" title="${esc(bgGet(p.bgFile)?.name||'')}"><span>Fondo: fichero aparte</span><b>${fmt(R.bgInfo.t0,1)}–${fmt(R.bgInfo.t1,1)} s</b></div>`:''}
+    <div class="k"><span>Δf · nfft</span><b>${fmtDf(R.df)} Hz · ${R.nfft}</b></div>
+    ${L?`<div class="k hi"><span>SL total ${fmtLog(S.fmin)}–${fmtLog(S.fmax)} Hz</span><b>${fmt(L.tot,1)} dB</b></div>
+    ${S.showLim&&L.worst?`<div class="k"><span>Margen mínimo vs SILENT(R)</span><b style="color:var(--${L.worst.m<0?'bad':'good'})">${L.worst.m>=0?'+':''}${fmt(L.worst.m,1)} dB @ ${fmtLog(+L.worst.fc.toPrecision(3))} Hz</b></div>`:''}`:''}
+   </div>
+   <div class="cbox"><div class="ctool"><span class="t">Tendencia del nivel RMS</span><span>Arrastra para ampliar · doble clic restablece · clic fija el CPA a mano</span><button class="btn sm" data-copy="trend">Copiar imagen</button></div><div class="chart" id="c-trend"></div></div>
+   <div class="cbox"><div class="ctool"><span class="t">Nivel de fuente a 1 m</span>
+     <select id="p-view" aria-label="Hidrófono mostrado">${viewOpts}</select><button class="btn sm" data-copy="spec">Copiar imagen</button></div><div class="chart tall" id="c-spec"></div></div>
+   ${L?`<details id="tdet"><summary class="ctool" style="cursor:pointer"><span class="t">Tabla por tercios de octava</span><button class="btn sm" data-copy="tbl" type="button">Copiar tabla</button></summary><div class="tw" style="margin-top:8px">${tableHTML(p,L)}</div></details>`:''}`;
+  $('#p-view').onchange=e=>{p.view=e.target.value;drawSpec(p)};
+  drawTrend(p);drawSpec(p);
+}
+function drawTrend(p){
+  const R=p.res,t=T();const tx=Float32Array.from({length:R.nb},(_,k)=>k*R.dt);
+  const ser=R.rms.map((r,i)=>({type:'line',x:tx,y:r,color:R.rms.length>1?i+3:'raw',w:1,label:'RMS H'+(R.keys[i]+1)}));
+  ser.push({type:'line',x:tx,y:R.trend,color:'fit',w:2.5,label:t.fit});
+  let mx=0;for(const v of R.trend)if(v>mx)mx=v;
+  const v=vKn(p),vms=(v||0)*KN,L=dwlLen(p);
+  charts.trend=mkChart('c-trend',{onClick:(x)=>{if(x<0||x>R.dur)return;p.cpaMode='manual';p.tcpa=+x.toFixed(1);const s=$('#p-cpamode');if(s){s.value='manual';$('#p-tcpa').disabled=false;$('#p-tcpa').value=p.tcpa}processPass(p)}});
+  charts.trend.set({title:t.trend(fmt(v,1),p.side),xlabel:t.time,ylabel:t.rms,xname:'t (s)',ydec:3,xlim:[0,R.dur],ylim:[0,mx*2||1],series:ser,
+    shades:[...(R.bgInfo?[]:[{x0:p.bg0,x1:Math.min(p.bg1,R.dur),color:'fondo',label:t.fondo}]),{x0:R.tini_eff,x1:R.tfin_eff,color:'dwl',label:t.dwl}],
+    vlines:[{x:R.tcpa,color:'cpa',w:2,label:t.cpa}],
+    box:[`DWL = ${fmt(L,0)} m`,`COMEX: −${fmt(R.tcpa*vms,0)} m`,`FINEX: +${fmt((R.dur-R.tcpa)*vms,0)} m`]});
+}
+function drawSpec(p){
+  const R=p.res,L=levels(p),t=T();charts.spec=mkChart('c-spec',{});if(!L){charts.spec.set(null);return}
+  const view=p.view==='avg'||+p.view>=R.keys.length?'avg':p.view;const df=fmtDf(R.df);
+  const ser=[];const nb=narrow(p,view,true),nu=narrow(p,view,false);
+  if(nb)ser.push({type:'line',x:nb.x,y:nb.y,color:'bgN',w:1,label:t.nbB(df)});
+  ser.push({type:'line',x:nu.x,y:nu.y,color:'urnN',w:1,label:t.nb(df)});
+  const rows=L.rows;const lo=rows.map(b=>b.lo),hi=rows.map(b=>b.hi);
+  const pick=(b,k)=>view==='avg'?(k==='sl'?b.sa:b.ba):(k==='sl'?b.sl[+view]:(b.bg?b.bg[+view]:NaN));
+  if(R.psdBg)ser.push({type:'stairs',lo,hi,y:rows.map(b=>pick(b,'bg')),color:'bg',w:1.6,label:t.toB});
+  if(view==='avg'&&R.keys.length>1)R.keys.forEach((k,i)=>ser.push({type:'stairs',lo,hi,y:rows.map(b=>b.sl[i]),color:i+3,w:1.2,dash:[5,3],label:'URN 1/3 oct H'+(k+1)}));
+  ser.push({type:'stairs',lo,hi,y:rows.map(b=>pick(b,'sl')),color:'urn',w:2.6,label:t.to+(view==='avg'&&R.keys.length>1?' (avg)':'')});
+  if(S.showLim){const bA=BANDS.filter(b=>b.fc>=S.fmin*0.79&&b.fc<=S.fmax*1.26),bB=bA.filter(b=>b.fc<=25.5);
+    ser.push({type:'line',x:bA.map(b=>b.fc),y:bA.map(b=>limA(b.fc)),color:'lim',w:2.4,dash:[8,5],label:t.limA});
+    if(bB.length)ser.push({type:'line',x:bB.map(b=>b.fc),y:bB.map(b=>limB(b.fc)),color:'lim2',w:2.4,dash:[8,5],label:t.limB});}
+  charts.spec.set({title:t.sl(fmt(vKn(p),1),p.side),xlabel:t.freq,ylabel:t.db,xlog:true,xname:'f (Hz)',xlim:[S.fmin,Math.min(S.fmax,R.fs/2)],ylim:[S.ymin,S.ymax],series:ser});
+}
+function tableHTML(p,L){
+  const R=p.res,multi=R.keys.length>1,hs=R.keys.map(k=>'H'+(k+1));
+  return `<table><thead><tr><th>f<sub>c</sub> (Hz)</th><th>N</th>${multi?hs.map(h=>`<th>SL ${h}</th>`).join(''):''}<th>SL ${multi?'medio':''}</th>${R.psdBg?'<th>Fondo</th><th>S/N</th>':''}${S.showLim?'<th>Límite</th><th>Margen</th>':''}</tr></thead><tbody>
+  ${L.rows.filter(b=>b.fc>=S.fmin*0.79&&b.fc<=S.fmax*1.26).map(b=>{const m=b.lim-b.sa;return `<tr><td>${b.fc<100?b.fc.toFixed(1):b.fc.toFixed(0)}</td><td>${b.N.toFixed(1)}</td>
+    ${multi?b.sl.map(x=>`<td>${fmt(x,1)}</td>`).join(''):''}<td><b>${fmt(b.sa,1)}</b></td>
+    ${R.psdBg?`<td>${fmt(b.ba,1)}</td><td class="${b.snr<S.snr?'lo':''}">${fmt(b.snr,1)}</td>`:''}
+    ${S.showLim?`<td>${fmt(b.lim,1)}</td><td class="${m<0?'neg':''}">${fin(m)?(m>=0?'+':'')+m.toFixed(1):'—'}</td>`:''}</tr>`}).join('')}</tbody></table>
+  <div class="note" style="padding:6px 9px">dB ref 1 µPa²·m² en banda. S/N en naranja si es menor de ${S.snr} dB (nivel posiblemente contaminado por el fondo). Margen = límite − SL; en rojo si se supera el límite.</div>`;
+}
+function tableTSV(p){const L=levels(p);if(!L)return'';const R=p.res,multi=R.keys.length>1,hs=R.keys.map(k=>'H'+(k+1));
+  const head=['fc_Hz','N',...(multi?hs.map(h=>'SL_'+h):[]),'SL_dB',...(R.psdBg?['Fondo_dB','SN_dB']:[]),...(S.showLim?['Limite_dB','Margen_dB']:[])];
+  const rows=L.rows.filter(b=>b.fc>=S.fmin*0.79&&b.fc<=S.fmax*1.26).map(b=>[b.fc.toFixed(2),b.N.toFixed(2),...(multi?b.sl.map(x=>fmt(x,2)):[]),fmt(b.sa,2),...(R.psdBg?[fmt(b.ba,2),fmt(b.snr,2)]:[]),...(S.showLim?[fmt(b.lim,2),fmt(b.lim-b.sa,2)]:[])]);
+  const hdr=[`# ${p.name} · ${fmt(vKn(p),1)} kn ${p.side} · dCPA ${fmt(p.dcpa,1)} m · r ${L.r.map(x=>x.toFixed(1)).join('/')} m`];
+  return hdr.concat([head.join('\t')],rows.map(r=>r.join('\t').replace(/\./g,','))).join('\n');}
+
+/* =====================================================================
+   Resumen
+   ===================================================================== */
+let sumChart=null,sumSel=null;
+function renderSummary(){
+  const el=$('#summary');const done=passes.filter(p=>p.res&&levels(p));
+  if(!done.length){el.innerHTML='<div class="empty">Aún no hay pasadas procesadas. Procesa al menos una para ver el resumen.</div>';return}
+  if(!sumSel)sumSel=new Set(done.map(p=>p.id));done.forEach(p=>{if(!sumSel.has(p.id)&&!sumSel.has(-p.id))sumSel.add(p.id)});
+  const sel=done.filter(p=>sumSel.has(p.id));
+  el.innerHTML=`<section class="blk"><h2>Resumen comparativo<span class="aside note">Nivel de fuente 1/3 oct (media energética de hidrófonos)</span></h2>
+    <div class="sum-sel">${done.map((p,i)=>`<label><input type="checkbox" data-sp="${p.id}" ${sumSel.has(p.id)?'checked':''}>${esc(p.name)} <span class="note">${fmt(vKn(p),1)} kn ${p.side}</span>${stale(p)?' <span class="dot st">desfasada</span>':''}</label>`).join('')}</div>
+    <div class="cbox"><div class="ctool"><span class="t">Todas las pasadas</span><button class="btn sm" id="s-copyimg">Copiar imagen</button></div><div class="chart tall" id="c-sum"></div></div>
+  </section>
+  <section class="blk"><h2>Tabla por pasada<span class="aside"><button class="btn sm" id="s-copy1">Copiar tabla</button></span></h2>
+    <div class="tw"><table><thead><tr><th class="l">Pasada</th><th>v (kn)</th><th class="l">Costado</th><th>d<sub>CPA</sub> (m)</th><th>r (m)</th><th>t CPA (s)</th><th>DWL (m)</th><th>SL total (dB)</th>${S.showLim?'<th>Margen mín. (dB)</th><th>@ f (Hz)</th>':''}</tr></thead><tbody>
+    ${sel.map(p=>{const L=levels(p);return `<tr><td class="l">${esc(p.name)}</td><td>${fmt(vKn(p),1)}</td><td class="l">${p.side}</td><td>${fmt(p.dcpa,1)}</td><td>${L.r.map(x=>x.toFixed(1)).join(' / ')}</td><td>${fmt(p.res.tcpa,1)}</td><td>${fmt(dwlLen(p),0)}</td><td><b>${fmt(L.tot,1)}</b></td>
+      ${S.showLim?`<td class="${L.worst&&L.worst.m<0?'neg':''}">${L.worst?(L.worst.m>=0?'+':'')+L.worst.m.toFixed(1):'—'}</td><td>${L.worst?fmtLog(+L.worst.fc.toPrecision(3)):'—'}</td>`:''}</tr>`}).join('')}</tbody></table></div>
+  </section>
+  <section class="blk"><h2>Espectros por tercios de octava<span class="aside"><button class="btn sm" id="s-copy2">Copiar tabla</button></span></h2>
+    <div class="tw">${sumTable(sel,false)}</div></section>`;
+  el.querySelectorAll('[data-sp]').forEach(c=>c.onchange=()=>{const id=+c.dataset.sp;if(c.checked){sumSel.add(id);sumSel.delete(-id)}else{sumSel.delete(id);sumSel.add(-id)}renderSummary()});
+  $('#s-copyimg').onclick=()=>copyChart(sumChart);
+  $('#s-copy1').onclick=()=>copyText(sel.map(p=>{const L=levels(p);return[p.name,fmt(vKn(p),1),p.side,fmt(p.dcpa,1),L.r.map(x=>x.toFixed(1)).join('/'),fmt(p.res.tcpa,1),fmt(dwlLen(p),0),fmt(L.tot,1),L.worst?L.worst.m.toFixed(1):'',L.worst?L.worst.fc.toFixed(1):''].join('\t').replace(/\./g,',')}).join('\n').replace(/^/,'Pasada\tv_kn\tCostado\tdCPA_m\tr_m\ttCPA_s\tDWL_m\tSL_total_dB\tMargen_min_dB\tf_Hz\n'),'Tabla de pasadas');
+  $('#s-copy2').onclick=()=>copyText(sumTable(sel,true),'Tabla de espectros');
+  const t=T();sumChart=mkChart('c-sum',{});
+  const ser=sel.map((p,i)=>{const L=levels(p);return{type:'line',x:L.rows.map(b=>b.fc),y:L.rows.map(b=>b.sa),color:i,w:2,label:`${fmt(vKn(p),1)} kn – ${p.side}${sel.filter(q=>vKn(q)===vKn(p)&&q.side===p.side).length>1?' ('+p.name+')':''}`}});
+  if(S.showLim){const bA=BANDS.filter(b=>b.fc>=S.fmin*0.79&&b.fc<=S.fmax*1.26),bB=bA.filter(b=>b.fc<=25.5);
+    ser.push({type:'line',x:bA.map(b=>b.fc),y:bA.map(b=>limA(b.fc)),color:'lim',w:2.6,dash:[8,5],label:t.limA});
+    if(bB.length)ser.push({type:'line',x:bB.map(b=>b.fc),y:bB.map(b=>limB(b.fc)),color:'lim2',w:2.6,dash:[2,4],label:t.limB});}
+  sumChart.set({title:t.sum,xlabel:t.freq,ylabel:t.db,xlog:true,xname:'f (Hz)',xlim:[S.fmin,S.fmax],ylim:[S.symin,S.symax],series:ser});
+}
+function sumTable(sel,tsv){
+  const fcs=BANDS.filter(b=>b.fc>=S.fmin*0.79&&b.fc<=S.fmax*1.26);const Ls=sel.map(levels);
+  const val=(L,b)=>{const r=L.rows.find(x=>x.fc===b.fc);return r?r.sa:NaN};
+  if(tsv){const h=['fc_Hz',...sel.map(p=>p.name+' ('+fmt(vKn(p),1)+'kn '+p.side+')'),...(S.showLim?['Limite_SILENT_R']:[])].join('\t');
+    return h+'\n'+fcs.map(b=>[b.fc.toFixed(2),...Ls.map(L=>fmt(val(L,b),2)),...(S.showLim?[limR(b.fc).toFixed(2)]:[])].join('\t').replace(/\./g,',')).join('\n')}
+  return `<table><thead><tr><th>f<sub>c</sub> (Hz)</th>${sel.map(p=>`<th title="${esc(p.name)}">${fmt(vKn(p),1)} kn ${p.side}</th>`).join('')}${S.showLim?'<th>Límite</th>':''}</tr></thead><tbody>
+  ${fcs.map(b=>`<tr><td>${b.fc<100?b.fc.toFixed(1):b.fc.toFixed(0)}</td>${Ls.map(L=>{const v=val(L,b);return `<td class="${S.showLim&&v>limR(b.fc)?'neg':''}">${fmt(v,1)}</td>`}).join('')}${S.showLim?`<td>${limR(b.fc).toFixed(1)}</td>`:''}</tr>`).join('')}</tbody></table>`;
+}
+
+/* =====================================================================
+   Ajustes
+   ===================================================================== */
+function renderSettings(){
+  const el=$('#settings');
+  const num=(k,lab,u,step='any',min='')=>`<label for="s-${k}">${lab}</label><span class="in"><input type="number" id="s-${k}" data-s="${k}" value="${S[k]}" step="${step}" ${min!==''?'min="'+min+'"':''}><span class="unit">${u}</span></span>`;
+  el.innerHTML=`
+  <section class="blk"><h2>Ventana de análisis</h2><div class="form2">
+    <label for="s-dwlMode">Definición de la DWL</label><span class="in"><select id="s-dwlMode" data-s="dwlMode"><option value="m" ${S.dwlMode==='m'?'selected':''}>Longitud fija</option><option value="deg" ${S.dwlMode==='deg'?'selected':''}>Ángulo ± desde el CPA</option></select></span>
+    ${num('dwl','Longitud DWL (p. ej. 2 esloras)','m','1','1')}
+    ${num('dwlAng','Ángulo de la ventana ±','°','1','1')}
+    ${num('bg0','Fondo por defecto: desde','s','1','0')}
+    ${num('bg1','Fondo por defecto: hasta','s','1','0')}
+  </div><div class="note">Los valores de fondo se aplican a las pasadas nuevas; cada pasada puede cambiarlos.</div></section>
+  <section class="blk"><h2>Tendencia y CPA</h2><div class="form2">
+    ${num('block','Bloque RMS','s','0.01','0.01')}
+    ${num('trendWin','Media móvil de la tendencia','s','1','0.1')}
+    ${num('hp','Paso alto Butterworth 4º orden (solo tendencia)','Hz','1','0')}
+  </div></section>
+  <section class="blk"><h2>Espectro</h2><div class="form2">
+    <label for="s-dfT">Resolución objetivo Δf</label><span class="in"><select id="s-dfT" data-s="dfT">${[0.25,0.5,1,2,4].map(v=>`<option value="${v}" ${+S.dfT===v?'selected':''}>≈ ${v} Hz</option>`).join('')}</select></span>
+    ${num('snr','Umbral S/N para avisar','dB','0.5','0')}
+  </div><div class="note">Welch con ventana Hann y 50 % de solape; nfft potencia de 2 más cercana a f<sub>s</sub>/Δf (con 200 kHz y 1 Hz: 262 144, Δf = 0,76 Hz).</div></section>
+  <section class="blk"><h2>Propagación (N·log<sub>10</sub> r)</h2><div class="form2">
+    ${num('N1','N en baja frecuencia','','0.5')}
+    ${num('f1','hasta','Hz','1','0')}
+    ${num('N2','N en alta frecuencia','','0.5')}
+    ${num('f2','desde','Hz','1','0')}
+    ${num('zs','Profundidad de la fuente (z<sub>s</sub>)','m','0.1')}
+  </div><div class="note">Entre f₁ y f₂, N varía linealmente. Pon N₁ = N₂ = 20 para propagación esférica pura.</div></section>
+  <section class="blk"><h2>Gráficas</h2><div class="form2">
+    <label for="s-lang">Idioma de los rótulos</label><span class="in"><select id="s-lang" data-s="lang"><option value="en" ${S.lang==='en'?'selected':''}>Inglés (informe)</option><option value="es" ${S.lang==='es'?'selected':''}>Español</option></select></span>
+    <label for="s-showLim">Mostrar límite SILENT(R) / ICES 209</label><span class="in"><input type="checkbox" id="s-showLim" data-s="showLim" ${S.showLim?'checked':''}></span>
+    ${num('fmin','Frecuencia mínima','Hz','1','1')}
+    ${num('fmax','Frecuencia máxima','Hz','100','10')}
+    ${num('ymin','Eje dB pasada: mínimo','dB','5')}
+    ${num('ymax','Eje dB pasada: máximo','dB','5')}
+    ${num('symin','Eje dB resumen: mínimo','dB','5')}
+    ${num('symax','Eje dB resumen: máximo','dB','5')}
+  </div></section>
+  <section class="blk"><h2>Memoria</h2><div class="form2">
+    ${num('keep','Señales que se mantienen cargadas','','1','1')}
+  </div><div class="note">Cada pasada guarda su fichero y sus resultados; la señal completa solo se mantiene en memoria para las últimas pasadas usadas y se vuelve a leer al reprocesar.</div>
+    <button class="btn" id="s-reset">Restablecer valores por defecto</button></section>
+  <section class="blk how" style="grid-column:1/-1"><h2>Cómo se calcula</h2>
+    <p>1 · <b>Distancia.</b> Las posiciones NMEA se proyectan en un plano local centrado en el hidrófono. d<sub>CPA</sub> es la mínima distancia horizontal barco–hidrófono.</p>
+    <p>2 · <b>CPA acústico.</b> Señal filtrada paso alto, RMS por bloques y media móvil; el CPA es el máximo de esa tendencia (media cuadrática de los hidrófonos seleccionados) o el instante que fijes a mano.</p>
+    <p>3 · <b>Ventana.</b> Se promedia el espectro de Welch de la señal sin filtrar dentro de la DWL centrada en el CPA. El ruido de fondo sale del tramo indicado del propio registro o de un fichero aparte (completo o un tramo), con el mismo factor de calibración y la misma corrección N·log<sub>10</sub>(r) que la pasada.</p>
+    <p>4 · <b>Nivel de fuente</b> en cada hidrófono y media energética entre hidrófonos:</p>
+    <div class="formula">r   = √( d_CPA² + (z_h − z_s)² )
+SL  = 10·log10( Σ PSD·Δf / 1 µPa² ) + N(f)·log10(r)
+N(f)= N₁ (f ≤ f₁) · lineal · N₂ (f ≥ f₂)
+DWL = L  ó  2·d_CPA·tan(θ)       COMEX = t_CPA·v     FINEX = (t_fin − t_CPA)·v</div>
+    <p>Las bandas de tercio de octava son f<sub>c</sub> = 2<sup>k/3</sup> (k = 1…47) con límites f<sub>c</sub>·2<sup>±1/6</sup>, como en el script de Octave.</p>
+  </section>`;
+  el.querySelectorAll('[data-s]').forEach(i=>i.addEventListener('change',()=>{const k=i.dataset.s;
+    S[k]=i.type==='checkbox'?i.checked:(i.tagName==='SELECT'&&isNaN(+i.value)?i.value:(parseFloat(i.value)));if(i.tagName==='SELECT'&&k==='dfT')S[k]=+i.value;
+    if(i.type==='number'&&!fin(S[k]))S[k]=DEF[k];saveS();renderList();}));
+  $('#s-reset').onclick=()=>{S=Object.assign({},DEF);saveS();renderSettings();renderList();toast('Ajustes restablecidos')};
+}
+
+/* =====================================================================
+   Pestañas y arranque
+   ===================================================================== */
+$$('.tabs button').forEach(b=>b.onclick=()=>{
+  $$('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));const v=b.dataset.view;
+  $('#view-p').hidden=v!=='p';$('#view-r').hidden=v!=='r';$('#view-a').hidden=v!=='a';
+  if(v==='r')renderSummary();if(v==='a')renderSettings();if(v==='p')renderDetail();});
+
+function exFixes(str){return str.split(';').map(r=>{const [h,la,lo]=r.split(',');const t=+h.slice(0,2)*3600+ +h.slice(2,4)*60+ +h.slice(4,6);
+  const L=v=>{const x=parseFloat(v);const d=Math.floor(x/100);return d+(x-d*100)/60};return{t,lat:L(la),lon:-L(lo)}})}
+(async function init(){
+  const s=addPool('EJEMPLO_GPS_barco_7kn.txt','ship',exFixes(EX_SHIP));
+  const h=addPool('EJEMPLO_GPS_boya.txt','hyd',exFixes(EX_HYD));
+  const p=newPass({name:'Ejemplo sintético · 7 kn',speed:7,side:'PS',ship:s.id,hyd:h.id,synth:true,fileName:'',
+    chans:[{use:true,depth:20,factor:1,fs:48000},{use:true,depth:40,factor:1,fs:48000}],bg0:0,bg1:5});
+  refreshGPS(p);passes.push(p);curId=p.id;renderList();renderDetail();
+  await processPass(p,true);
+})();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ALLCH.forEach(c=>c.draw()));
+</script>
+
+</body>
+</html>
