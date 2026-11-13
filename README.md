@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.1.0**
+**Versión 1.1.1**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -28,11 +28,12 @@ Todo el cálculo se hace en el navegador: los ficheros no salen del equipo.
 
 ## Uso
 
-Abre `index.html` en un navegador actual (Chrome, Edge o Firefox) o publícalo con GitHub Pages. Al abrirse carga un ejemplo **sintético**: una trayectoria GPS inventada y una señal simulada de dos hidrófonos.
+Abre `index.html` en un navegador actual (Chrome, Edge o Firefox) o usa la versión publicada en https://oscarvib.github.io/procesador-urn/. Desde Chrome o Edge se puede instalar como aplicación (icono de instalar en la barra de direcciones); una vez abierta con conexión, funciona también sin ella. Al abrirse carga un ejemplo **sintético**: una trayectoria GPS inventada y una señal simulada de dos hidrófonos.
 
 Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `save("fichero.mat","recorded_data","-v7")`.
 
 ## Historial de versiones
 
+- **1.1.1**: instalable como aplicación en Chrome/Edge con su icono (manifiesto e iconos PNG) y uso sin conexión (service worker).
 - **1.1.0**: ruido de fondo desde un fichero aparte (completo o un tramo), con asignación de canales y carga por lotes; ejemplo GPS sintético; número de versión e icono.
 - **1.0.0**: primera versión: GPS y CPA, señal .mat/UNV/WAV, tendencia RMS, ventana DWL, nivel de fuente a 1 m con N·log10(r), resumen frente a SILENT(R)/ICES 209.
