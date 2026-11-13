@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.2.0**
+**Versión 1.2.1**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -33,9 +33,8 @@ En **Ajustes → Curva límite** se elige el criterio (DNV-GL RU-SHIP Pt.6 Ch.7 
 | Silent(F) | Arrastre pesado | 178 − 8·log f (10–100 Hz) · 162 (100 Hz–1 kHz) · 162 − 15·log f(kHz) (1–100 kHz) |
 | Silent(A) | Prospección ligera | 156 − 12·log f(kHz) (1–100 kHz) |
 | Silent(A) | Con hélices de maniobra | 165 − 12·log f(kHz) (1–100 kHz) |
-| Silent(S) | Sísmica | 168 por tercio y 175 global (3,15–315 Hz) |
 
-La curva elegida se dibuja en las gráficas y se usa para el margen mínimo y para las tablas. Con Silent(S) se calcula además el nivel global 3,15–315 Hz frente a 175 dB.
+La curva elegida se dibuja en las gráficas y se usa para el margen mínimo y para las tablas.
 
 ## Varias pasadas
 
@@ -51,6 +50,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.2.1**: se quita la curva Silent(S) (sísmica).
 - **1.2.0**: curvas límite DNV Silent R, E (tránsito y crucero silencioso), F (búsqueda ligera y arrastre pesado), A (prospección ligera y hélices de maniobra) y S (por tercio y global), seleccionables en Ajustes.
 - **1.1.2**: iconos en más tamaños (48–512 px) y favicon.ico para el acceso directo del escritorio en Windows.
 - **1.1.1**: instalable como aplicación en Chrome/Edge con su icono (manifiesto e iconos PNG) y uso sin conexión (service worker).

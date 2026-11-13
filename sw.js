@@ -1,5 +1,5 @@
 // Procesador URN · service worker: red primero, caché si no hay conexión
-const CACHE = 'procesador-urn-v1.2.0';
+const CACHE = 'procesador-urn-v1.2.1';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'favicon.ico', 'icon-48.png', 'icon-64.png', 'icon-96.png', 'icon-128.png', 'icon-256.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

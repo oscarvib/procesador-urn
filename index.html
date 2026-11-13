@@ -162,7 +162,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.2.0</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.2.1</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-view="p" aria-selected="true" id="tab-p">Pasadas</button>
     <button role="tab" data-view="r" aria-selected="false" id="tab-r">Resumen</button>
@@ -208,7 +208,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.2.0';
+const APP_VERSION='1.2.1';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -684,9 +684,8 @@ const LIMITS={
        fn:f=>156-12*lg(kHz(f)),txt:['1 – 100 kHz: 156 − 12·log f(kHz)','Sin requisito por debajo de 1 kHz']},
   A_T:{grp:'Silent(A) – Acústica',sh:'SILENT(A) thruster',en:'DNV SILENT(A) – thruster condition',es:'DNV SILENT(A) – con hélices de maniobra',f0:1000,f1:100000,
        fn:f=>165-12*lg(kHz(f)),txt:['1 – 100 kHz: 165 − 12·log f(kHz)','Sin requisito por debajo de 1 kHz']},
-  S:  {grp:'Silent(S) – Sísmica',sh:'SILENT(S)',en:'DNV SILENT(S) – seismic',es:'DNV SILENT(S) – sísmica',f0:3.15,f1:315,
-       fn:f=>168,overall:{f0:3.15,f1:315,lim:175},txt:['3,15 – 315 Hz: 168 en cada tercio de octava','Global 3,15 – 315 Hz: 175','Buques > 3 000 kW/eje: +20·log(d/250) si el primer grupo de hidrófonos está a más de 250 m']},
 };
+if(S.lim!=='none'&&!LIMITS[S.lim]){S.lim='R';S.showLim=true}
 const LIM=()=>LIMITS[S.lim]||null;
 const inLim=(L,f)=>L&&f>=L.f0/1.12&&f<=L.f1*1.12;
 function limVal(f){const L=LIM();return inLim(L,f)?L.fn(f):NaN}
