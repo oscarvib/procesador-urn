@@ -162,7 +162,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.3.0</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.3.1</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-view="p" aria-selected="true" id="tab-p">Pasadas</button>
     <button role="tab" data-view="r" aria-selected="false" id="tab-r">Resumen</button>
@@ -208,7 +208,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.3.0';
+const APP_VERSION='1.3.1';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -383,8 +383,10 @@ function parseUNV(buf,progress){
   const findEnd=()=>{let i=pos;for(;;){let e=u8.indexOf(10,i);if(e<0)e=u8.length;if(e-i<=9){if(latin1(u8.subarray(i,e)).trim()==='-1')return i;}if(e>=u8.length)return u8.length;i=e+1;}};
   for(;;){
     const l=line();if(l===null)break;if(l.trim()!=='-1')continue;
-    const h=line();if(h===null)break;const ht=h.trim().split(/\s+/);const id=ht[0];
-    if(id!=='58'&&id!=='58b'){pos=findEnd();line();continue;}
+    let h=line();while(h!==null&&h.trim()==='-1')h=line();if(h===null)break;
+    const ht=h.trim().split(/\s+/);const id=ht[0].toLowerCase();
+    if(!/^\d+b?$/.test(id))continue;
+    if(id!=='58'&&id!=='58b'){pos=findEnd();continue;}
     const hd=[];for(let k=0;k<11;k++)hd.push(line()||'');
     const r7=hd[6];let ot=parseInt(r7.slice(0,10)),n=parseInt(r7.slice(10,20)),even=parseInt(r7.slice(20,30)),dx=ff(r7.slice(43,56));
     if(![ot,n,even,dx].every(Number.isFinite)){const t=r7.trim().split(/\s+/);ot=+t[0];n=+t[1];even=+t[2];dx=ff(t[4]);}
@@ -393,15 +395,16 @@ function parseUNV(buf,progress){
       const le=(+ht[1]||1)===1;const nb=+ht[4]||0;const b=dbl?8:4;const len=Math.min(nb||nv*b,u8.length-pos);
       const dv=new DataView(buf,pos,len);const m=Math.floor(len/b);vals=new Float32Array(Math.min(nv,m));
       for(let i=0;i<vals.length;i++)vals[i]=dbl?dv.getFloat64(i*8,le):dv.getFloat32(i*4,le);
-      pos+=len;pos=findEnd();line();
-    }else{const e=findEnd();vals=parseNumsBytes(u8,pos,e,nv);pos=e;line();}
+      pos+=len;pos=findEnd();
+    }else{const e=findEnd();vals=parseNumsBytes(u8,pos,e,nv);pos=e;}
     let y;if(per===1)y=vals;else{const m=Math.floor(vals.length/per);y=new Float32Array(m);const o=even?0:1;for(let i=0;i<m;i++)y[i]=vals[i*per+o];if(!even&&m>1)dx=vals[per]-vals[0];}
     const r6=hd[5].trim().split(/\s+/);let label=hd[0].trim();
     if(!label||/^none$/i.test(label))label=(hd[1].trim()||('Canal '+(out.length+1)));
     if(r6.length>=7&&r6[5]!=='0')label+=' · nodo '+r6[5]+(r6[6]&&r6[6]!=='0'?' dir '+r6[6]:'');
     let start=null;for(let k=0;k<5&&!start;k++)start=parseDateStr(hd[k]);
     let unit=(hd[8].slice(47,67)||'').trim();if(!unit){const t=hd[8].trim().split(/\s+/);unit=t.length>4?t[t.length-1]:'';}
-    out.push({label,unit,fs:dx>0?1/dx:0,data:y,start});progress(pos/u8.length);
+    let fsv=dx>0?1/dx:0;if(fsv>0&&Math.abs(fsv-Math.round(fsv))<1e-6*fsv)fsv=Math.round(fsv);
+    out.push({label,unit,fs:fsv,data:y,start});progress(pos/u8.length);
   }
   return out;
 }

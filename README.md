@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.3.0**
+**Versión 1.3.1**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -55,6 +55,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.3.1**: el lector UNV acepta canales separados por un solo `-1` (antes solo leía el primer canal) y redondea la frecuencia de muestreo.
 - **1.3.0**: sincronización señal–GPS (hora de cabecera UNV/.mat, manual o ajuste automático), ventana centrada en el CPA del GPS, corrección r(t) por segmento, lectura UNV ASCII más rápida.
 - **1.2.1**: se quita la curva Silent(S) (sísmica).
 - **1.2.0**: curvas límite DNV Silent R, E (tránsito y crucero silencioso), F (búsqueda ligera y arrastre pesado), A (prospección ligera y hélices de maniobra) y S (por tercio y global), seleccionables en Ajustes.
