@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Procesador URN</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -50,6 +51,8 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--panel)}
 .brand{font-family:var(--f-disp);font-weight:700;font-size:22px;letter-spacing:.02em;display:flex;align-items:baseline;gap:10px}
 .brand small{font-family:var(--f-body);font-weight:400;font-size:13px;color:var(--ink2);letter-spacing:0}
+.brand .logo{width:30px;height:30px;align-self:center;border-radius:7px}
+.brand .ver{font:600 12px var(--f-mono);letter-spacing:0;color:var(--ink2);background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:1px 7px;align-self:center}
 .brand .mark{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);position:relative;top:1px}
 .brand .mark::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
 .tabs{display:flex;gap:4px;margin-left:auto}
@@ -153,7 +156,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><span class="mark" aria-hidden="true"></span>Procesador URN <small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.1.0</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-view="p" aria-selected="true" id="tab-p">Pasadas</button>
     <button role="tab" data-view="r" aria-selected="false" id="tab-r">Resumen</button>
@@ -199,6 +202,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
+const APP_VERSION='1.1.0';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -1154,7 +1158,7 @@ function tableHTML(p,L){
 function tableTSV(p){const L=levels(p);if(!L)return'';const R=p.res,multi=R.keys.length>1,hs=R.keys.map(k=>'H'+(k+1));
   const head=['fc_Hz','N',...(multi?hs.map(h=>'SL_'+h):[]),'SL_dB',...(R.psdBg?['Fondo_dB','SN_dB']:[]),...(S.showLim?['Limite_dB','Margen_dB']:[])];
   const rows=L.rows.filter(b=>b.fc>=S.fmin*0.79&&b.fc<=S.fmax*1.26).map(b=>[b.fc.toFixed(2),b.N.toFixed(2),...(multi?b.sl.map(x=>fmt(x,2)):[]),fmt(b.sa,2),...(R.psdBg?[fmt(b.ba,2),fmt(b.snr,2)]:[]),...(S.showLim?[fmt(b.lim,2),fmt(b.lim-b.sa,2)]:[])]);
-  const hdr=[`# ${p.name} · ${fmt(vKn(p),1)} kn ${p.side} · dCPA ${fmt(p.dcpa,1)} m · r ${L.r.map(x=>x.toFixed(1)).join('/')} m`];
+  const hdr=[`# Procesador URN v${APP_VERSION}`,`# ${p.name} · ${fmt(vKn(p),1)} kn ${p.side} · dCPA ${fmt(p.dcpa,1)} m · r ${L.r.map(x=>x.toFixed(1)).join('/')} m`];
   return hdr.concat([head.join('\t')],rows.map(r=>r.join('\t').replace(/\./g,','))).join('\n');}
 
 /* =====================================================================

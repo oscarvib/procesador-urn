@@ -1,4 +1,8 @@
+<img src="icon.svg" width="72" alt="Icono de Procesador URN">
+
 # Procesador URN
+
+**Versión 1.1.0**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -27,3 +31,8 @@ Todo el cálculo se hace en el navegador: los ficheros no salen del equipo.
 Abre `index.html` en un navegador actual (Chrome, Edge o Firefox) o publícalo con GitHub Pages. Al abrirse carga un ejemplo **sintético**: una trayectoria GPS inventada y una señal simulada de dos hidrófonos.
 
 Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `save("fichero.mat","recorded_data","-v7")`.
+
+## Historial de versiones
+
+- **1.1.0**: ruido de fondo desde un fichero aparte (completo o un tramo), con asignación de canales y carga por lotes; ejemplo GPS sintético; número de versión e icono.
+- **1.0.0**: primera versión: GPS y CPA, señal .mat/UNV/WAV, tendencia RMS, ventana DWL, nivel de fuente a 1 m con N·log10(r), resumen frente a SILENT(R)/ICES 209.
