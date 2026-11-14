@@ -61,6 +61,15 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .brand .mark{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);position:relative;top:1px}
 .brand .mark::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
 .tabs{display:flex;gap:4px;margin-left:auto}
+.projbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+.projbar .proj{font-size:13px;color:var(--ink2);max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.projbar .proj b{color:var(--ink);font-weight:600}
+.projbar .dirty{color:var(--warn);font-weight:600}
+.welcome{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:28px 24px;display:flex;flex-direction:column;gap:14px;max-width:760px}
+.welcome h2{font:700 24px var(--f-disp);margin:0;color:var(--ink)}
+.welcome p{margin:0;color:var(--ink2);max-width:64ch}
+.welcome .acts{display:flex;flex-wrap:wrap;gap:8px}
+.welcome ol{margin:0;padding-left:20px;color:var(--ink2);display:flex;flex-direction:column;gap:3px}
 .tabs button{font:600 14px var(--f-body);background:none;border:1px solid transparent;color:var(--ink2);padding:6px 14px;border-radius:6px;cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--accent-soft);color:var(--ink);border-color:var(--line)}
 main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 40px;max-width:1500px;margin:0 auto}
@@ -162,7 +171,15 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.3.2</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.4.0</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="projbar">
+    <span class="proj" id="projName" title="Proyecto actual"></span>
+    <button class="btn sm" id="b-new" title="Empezar un proyecto vacío">Nuevo</button>
+    <button class="btn sm" id="b-open" title="Abrir un proyecto guardado (.json) · Ctrl+O">Abrir…</button>
+    <button class="btn sm pri" id="b-save" title="Guardar el proyecto · Ctrl+S">Guardar</button>
+    <button class="btn sm" id="b-saveas" title="Guardar con otro nombre o en otra carpeta · Ctrl+Mayús+S">Guardar como…</button>
+    <input type="file" id="f-proj" accept=".json,application/json" hidden>
+  </div>
   <nav class="tabs" role="tablist">
     <button role="tab" data-view="p" aria-selected="true" id="tab-p">Pasadas</button>
     <button role="tab" data-view="r" aria-selected="false" id="tab-r">Resumen</button>
@@ -208,7 +225,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.3.2';
+const APP_VERSION='1.4.0';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -712,13 +729,14 @@ function computeSync(p,tr){
   return out;
 }
 async function ensureBg(b,onp){const k='bg'+b.id;if(loaded.includes(k)){await touchLoaded(k);return}
+  if(!b.file)throw new Error(`Vuelve a cargar el fichero de ruido de fondo «${b.name}» para reprocesar (el proyecto guarda los resultados, no las señales).`);
   const r=await call({cmd:'load',passId:k,file:b.file},onp);b.meta=r.meta;await touchLoaded(k);}
 async function ensureLoaded(p,onp){
   if(loaded.includes(p.id)){await touchLoaded(p.id);return}
   let r;
   if(p.synth)r=await call({cmd:'synth',passId:p.id,fs:48000,dur:120,tc:62,d:46.9,v:7*KN,depths:[20,40],start:{y:2026,mo:4,d:30,sec:12*3600+21*60+8,str:'30-abr.-26 12:21:08'}});
   else if(p.file)r=await call({cmd:'load',passId:p.id,file:p.file},onp);
-  else throw new Error('Carga primero el fichero de señal de esta pasada.');
+  else throw new Error(p.fileName?`Vuelve a cargar el fichero de señal «${p.fileName}» para reprocesar esta pasada (el proyecto guarda los resultados, no las señales).`:'Carga primero el fichero de señal de esta pasada.');
   applyMeta(p,r.meta);
   for(let i=0;i<p.chans.length;i++)if(p.chans[i].fs&&p.chans[i].fs!==r.meta[i].fs)await call({cmd:'setfs',passId:p.id,key:i,fs:p.chans[i].fs});
   await touchLoaded(p.id);
@@ -973,7 +991,7 @@ $('#ovl').addEventListener('click',e=>{if(e.target.id==='ovl')$('#ovl').hidden=t
    Lista lateral
    ===================================================================== */
 function sideLbl(s){return s==='PS'?'PS':'STB'}
-function renderList(){
+function renderList(){updateProj();
   const el=$('#plist');
   if(!passes.length){el.innerHTML='<div class="note">Sin pasadas. Añade una o usa la carga por lotes.</div>';return}
   el.innerHTML=passes.map(p=>{
@@ -1038,7 +1056,14 @@ function poolOpts(role,sel){const list=pool.filter(g=>g.role===role);
   return `<option value="">— sin fichero —</option>`+list.map(g=>`<option value="${g.id}" ${g.id===sel?'selected':''}>${esc(g.name)} · ${hmsStr(g.t0)}–${hmsStr(g.t1)}</option>`).join('')}
 function renderDetail(){
   const el=$('#detail');const p=cur();charts={};
-  if(!p){el.innerHTML=`<div class="empty">Añade una pasada con «+ Pasada» o crea varias con la carga por lotes.</div>`;return}
+  if(!p){el.innerHTML=`<div class="welcome"><h2>Proyecto vacío</h2>
+    <p>Cada pasada reúne los NMEA del barco y de la boya, la señal de los hidrófonos y, si quieres, un fichero de ruido de fondo. El proyecto se guarda en un fichero .json con los ajustes, los GPS y los resultados, y se vuelve a abrir tal cual.</p>
+    <ol><li>«+ Pasada» o «Carga por lotes» para crear las pasadas.</li><li>Carga GPS y señal, revisa canales y profundidades, y procesa.</li><li>«Guardar» para conservar el proyecto.</li></ol>
+    <div class="acts"><button class="btn pri" id="w-add">+ Pasada</button><button class="btn" id="w-batch">Carga por lotes</button><button class="btn" id="w-open">Abrir proyecto…</button><button class="btn" id="w-rest" hidden>Restaurar última sesión</button><button class="btn" id="w-ex">Ver un ejemplo</button></div></div>`;
+    $('#w-add').onclick=()=>$('#b-add').click();$('#w-batch').onclick=()=>{$('#batch').open=true;$('#bf-sig').focus()};$('#w-open').onclick=()=>openDialog();$('#w-ex').onclick=()=>loadExample();
+    idbGet().then(o=>{const b=$('#w-rest');if(!b||!o||!o.data)return;b.hidden=false;b.textContent=`Restaurar última sesión (${o.n} pasada${o.n===1?'':'s'} · ${new Date(o.t).toLocaleString('es-ES',{dateStyle:'short',timeStyle:'short'})})`;
+      b.onclick=()=>{try{loadProjectData(JSON.parse(o.data,reviver));proj.name=o.name||null;proj.handle=null;proj.savedSig='';updateProj();toast('Última sesión restaurada. Guárdala para conservarla en un fichero.')}catch(e){toast('No se pudo restaurar la sesión anterior')}}});
+    return}
   const g=p.gps;
   el.innerHTML=`
   <div class="phead">
@@ -1075,7 +1100,7 @@ function renderDetail(){
     <h2><span class="n">2</span>Señal de presión<span class="aside note">.mat v5/v7 · UNV 58/58b · WAV</span></h2>
     <div class="slot" data-drop="sig"><span class="lab">Fichero de los hidrófonos</span>
       <div class="row"><label class="btn sm">Elegir fichero…<input type="file" id="f-sig" accept=".mat,.unv,.uff,.wav"></label>
-      <span class="fname" id="sig-name">${p.synth?'Señal sintética de ejemplo (2 hidrófonos, 48 kHz, 120 s)':esc(p.fileName||'Ningún fichero. También puedes arrastrarlo aquí.')}</span></div>
+      <span class="fname" id="sig-name">${p.synth?'Señal sintética de ejemplo (2 hidrófonos, 48 kHz, 120 s)':p.fileName&&!p.file?esc(p.fileName)+' · no cargado (vuelve a cargarlo solo si quieres reprocesar)':esc(p.fileName||'Ningún fichero. También puedes arrastrarlo aquí.')}</span></div>
       <div class="prog" id="sigprog" hidden><i></i></div></div>
     <div class="slot" data-drop="bg"><span class="lab">Ruido de fondo</span>
       <div class="row"><select id="p-bgsrc" aria-label="Origen del ruido de fondo"><option value="">Tramo del propio registro (paso 3)</option>${bgPool.map(b=>`<option value="${b.id}" ${b.id===p.bgFile?'selected':''}>Fichero: ${esc(b.name)}</option>`).join('')}</select>
@@ -1133,7 +1158,7 @@ function bindDetail(p){
   on('f-hyd','change',e=>{if(e.target.files[0])gpsFile(e.target.files[0],'hyd')});
   const sigFile=async f=>{
     if(loaded.includes(p.id)){await call({cmd:'free',passId:p.id});loaded=loaded.filter(x=>x!==p.id)}
-    p.file=f;p.fileName=f.name;p.synth=false;p.err=null;p.meta=null;p.res=null;p.chans=[];
+    const same=f.name===p.fileName;p.file=f;p.fileName=f.name;p.synth=false;p.err=null;p.meta=null;if(!same){p.res=null;p.chans=[];}
     const g=guessFromName(f.name);if(fin(g.speed)&&!fin(p.speed))p.speed=g.speed;if(g.side)p.side=g.side;
     if(/^Pasada( \d+)?$/.test(p.name))p.name=f.name.replace(/\.[^.]+$/,'');
     $('#sig-name').textContent=f.name+' · leyendo…';$('#sigprog').hidden=false;
@@ -1453,14 +1478,107 @@ $$('.tabs button').forEach(b=>b.onclick=()=>{
 
 function exFixes(str){return str.split(';').map(r=>{const [h,la,lo]=r.split(',');const t=+h.slice(0,2)*3600+ +h.slice(2,4)*60+ +h.slice(4,6);
   const L=v=>{const x=parseFloat(v);const d=Math.floor(x/100);return d+(x-d*100)/60};return{t,lat:L(la),lon:-L(lo)}})}
-(async function init(){
+async function loadExample(){
   const s=addPool('EJEMPLO_GPS_barco_7kn.txt','ship',exFixes(EX_SHIP));
   const h=addPool('EJEMPLO_GPS_boya.txt','hyd',exFixes(EX_HYD));
   const p=newPass({name:'Ejemplo sintético · 7 kn',speed:7,side:'PS',ship:s.id,hyd:h.id,synth:true,fileName:'',
     chans:[{use:true,depth:20,factor:1,fs:48000},{use:true,depth:40,factor:1,fs:48000}],bg0:0,bg1:5});
   refreshGPS(p);passes.push(p);curId=p.id;renderList();renderDetail();
   await processPass(p,true);
-})();
+}
+
+/* =====================================================================
+   Proyecto: nuevo / abrir / guardar (.json) y sesión automática
+   ===================================================================== */
+const proj={handle:null,name:null,savedSig:null};
+const PFIELDS=['id','name','speed','side','ship','hyd','hydMode','hydLat','hydLon','dcpa','dcpaSrc','fileName','meta','chans','trim','bg0','bg1','bgFile','bgWhole','bgf0','bgf1','cpaMode','tcpa','syncMode','t0Manual','syncAdj','rcorr','view','synth','resKey'];
+function projSig(){try{return JSON.stringify([S,pool.map(g=>g.id),bgPool.map(b=>b.id),passes.map(p=>[PFIELDS.map(k=>k==='meta'?!!p.meta:p[k]),!!p.res])])}catch(e){return String(Math.random())}}
+function isDirty(){return passes.length>0&&proj.savedSig!==projSig()}
+let autoT=0,lastAuto='';
+function updateProj(){const el=$('#projName');if(!el)return;if(proj.savedSig==null)proj.savedSig=projSig();
+  el.innerHTML=`<b>${esc(proj.name||'Proyecto sin guardar')}</b>${isDirty()?' <span class="dirty">• cambios sin guardar</span>':''}`;
+  const sg=projSig();if(passes.length&&sg!==lastAuto){clearTimeout(autoT);autoT=setTimeout(()=>{lastAuto=sg;idbPut()},2500);}}
+function b64f(a){const u=new Uint8Array(a.buffer,a.byteOffset,a.byteLength);let s='';for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
+function f32b(b){const s=atob(b);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return new Float32Array(u.buffer)}
+const replacer=(k,v)=>(v instanceof Float32Array||v instanceof Float64Array)?{__f32:b64f(v instanceof Float32Array?v:Float32Array.from(v))}:v;
+const reviver=(k,v)=>v&&typeof v==='object'&&typeof v.__f32==='string'?f32b(v.__f32):v;
+function packRes(R){if(!R)return null;const o={...R};
+  const cut=(arr,df)=>arr?arr.map(a=>a.slice(0,Math.min(a.length,Math.ceil(Math.min(R.fs/2,Math.max(S.fmax*1.5,2000))/df)+2))):arr;
+  o.psd=cut(R.psd,R.df);o.psdBg=cut(R.psdBg,R.dfBg||R.df);if(R.sync){o.sync={...R.sync};delete o.sync.tr;}return o}
+function projectData(){
+  return{app:'procesador-urn',v:1,appVersion:APP_VERSION,savedAt:new Date().toISOString(),settings:S,template,curId,
+    pool:pool.map(g=>({id:g.id,name:g.name,role:g.role,pairHyd:g.pairHyd||null,fixes:g.fixes.map(f=>[f.t,f.lat,f.lon,fin(f.sog)?f.sog:null,fin(f.cog)?f.cog:null])})),
+    bgPool:bgPool.map(b=>({id:b.id,name:b.name,meta:b.meta})),
+    passes:passes.map(p=>{const o={};for(const k of PFIELDS)o[k]=p[k];o.res=packRes(p.res);return o})};
+}
+function projectJSON(){return JSON.stringify(projectData(),replacer)}
+async function freeAll(){for(const id of loaded){try{await call({cmd:'free',passId:id})}catch(e){}}loaded=[];}
+function loadProjectData(o){
+  if(!o||o.app!=='procesador-urn'||!Array.isArray(o.passes))throw new Error('formato');
+  freeAll();
+  S=Object.assign({},DEF,o.settings||{});if(S.lim!=='none'&&!LIMITS[S.lim])S.lim='R';S.showLim=S.lim!=='none';saveS();
+  if(o.template){template=o.template;LS.set('urn.template',template);}
+  pool=(o.pool||[]).map(g=>{const fixes=g.fixes.map(a=>({t:a[0],lat:a[1],lon:a[2],sog:a[3]??undefined,cog:a[4]??undefined}));const sog=fixes.filter(f=>fin(f.sog)).map(f=>f.sog).sort((a,b)=>a-b);
+    return{id:g.id,name:g.name,role:g.role,pairHyd:g.pairHyd,fixes,t0:fixes.length?fixes[0].t:0,t1:fixes.length?fixes[fixes.length-1].t:0,sog:sog.length?sog[Math.floor(sog.length/2)]:null,...guessFromName(g.name)}});
+  bgPool=(o.bgPool||[]).map(b=>({id:b.id,name:b.name,meta:b.meta||null,file:null}));
+  passes=o.passes.map(q=>{const p=newPass({});for(const k of PFIELDS)if(q[k]!==undefined)p[k]=q[k];p.id=q.id;p.file=null;p.res=q.res||null;p.busy=false;p.err=null;
+    const src=p.dcpaSrc;refreshGPS(p);if(src==='manual')p.dcpaSrc='manual';return p});
+  passes.forEach(p=>{if(p.res&&p.resKey==null)p.resKey=procKey(p)});
+  uid=Math.max(uid,1+Math.max(0,...pool.map(g=>g.id),...bgPool.map(b=>b.id),...passes.map(p=>p.id)));
+  curId=passes.some(p=>p.id===o.curId)?o.curId:(passes[0]?.id??null);sumSel=null;
+  renderList();renderDetail();if(!$('#view-r').hidden)renderSummary();if(!$('#view-a').hidden)renderSettings();
+}
+/* ficheros: selector de carpeta (Chrome/Edge) o descarga */
+const canPick=()=>typeof window.showSaveFilePicker==='function';
+async function writeHandle(h,data){
+  if(h.queryPermission&&(await h.queryPermission({mode:'readwrite'}))!=='granted'){if((await h.requestPermission({mode:'readwrite'}))!=='granted')throw new Error('denied')}
+  const w=await h.createWritable();await w.write(data);await w.close();}
+let dlNs;
+async function saveFile(name,data){
+  try{if(window.claude?.use){if(dlNs===undefined)dlNs=await window.claude.use('downloads').catch(()=>null);if(dlNs){await dlNs.save({filename:name,data});toast('Guardado: '+name);return true}}}catch(e){if(e&&e.code==='declined')return false}
+  try{const blob=new Blob([data],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('Descargado: '+name);return true}
+  catch(e){toast('Este visor no permite guardar ficheros: usa la versión de GitHub o la aplicación instalada');return false}
+}
+const p2=n=>String(n).padStart(2,'0');
+function stamp(){const d=new Date();return `${d.getFullYear()}${p2(d.getMonth()+1)}${p2(d.getDate())}-${p2(d.getHours())}${p2(d.getMinutes())}`}
+async function saveProject(as){
+  if(!passes.length){toast('No hay nada que guardar todavía');return}
+  let data;try{data=projectJSON()}catch(e){toast('No se pudo preparar el proyecto: '+e.message,5000);return}
+  const sig=projSig();
+  if(!as&&proj.handle){try{await writeHandle(proj.handle,data);proj.savedSig=sig;updateProj();toast('Guardado: '+proj.name);return}catch(e){}}
+  const name=proj.name||`proyecto-urn-${stamp()}.json`;
+  if(canPick()){try{const h=await window.showSaveFilePicker({suggestedName:name,types:[{description:'Proyecto URN',accept:{'application/json':['.json']}}]});
+      await writeHandle(h,data);proj.handle=h;proj.name=h.name;proj.savedSig=sig;updateProj();toast('Guardado: '+h.name);return}
+    catch(e){if(e&&e.name==='AbortError')return}}
+  if(await saveFile(name,data)){proj.name=name;proj.handle=null;proj.savedSig=sig;updateProj();}
+}
+function askConfirm(msg,ok){return new Promise(res=>{const b=$('#ovlbox');b.innerHTML=`<div class="ctool"><span class="t">${esc(msg)}</span></div><div class="ctool" style="justify-content:flex-end"><button class="btn sm" id="cf-no">Cancelar</button><button class="btn sm pri" id="cf-ok">${esc(ok)}</button></div>`;
+  $('#ovl').hidden=false;const done=v=>{$('#ovl').hidden=true;res(v)};$('#cf-no').onclick=()=>done(false);$('#cf-ok').onclick=()=>done(true);$('#cf-ok').focus();})}
+async function openProjectFile(file,handle){
+  if(isDirty()&&!(await askConfirm('Hay cambios sin guardar en el proyecto actual. ¿Abrir otro igualmente?','Abrir sin guardar')))return;
+  try{const o=JSON.parse(await file.text(),reviver);loadProjectData(o);proj.handle=handle||null;proj.name=file.name;proj.savedSig=projSig();updateProj();
+    const miss=passes.filter(p=>p.fileName&&!p.synth).length;toast(`Proyecto «${file.name}» abierto · ${passes.length} pasada${passes.length===1?'':'s'}${miss?'. Para reprocesar, vuelve a cargar las señales':''}`,5000);}
+  catch(e){toast(e.message==='formato'?'Ese fichero no es un proyecto del Procesador URN (.json)':'No se pudo abrir el proyecto: '+e.message,5000)}
+}
+async function openDialog(){
+  if(typeof window.showOpenFilePicker==='function'){try{const [h]=await window.showOpenFilePicker({types:[{description:'Proyecto URN',accept:{'application/json':['.json']}}]});await openProjectFile(await h.getFile(),h);return}catch(e){if(e&&e.name==='AbortError')return}}
+  $('#f-proj').value='';$('#f-proj').click();
+}
+async function newProject(){
+  if(isDirty()&&!(await askConfirm('Hay cambios sin guardar. ¿Empezar un proyecto nuevo y descartarlos?','Descartar y empezar')))return;
+  await freeAll();passes=[];pool=[];bgPool=[];curId=null;sumSel=null;proj.handle=null;proj.name=null;proj.savedSig=null;
+  renderList();renderDetail();if(!$('#view-r').hidden)renderSummary();toast('Proyecto nuevo');
+}
+$('#b-new').onclick=()=>newProject();$('#b-open').onclick=()=>openDialog();$('#b-save').onclick=()=>saveProject(false);$('#b-saveas').onclick=()=>saveProject(true);
+$('#f-proj').onchange=e=>{const f=e.target.files[0];if(f)openProjectFile(f,null)};
+document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey))return;const k=e.key.toLowerCase();
+  if(k==='s'){e.preventDefault();saveProject(e.shiftKey)}else if(k==='o'){e.preventDefault();openDialog()}});
+window.addEventListener('beforeunload',e=>{if(isDirty()){e.preventDefault();e.returnValue=''}});
+/* sesión automática en IndexedDB (solo este navegador) */
+function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open('procesador-urn',1);r.onupgradeneeded=()=>r.result.createObjectStore('s');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
+async function idbPut(){try{if(!passes.length)return;const data=projectJSON();const db=await idb();db.transaction('s','readwrite').objectStore('s').put({data,t:Date.now(),n:passes.length,name:proj.name},'last')}catch(e){}}
+async function idbGet(){try{const db=await idb();return await new Promise(res=>{const r=db.transaction('s').objectStore('s').get('last');r.onsuccess=()=>res(r.result||null);r.onerror=()=>res(null)})}catch(e){return null}}
+renderList();renderDetail();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ALLCH.forEach(c=>c.draw()));
 </script>
 

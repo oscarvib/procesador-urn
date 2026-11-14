@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.3.2**
+**Versión 1.4.0**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -41,6 +41,18 @@ En **Ajustes → Curva límite** se elige el criterio (DNV-GL RU-SHIP Pt.6 Ch.7 
 
 La curva elegida se dibuja en las gráficas y se usa para el margen mínimo y para las tablas.
 
+## Proyectos
+
+La herramienta se abre **en blanco**. Desde la cabecera:
+
+- **Nuevo** empieza un proyecto vacío.
+- **Abrir…** (Ctrl+O) carga un proyecto guardado.
+- **Guardar** (Ctrl+S) y **Guardar como…** (Ctrl+Mayús+S) escriben el proyecto en un fichero `.json`. En Chrome/Edge se elige carpeta y nombre, y luego «Guardar» sobrescribe el mismo fichero; en otros navegadores se descarga.
+
+El proyecto guarda los ajustes, las posiciones GPS, la configuración de cada pasada (canales, profundidades, sincronización, ventanas) y los **resultados** (tendencia y espectros). Al abrirlo se ven las gráficas, las tablas y el resumen sin volver a procesar. Las señales no se guardan, porque son ficheros muy grandes: para reprocesar una pasada se vuelve a cargar su UNV/.mat, y se conserva la configuración de canales.
+
+La cabecera avisa de los cambios sin guardar, y el navegador pide confirmación al cerrar. Además, la última sesión se guarda automáticamente en el navegador y se puede recuperar con «Restaurar última sesión».
+
 ## Varias pasadas
 
 - Carga por lotes de señales, GPS y ruido de fondo, con emparejamiento automático por hora, velocidad y costado.
@@ -49,12 +61,13 @@ La curva elegida se dibuja en las gráficas y se usa para el margen mínimo y pa
 
 ## Uso
 
-Abre `index.html` en un navegador actual (Chrome, Edge o Firefox) o usa la versión publicada en https://oscarvib.github.io/procesador-urn/. Desde Chrome o Edge se puede instalar como aplicación (icono de instalar en la barra de direcciones); una vez abierta con conexión, funciona también sin ella. Al abrirse carga un ejemplo **sintético**: una trayectoria GPS inventada y una señal simulada de dos hidrófonos.
+Abre `index.html` en un navegador actual (Chrome, Edge o Firefox) o usa la versión publicada en https://oscarvib.github.io/procesador-urn/. Desde Chrome o Edge se puede instalar como aplicación (icono de instalar en la barra de direcciones); una vez abierta con conexión, funciona también sin ella. Se abre en blanco; el botón «Ver un ejemplo» carga una pasada **sintética** (trayectoria GPS inventada y señal simulada de dos hidrófonos).
 
 Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `save("fichero.mat","recorded_data","-v7")`.
 
 ## Historial de versiones
 
+- **1.4.0**: arranque en blanco; proyectos Nuevo/Abrir/Guardar/Guardar como (.json con ajustes, GPS, pasadas y resultados), aviso de cambios sin guardar y restauración de la última sesión.
 - **1.3.2**: velocidad sobre el fondo (SOG, media en ±5 s a partir de las posiciones) en eje secundario de la gráfica de distancia.
 - **1.3.1**: el lector UNV acepta canales separados por un solo `-1` (antes solo leía el primer canal) y redondea la frecuencia de muestreo.
 - **1.3.0**: sincronización señal–GPS (hora de cabecera UNV/.mat, manual o ajuste automático), ventana centrada en el CPA del GPS, corrección r(t) por segmento, lectura UNV ASCII más rápida.
