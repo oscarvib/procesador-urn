@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.4.0**
+**Versión 1.4.1**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -67,6 +67,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.4.1**: las versiones nuevas se ven al recargar (sin esperar a la caché de GitHub Pages) y aviso cuando hay una versión nueva.
 - **1.4.0**: arranque en blanco; proyectos Nuevo/Abrir/Guardar/Guardar como (.json con ajustes, GPS, pasadas y resultados), aviso de cambios sin guardar y restauración de la última sesión.
 - **1.3.2**: velocidad sobre el fondo (SOG, media en ±5 s a partir de las posiciones) en eje secundario de la gráfica de distancia.
 - **1.3.1**: el lector UNV acepta canales separados por un solo `-1` (antes solo leía el primer canal) y redondea la frecuencia de muestreo.
