@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.4.2**
+**Versión 1.5.0**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -41,6 +41,19 @@ La curva se elige en el **Resumen**, en los resultados de cada pasada o en **Aju
 
 La curva elegida se dibuja en las gráficas y se usa para el margen mínimo y para las tablas.
 
+## Propagación: estimación de N
+
+La pestaña **Propagación (N)** estima, para la geometría de la medida, el N de `N·log10(r)` por tercio de octava:
+
+- **Entradas:** d_CPA, ventana DWL, calado (fuente a 0,7 × calado o la profundidad que indiques), profundidades de los hidrófonos (o «Tomar de la pasada»), fondo (sin fondo, o arcilla, limo, arena, grava, morrena, creta, caliza, basalto o personalizado, con su profundidad), altura de ola y paredes verticales (paralelas o perpendiculares a la derrota, con material o R).
+- **Modelo:** fuentes imagen en 3D. Superficie con coeficiente −1 atenuado por el oleaje, reflexiones superficie–fondo con el coeficiente de Rayleigh de un fondo fluido con pérdidas y paredes con R fijo. Suma coherente a 16 frecuencias por tercio y promedio de energía; TL referida al campo libre a 1 m.
+- **Resultados:**
+  - N en el CPA y **N efectivo en la DWL**, calculado con 15 posiciones del barco y la misma corrección r(t) que el procesado;
+  - aviso de la frecuencia por debajo de la cual domina el dipolo de superficie;
+  - mapa de TL o de N en la sección del CPA;
+  - planta y tabla.
+- **«Usar este N en el procesado»:** cada hidrófono usa la curva de su profundidad (también en la corrección r(t)), y se toma la profundidad de la fuente para r. En Ajustes se puede volver al N lineal.
+
 ## Proyectos
 
 La herramienta se abre **en blanco**. Desde la cabecera:
@@ -67,6 +80,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.5.0**: pestaña Propagación (N): modelo de fuentes imagen con superficie rugosa, fondo fluido (Rayleigh), paredes, N efectivo en la DWL, mapa de TL/N y aplicación del N por banda e hidrófono al procesado.
 - **1.4.2**: selector de curva límite también en el resumen y en los resultados de cada pasada (sincronizado con Ajustes).
 - **1.4.1**: las versiones nuevas se ven al recargar (sin esperar a la caché de GitHub Pages) y aviso cuando hay una versión nueva.
 - **1.4.0**: arranque en blanco; proyectos Nuevo/Abrir/Guardar/Guardar como (.json con ajustes, GPS, pasadas y resultados), aviso de cambios sin guardar y restauración de la última sesión.

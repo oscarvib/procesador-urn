@@ -28,7 +28,7 @@ body{margin:0}
   --c-plotbg:#ffffff; --c-ink:#122028; --c-ink2:#5b6b75; --c-grid:#e4eaed; --c-grid2:#f1f4f6;
   --c-urn:#1d4ed8; --c-urnN:#b9c1c8; --c-bg:#6d63c4; --c-bgN:#d3cff3; --c-lim:#c81e1e; --c-lim2:#122028;
   --c-fit:#d62828; --c-raw:#3b82b8; --c-dwl:rgba(226,184,30,.28); --c-fondo:rgba(109,99,196,.14); --c-cpa:#119a52; --c-track:#1d4ed8;
-  --c-series:#1d4ed8,#d1495b,#16857a,#d18f1b,#7c4dd1,#3d7f2f,#c2410c,#0e7490,#a21caf,#475569;
+  --c-series:#1d4ed8,#d1495b,#16857a,#d18f1b,#7c4dd1,#3d7f2f,#c2410c,#0e7490,#a21caf,#475569; --c-sed:#c8b48c; --c-sedline:#8a7350; --c-wall:#3b4a52;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0c1418; --panel:#131f26; --panel2:#18262e; --ink:#dae5ea; --ink2:#93a6b0; --line:#25363f;
@@ -37,7 +37,7 @@ body{margin:0}
   --c-plotbg:#131f26; --c-ink:#dae5ea; --c-ink2:#93a6b0; --c-grid:#22333c; --c-grid2:#1a2a32;
   --c-urn:#7ea6ff; --c-urnN:#3e4c56; --c-bg:#a99ef5; --c-bgN:#38345d; --c-lim:#ff6f6f; --c-lim2:#dae5ea;
   --c-fit:#ff6b6b; --c-raw:#6aaedc; --c-dwl:rgba(240,200,60,.22); --c-fondo:rgba(169,158,245,.16); --c-cpa:#4fd38c; --c-track:#7ea6ff;
-  --c-series:#7ea6ff,#ff8a9a,#5fd3c4,#f2c26b,#b39bff,#8fd16f,#ff9a5c,#5cc8e6,#e58bf0,#b8c4d2;
+  --c-series:#7ea6ff,#ff8a9a,#5fd3c4,#f2c26b,#b39bff,#8fd16f,#ff9a5c,#5cc8e6,#e58bf0,#b8c4d2; --c-sed:#5c4f38; --c-sedline:#a08a62; --c-wall:#b8c6cc;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0c1418; --panel:#131f26; --panel2:#18262e; --ink:#dae5ea; --ink2:#93a6b0; --line:#25363f;
@@ -46,7 +46,7 @@ body{margin:0}
   --c-plotbg:#131f26; --c-ink:#dae5ea; --c-ink2:#93a6b0; --c-grid:#22333c; --c-grid2:#1a2a32;
   --c-urn:#7ea6ff; --c-urnN:#3e4c56; --c-bg:#a99ef5; --c-bgN:#38345d; --c-lim:#ff6f6f; --c-lim2:#dae5ea;
   --c-fit:#ff6b6b; --c-raw:#6aaedc; --c-dwl:rgba(240,200,60,.22); --c-fondo:rgba(169,158,245,.16); --c-cpa:#4fd38c; --c-track:#7ea6ff;
-  --c-series:#7ea6ff,#ff8a9a,#5fd3c4,#f2c26b,#b39bff,#8fd16f,#ff9a5c,#5cc8e6,#e58bf0,#b8c4d2;
+  --c-series:#7ea6ff,#ff8a9a,#5fd3c4,#f2c26b,#b39bff,#8fd16f,#ff9a5c,#5cc8e6,#e58bf0,#b8c4d2; --c-sed:#5c4f38; --c-sedline:#a08a62; --c-wall:#b8c6cc;
   color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45}
@@ -60,11 +60,25 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .brand .ver{font:600 12px var(--f-mono);letter-spacing:0;color:var(--ink2);background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:1px 7px;align-self:center}
 .brand .mark{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);position:relative;top:1px}
 .brand .mark::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
-.tabs{display:flex;gap:4px;margin-left:auto}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin-left:auto}
 .projbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
 .projbar .proj{font-size:13px;color:var(--ink2);max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .projbar .proj b{color:var(--ink);font-weight:600}
 .projbar .dirty{color:var(--warn);font-weight:600}
+.view-n{display:grid;grid-template-columns:360px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:1000px){.view-n{grid-template-columns:minmax(0,1fr)}}
+.nform{display:flex;flex-direction:column;gap:12px}
+.nform .blk{gap:10px;padding:12px 14px}
+.nform .grid-f{gap:10px 14px}
+.nform input[type=number]{width:84px}
+.wall{display:grid;grid-template-columns:1fr auto;gap:6px 8px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel2)}
+.wall .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.wall select{max-width:100%}
+.nchips{display:flex;flex-wrap:wrap;gap:8px}
+.mapwrap{position:relative;height:420px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--c-plotbg)}
+.mapwrap canvas{display:block}
+.plan{border:1px solid var(--line);border-radius:8px;background:var(--c-plotbg);max-width:100%;height:auto;display:block}
+.nstat{font-size:13px;color:var(--ink2);display:flex;gap:8px;align-items:center}
 .welcome{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:28px 24px;display:flex;flex-direction:column;gap:14px;max-width:760px}
 .welcome h2{font:700 24px var(--f-disp);margin:0;color:var(--ink)}
 .welcome p{margin:0;color:var(--ink2);max-width:64ch}
@@ -172,7 +186,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.4.2</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.5.0</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <div class="projbar">
     <span class="proj" id="projName" title="Proyecto actual"></span>
     <button class="btn sm" id="b-new" title="Empezar un proyecto vacío">Nuevo</button>
@@ -184,6 +198,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
   <nav class="tabs" role="tablist">
     <button role="tab" data-view="p" aria-selected="true" id="tab-p">Pasadas</button>
     <button role="tab" data-view="r" aria-selected="false" id="tab-r">Resumen</button>
+    <button role="tab" data-view="n" aria-selected="false" id="tab-n">Propagación (N)</button>
     <button role="tab" data-view="a" aria-selected="false" id="tab-a">Ajustes</button>
   </nav>
 </header>
@@ -217,6 +232,11 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
     <div class="detail" id="summary"></div>
   </section>
 
+  <section id="view-n" class="view-n" hidden>
+    <div class="nform" id="nform"></div>
+    <div class="detail" id="nres"></div>
+  </section>
+
   <section id="view-a" hidden>
     <div class="sets" id="settings"></div>
   </section>
@@ -226,7 +246,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.4.2';
+const APP_VERSION='1.5.0';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -482,11 +502,11 @@ function wsetup(n){if(WCache[n])return WCache[n];const lg=Math.round(Math.log2(n
 function fft(re,im,W){const n=W.n,rev=W.rev;for(let i=0;i<n;i++){const j=rev[i];if(j>i){let t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t}}
   for(let size=2;size<=n;size<<=1){const half=size>>1,step=n/size;for(let i=0;i<n;i+=size){for(let j=0,k=0;j<half;j++,k+=step){const a=i+j,b=a+half;const wr=W.cs[k],wi=W.sn[k];const tr=re[b]*wr-im[b]*wi,ti=re[b]*wi+im[b]*wr;re[b]=re[a]-tr;im[b]=im[a]-ti;re[a]+=tr;im[a]+=ti}}}}
 function welch(d,start,len,f,fs,W,geo){const n=W.n,step=n>>1;const nseg=Math.floor((len-n)/step)+1;const P=new Float64Array(n/2+1);const re=W.re,im=W.im,w=W.w;
-  let wk=null,kc=0,rmin=Infinity,rmax=0;if(geo){wk=new Float64Array(n/2+1);kc=Math.min(n/2,Math.ceil(geo.f2*n/fs));}
+  let wk=null,rmin=Infinity,rmax=0;if(geo){wk=new Float64Array(n/2+1);}
   for(let s=0;s<nseg;s++){const o=start+s*step;let mean=0;for(let i=0;i<n;i++)mean+=d[o+i];mean/=n;
     for(let i=0;i<n;i++){re[i]=(d[o+i]-mean)*w[i];im[i]=0}fft(re,im,W);
     if(geo){const r=geo.r((o+n/2-geo.i0)/fs);if(r<rmin)rmin=r;if(r>rmax)rmax=r;const lr=Math.log(r)/10;
-      for(let k=0;k<=kc;k++)wk[k]=Math.exp(geo.Nk[k]*lr);const wc=Math.exp(geo.N2*lr);for(let k=kc+1;k<=n/2;k++)wk[k]=wc;
+      for(let k=0;k<=n/2;k++)wk[k]=Math.exp(geo.Nk[k]*lr);
       for(let k=0;k<=n/2;k++)P[k]+=(re[k]*re[k]+im[k]*im[k])*wk[k];}
     else for(let k=0;k<=n/2;k++)P[k]+=re[k]*re[k]+im[k]*im[k];}
   const sc=f*f/(fs*W.s2*nseg);const out=new Float32Array(n/2+1);for(let k=0;k<=n/2;k++){let v=P[k]*sc;if(k>0&&k<n/2)v*=2;out[k]=v}return{p:out,nseg,rmin,rmax}}
@@ -514,10 +534,12 @@ function processPass(m){
   if(s1-s0<nfft)throw new Error('La ventana DWL es demasiado corta: revisa la velocidad, la DWL o el CPA.');
   const W=wsetup(nfft);
   let geoF=null;
-  if(m.geo){const g=m.geo,tt=g.tt,dh=g.dh,n=W.n;const Nk=new Float64Array(n/2+1);
-    for(let k=0;k<=n/2;k++){const f=k*fs/n;Nk[k]=f<=g.f1?g.N1:(f>=g.f2?g.N2:g.N1+(g.N2-g.N1)*(f-g.f1)/(g.f2-g.f1));}
+  if(m.geo){const g=m.geo,tt=g.tt,dh=g.dh,n=W.n;
+    const lgf=g.gf.map(Math.log);
+    const mkNk=gN=>{const Nk=new Float64Array(n/2+1);let j=0;for(let k=0;k<=n/2;k++){const lf=Math.log(Math.max(k*fs/n,g.gf[0]));while(j<lgf.length-2&&lgf[j+1]<lf)j++;const t=Math.min(1,Math.max(0,(lf-lgf[j])/(lgf[j+1]-lgf[j])));Nk[k]=gN[j]+(gN[j+1]-gN[j])*t;}return Nk};
+    const Nks=g.Ng.map(mkNk);
     const dAt=t=>{if(t<=tt[0])return dh[0];const L=tt.length-1;if(t>=tt[L])return dh[L];let a=0,b=L;while(b-a>1){const mm=(a+b)>>1;if(tt[mm]<=t)a=mm;else b=mm}return dh[a]+(dh[b]-dh[a])*(t-tt[a])/(tt[b]-tt[a])};
-    geoF=i=>({i0,Nk,N2:g.N2,f2:g.f2,r:t=>Math.max(1,Math.hypot(dAt(t),g.dz[i]))});
+    geoF=i=>({i0,Nk:Nks[i],r:t=>Math.max(1,Math.hypot(dAt(t),g.dz[i]))});
     if(tini<tt[0]||tfin>tt[tt.length-1])warn.push('Parte de la ventana DWL queda fuera del GPS: allí se usa la distancia del extremo más cercano.');}
   const ps=C.map((x,i)=>welch(x.c.data,i0+s0,s1-s0,x.f,fs,W,geoF?geoF(i):null));
   let pb=null,dfBg=fs/nfft,bgInfo=null;
@@ -565,9 +587,9 @@ const log10=Math.log10;
 /* =====================================================================
    Ajustes
    ===================================================================== */
-const DEF={dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
+const DEF={Nmode:'lin',Nmodel:null,prop:{dcpa:50,L:90,draft:3,zsAuto:true,zs:2.1,hyds:'20, 40',bottom:'sand',H:100,cb:1650,rhob:1.9,ab:0.8,Hs:0.5,walls:[],mapFc:50.8,mapMode:'TL',rcorr:true,fmax:10000},dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
   showLim:true,lim:'R',tzMode:'madrid',tzH:2,lang:'en',fmin:10,fmax:50000,ymin:50,ymax:170,symin:100,symax:160,snr:3,bg0:0,bg1:5,keep:2,depth0:40};
-let S=Object.assign({},DEF,LS.get('urn.settings',{}));
+let S=Object.assign({},DEF,LS.get('urn.settings',{}));S.prop=Object.assign({},DEF.prop,S.prop||{});
 if(!LS.get('urn.settings',{}).lim)S.lim=S.showLim===false?'none':'R';
 S.showLim=S.lim!=='none';
 const saveS=()=>LS.set('urn.settings',S);
@@ -750,7 +772,7 @@ function dwlLen(p){if(S.dwlMode==='deg'&&fin(p.dcpa))return 2*p.dcpa*Math.tan(S.
 function vKn(p){return fin(p.speed)&&p.speed>0?p.speed:(p.gps&&fin(p.gps.sog)?p.gps.sog:null)}
 function nfftFor(fs){return 2**Math.max(8,Math.round(Math.log2(fs/S.dfT)))}
 function procKey(p){const sel=p.chans.map((c,i)=>c.use?i+':'+c.factor+':'+c.fs+(p.bgFile?':'+c.bgCh:''):'').join(',');
-  return JSON.stringify([sel,p.bgFile,p.bgFile?[p.bgWhole,p.bgf0,p.bgf1]:0,p.trim,p.bg0,p.bg1,p.cpaMode,p.cpaMode==='manual'?p.tcpa:0,p.syncMode,p.syncMode==='manual'?p.t0Manual:0,p.syncAdj,p.rcorr,S.tzMode,S.tzH,S.zs,S.N1,S.N2,S.f1,S.f2,p.gps&&!p.gps.err?[p.gps.tcpa,p.gps.dcpa]:0,vKn(p),dwlLen(p).toFixed(2),S.block,S.trendWin,S.hp,S.dfT]);}
+  return JSON.stringify([sel,p.bgFile,p.bgFile?[p.bgWhole,p.bgf0,p.bgf1]:0,p.trim,p.bg0,p.bg1,p.cpaMode,p.cpaMode==='manual'?p.tcpa:0,p.syncMode,p.syncMode==='manual'?p.t0Manual:0,p.syncAdj,p.rcorr,S.tzMode,S.tzH,S.zs,JSON.stringify(nKey()),p.gps&&!p.gps.err?[p.gps.tcpa,p.gps.dcpa]:0,vKn(p),dwlLen(p).toFixed(2),S.block,S.trendWin,S.hp,S.dfT]);}
 async function processPass(p,quiet){
   p.err=null;p.busy=true;renderList();if(p.id===curId)updProcState();
   try{
@@ -770,7 +792,7 @@ async function processPass(p,quiet){
       if(synced){const tc=p.gps.tcpa-sy.t0;if(tc>=0&&tc<=sy.tr.dur){msg.cpaMode='manual';msg.tcpa=tc;}
         else{msg.cpaMode='auto';extra.push(`El CPA del GPS (${hmsStr(p.gps.tcpa)} UTC) cae fuera del registro: se centra la ventana en el máximo acústico.`);}}
       else{msg.cpaMode='auto';extra.push('Sin sincronización con el GPS: la ventana se centra en el máximo acústico.');}}
-    if(synced&&p.rcorr){const pr=p.gps.pr;msg.geo={tt:pr.map(q=>q.t-sy.t0),dh:pr.map(q=>q.d),dz:sel.map(c=>(+p.chans[c.key].depth||0)-S.zs),N1:S.N1,f1:S.f1,N2:S.N2,f2:S.f2};}
+    if(synced&&p.rcorr){const pr=p.gps.pr;msg.geo={tt:pr.map(q=>q.t-sy.t0),dh:pr.map(q=>q.d),dz:sel.map(c=>(+p.chans[c.key].depth||0)-S.zs)};const gf=[];for(let i=0;i<256;i++)gf.push(10**(log10(fs/2)*i/255));msg.geo.gf=gf;msg.geo.Ng=sel.map(c=>gf.map(f=>Nf(f,+p.chans[c.key].depth||0)));}
     const r=await run(msg);
     p.res=r.res;p.res.warn=[...(sy?sy.warn:[]),...extra,...p.res.warn];p.res.sync=sy;p.res.cpaSrc=msg.cpaMode==='manual'&&p.cpaMode==='gps'?'gps':(msg.cpaMode==='auto'?'acoustic':'manual');
     {let im=0;for(let k=1;k<p.res.nb;k++)if(p.res.trend[k]>p.res.trend[im])im=k;p.res.tpeak=im*p.res.dt;}
@@ -781,7 +803,12 @@ async function processPass(p,quiet){
 }
 
 const BANDS=[];for(let k=1;k<=47;k++){const fc=2**(k/3),lo=fc/2**(1/6);BANDS.push({fc,lo,hi:lo*2**(1/3)})}
-const Nf=f=>f<=S.f1?S.N1:(f>=S.f2?S.N2:S.N1+(S.N2-S.N1)*(f-S.f1)/(S.f2-S.f1));
+function nInterp(fc,N,f){const n=fc.length;if(!n)return 20;if(f<=fc[0])return N[0];if(f>=fc[n-1])return N[n-1];let a=0,b=n-1;while(b-a>1){const m=(a+b)>>1;if(fc[m]<=f)a=m;else b=m}const t=(Math.log(f)-Math.log(fc[a]))/(Math.log(fc[b])-Math.log(fc[a]));return N[a]+(N[b]-N[a])*t}
+function Nf(f,z){
+  const M=S.Nmode==='model'?S.Nmodel:null;
+  if(M&&M.rows&&M.rows.length){let row=M.rows[0];if(fin(z)){let best=Infinity;for(const r of M.rows){const d=Math.abs(r.z-z);if(d<best){best=d;row=r}}}return nInterp(M.fc,row.N,f)}
+  return f<=S.f1?S.N1:(f>=S.f2?S.N2:S.N1+(S.N2-S.N1)*(f-S.f1)/(S.f2-S.f1));}
+function nKey(){return S.Nmode==='model'&&S.Nmodel?['m',S.Nmodel.id]:['l',S.N1,S.N2,S.f1,S.f2]}
 /* Curvas límite DNV-GL RU-SHIP Pt.6 Ch.7 Sec.6 (Silent), tabla 2 · dB re 1 µPa @ 1 m en tercios de octava */
 const lg=log10,kHz=f=>f/1000;
 const LIMITS={
@@ -823,8 +850,8 @@ function levels(p){
   const ch=R.keys.map(k=>p.chans[k]||{depth:S.depth0});
   const r=ch.map(c=>Math.sqrt(p.dcpa**2+((+c.depth||0)-S.zs)**2));const rS=R.rcorr?r.map(()=>1):r;
   const rows=BANDS.filter(b=>b.hi<=R.fs/2).map(b=>{
-    const N=Nf(b.fc);const sl=R.psd.map((ps,i)=>{const e=bandSum(ps,R.df,b);return e>0?10*log10(e)+120+N*log10(rS[i]):NaN});
-    const bg=R.psdBg?R.psdBg.map((ps,i)=>{const e=bandSum(ps,R.dfBg||R.df,b);return e>0?10*log10(e)+120+N*log10(r[i]):NaN}):null;
+    const Ns=ch.map(c=>Nf(b.fc,+c.depth||0)),N=Ns.reduce((a,v)=>a+v,0)/Ns.length;const sl=R.psd.map((ps,i)=>{const e=bandSum(ps,R.df,b);return e>0?10*log10(e)+120+Ns[i]*log10(rS[i]):NaN});
+    const bg=R.psdBg?R.psdBg.map((ps,i)=>{const e=bandSum(ps,R.dfBg||R.df,b);return e>0?10*log10(e)+120+Ns[i]*log10(r[i]):NaN}):null;
     const sa=eavg(sl),ba=bg?eavg(bg):NaN;return{...b,N,sl,bg,sa,ba,snr:sa-ba,lim:limVal(b.fc)};});
   const inR=rows.filter(b=>b.fc>=S.fmin&&b.fc<=S.fmax&&fin(b.sa));
   const tot=inR.length?10*log10(inR.reduce((s,b)=>s+10**(b.sa/10),0)):NaN;
@@ -837,7 +864,7 @@ function narrow(p,view,bg){
   const R=p.res,L=levels(p);if(!L)return null;const src=bg?R.psdBg:R.psd;if(!src)return null;
   const n=src[0].length,x=new Float32Array(n-1),y=new Float32Array(n-1);
   const idx=view==='avg'?src.map((_,i)=>i):[+view];
-  for(let k=1;k<n;k++){const f=k*(bg?(R.dfBg||R.df):R.df);x[k-1]=f;const N=Nf(f);let s=0;for(const i of idx){s+=10**((10*log10(src[i][k]||1e-30)+120+N*log10((bg?L.r:L.rS)[i]))/10)}y[k-1]=10*log10(s/idx.length);}
+  for(let k=1;k<n;k++){const f=k*(bg?(R.dfBg||R.df):R.df);x[k-1]=f;let s=0;for(const i of idx){const N=Nf(f,+L.ch[i].depth||0);s+=10**((10*log10(src[i][k]||1e-30)+120+N*log10((bg?L.r:L.rS)[i]))/10)}y[k-1]=10*log10(s/idx.length);}
   return{x,y};
 }
 function stale(p){return p.res&&p.resKey!==procKey(p)}
@@ -1119,7 +1146,7 @@ function renderDetail(){
   <section class="blk" id="sec-proc">
     <h2><span class="n">3</span>Procesado</h2>
     <div class="grid-f">
-      <label class="fld">d<sub>CPA</sub> horizontal<span class="in"><input type="number" id="p-dcpa" step="0.1" min="0" value="${fin(p.dcpa)?p.dcpa:''}"><span class="unit">m</span>
+      <label class="fld"><span>d<sub>CPA</sub> horizontal</span><span class="in"><input type="number" id="p-dcpa" step="0.1" min="0" value="${fin(p.dcpa)?p.dcpa:''}"><span class="unit">m</span>
         <button class="btn sm" id="p-dcpa-gps" ${p.gps&&!p.gps.err&&p.dcpaSrc!=='gps'?'':'hidden'}>Usar GPS</button></span></label>
       <label class="fld">Recorte inicial<span class="in"><input type="number" id="p-trim" step="1" min="0" value="${p.trim}"><span class="unit">s</span></span></label>
       ${p.bgFile?`<label class="fld">Fondo (fichero aparte)<span class="in"><label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="p-bgwhole" ${p.bgWhole?'checked':''}>Fichero completo</label></span></label>
@@ -1431,12 +1458,13 @@ function renderSettings(){
     ${num('snr','Umbral S/N para avisar','dB','0.5','0')}
   </div><div class="note">Welch con ventana Hann y 50 % de solape; nfft potencia de 2 más cercana a f<sub>s</sub>/Δf (con 200 kHz y 1 Hz: 262 144, Δf = 0,76 Hz).</div></section>
   <section class="blk"><h2>Propagación (N·log<sub>10</sub> r)</h2><div class="form2">
+    <label for="s-Nmode">Origen de N</label><span class="in"><select id="s-Nmode" data-s="Nmode"><option value="lin" ${S.Nmode!=='model'?'selected':''}>Lineal N₁ → N₂</option><option value="model" ${S.Nmode==='model'?'selected':''} ${S.Nmodel?'':'disabled'}>Modelo (pestaña Propagación)</option></select></span>
     ${num('N1','N en baja frecuencia','','0.5')}
     ${num('f1','hasta','Hz','1','0')}
     ${num('N2','N en alta frecuencia','','0.5')}
     ${num('f2','desde','Hz','1','0')}
     ${num('zs','Profundidad de la fuente (z<sub>s</sub>)','m','0.1')}
-  </div><div class="note">Entre f₁ y f₂, N varía linealmente. Pon N₁ = N₂ = 20 para propagación esférica pura.</div></section>
+  </div><div class="note">${S.Nmode==='model'&&S.Nmodel?`Se usa el N del modelo: ${esc(S.Nmodel.desc)}. Cada hidrófono usa la curva de su profundidad más cercana. N₁/N₂ no se aplican.`:'Entre f₁ y f₂, N varía linealmente. Pon N₁ = N₂ = 20 para propagación esférica pura. En la pestaña Propagación puedes estimar N por tercio de octava para tu geometría.'}</div></section>
   <section class="blk" style="grid-column:1/-1"><h2>Curva límite</h2><div class="form2">
     <label for="s-lim">Criterio de cumplimiento</label><span class="in"><select id="s-lim" data-s="lim">
       ${limOpts()}
@@ -1470,8 +1498,316 @@ DWL = L  ó  2·d_CPA·tan(θ)       COMEX = t_CPA·v     FINEX = (t_fin − t_C
   </section>`;
   el.querySelectorAll('[data-s]').forEach(i=>i.addEventListener('change',()=>{const k=i.dataset.s;
     S[k]=i.type==='checkbox'?i.checked:(i.tagName==='SELECT'&&isNaN(+i.value)?i.value:(parseFloat(i.value)));if(i.tagName==='SELECT'&&k==='dfT')S[k]=+i.value;
-    if(i.type==='number'&&!fin(S[k]))S[k]=DEF[k];if(k==='lim'){S.showLim=S.lim!=='none';saveS();renderSettings();renderList();return}saveS();renderList();}));
-  $('#s-reset').onclick=()=>{S=Object.assign({},DEF);S.showLim=true;saveS();renderSettings();renderList();toast('Ajustes restablecidos')};
+    if(i.type==='number'&&!fin(S[k]))S[k]=DEF[k];if(k==='lim'){S.showLim=S.lim!=='none';saveS();renderSettings();renderList();return}if(k==='Nmode'){saveS();renderSettings();renderList();return}saveS();renderList();}));
+  $('#s-reset').onclick=()=>{S=Object.assign({},DEF);S.prop=Object.assign({},DEF.prop);S.showLim=true;saveS();renderSettings();renderList();toast('Ajustes restablecidos')};
+}
+
+/* =====================================================================
+   Propagación: estimación de N en N·log10(r) con un modelo de imágenes
+   (superficie con oleaje, fondo fluido con reflexión de Rayleigh y
+   paredes verticales), promediado en tercios de octava y en la DWL.
+   ===================================================================== */
+const MODEL_SRC=String.raw`
+'use strict';
+function csqrt(x,y){const r=Math.hypot(x,y);let re=Math.sqrt(Math.max(0,(r+x)/2)),im=Math.sqrt(Math.max(0,(r-x)/2));if(y<0)im=-im;if(im<0){re=-re;im=-im}return[re,im]}
+/* coeficiente de reflexión del fondo (fluido con pérdidas), ángulo rasante con seno s y coseno c */
+function Rb(B,s,c){const n2r=B.nr*B.nr-B.ni*B.ni-c*c,n2i=2*B.nr*B.ni;const q=csqrt(n2r,n2i);
+  const ar=B.m*s-q[0],ai=-q[1],br=B.m*s+q[0],bi=q[1];const d=br*br+bi*bi;return[(ar*br+ai*bi)/d,(ai*br-ar*bi)/d]}
+function prep(e){const B=e.bottom?{m:e.bottom.rho,nr:e.cw/e.bottom.c,ni:(e.cw/e.bottom.c)*(e.bottom.a/54.575)}:null;return{H:e.bottom?e.H:Infinity,B,sig:e.sig,walls:e.walls||[],cw:e.cw}}
+/* fuentes imagen en horizontal por paredes verticales (1.er orden y esquina) */
+function hImages(src,env){const L=[{x:src.x,y:src.y,c:1}];const ws=env.walls;
+  for(const w of ws)L.push(w.t==='y'?{x:src.x,y:2*w.pos-src.y,c:w.R}:{x:2*w.pos-src.x,y:src.y,c:w.R});
+  for(let i=0;i<ws.length;i++)for(let j=i+1;j<ws.length;j++){const a=ws[i],b=ws[j];if(a.t===b.t)continue;const wy=a.t==='y'?a:b,wx=a.t==='x'?a:b;L.push({x:2*wx.pos-src.x,y:2*wy.pos-src.y,c:a.R*b.R})}
+  return L}
+/* trayectos (imágenes) de fuente a receptor: [R, sen(rasante), Re(coef), Im(coef), nº reflexiones en superficie] */
+function paths(rx,ry,rz,src,env){
+  const out=[];const H=env.H;
+  for(const h of hImages(src,env)){const rho=Math.hypot(rx-h.x,ry-h.y);
+    const add=(zp,s,b)=>{const Z=rz-zp;const R=Math.hypot(rho,Z);if(R<1e-6)return 0;const sn=Math.abs(Z)/R,cs=rho/R;let ar=h.c,ai=0;
+      if(b>0){const rb=Rb(env.B,sn,cs);const mag=Math.pow(Math.hypot(rb[0],rb[1]),b),ang=Math.atan2(rb[1],rb[0])*b;ar=h.c*mag*Math.cos(ang);ai=h.c*mag*Math.sin(ang)}
+      out.push(R,sn,ar,ai,s);return Math.hypot(ar,ai)/R};
+    add(src.z,0,0);add(-src.z,1,0);
+    if(isFinite(H)&&env.B){const ref=1/Math.max(1,Math.hypot(rho,rz-src.z));let quiet=0;
+      for(let n=1;n<=800;n++){const mx=Math.max(add(2*n*H+src.z,n,n),add(-2*n*H+src.z,n,n),add(2*n*H-src.z,n-1,n),add(-2*n*H-src.z,n+1,n));
+        if(mx<2e-5*ref){if(++quiet>=3)break}else quiet=0}}
+  }
+  return Float64Array.from(out);
+}
+/* |p|² para un número de onda k (p normalizada: campo libre = 1/R) */
+function press2(P,k,sig){let re=0,im=0;const ks=k*sig;
+  for(let i=0;i<P.length;i+=5){const R=P[i],s=P[i+4];let a=1/R;if(s>0){const g=Math.exp(-2*s*Math.pow(ks*P[i+1],2));a*=(s%2?-g:g)}
+    const ph=k*R,c=Math.cos(ph),sv=Math.sin(ph),ar=P[i+2]*a,ai=P[i+3]*a;re+=ar*c-ai*sv;im+=ar*sv+ai*c}
+  return re*re+im*im}
+function bandE(P,b,nf,cw,sig){let e=0;for(let j=0;j<nf;j++){const f=b.lo*Math.pow(b.hi/b.lo,(j+0.5)/nf);e+=press2(P,2*Math.PI*f/cw,sig)}return e/nf}
+self.onmessage=e=>{const m=e.data;try{
+  const env=prep(m.env);
+  if(m.cmd==='bands'){
+    const g=m.geo,warn=[];let xs=[];const np=g.L>0?g.npos:1;for(let i=0;i<np;i++)xs.push(np>1?-g.L/2+i*g.L/(np-1):0);
+    for(const w of env.walls)if(w.t==='x'){if(Math.abs(w.pos)<1e-6)throw new Error('Una pared perpendicular no puede pasar por el CPA.');const n0=xs.length;xs=xs.filter(x=>w.pos>0?x<w.pos:x>w.pos);if(xs.length<n0)warn.push('Una pared perpendicular corta la ventana DWL: solo se usan las posiciones del barco antes de la pared.');}
+    if(!xs.some(x=>x===0))xs.push(0);xs.sort((a,b)=>a-b);
+    const rows=[];let done=0;const tot=g.hyds.length*xs.length;
+    for(const zr of g.hyds){
+      const Ps=xs.map(x=>{const P=paths(0,0,zr,{x,y:g.dcpa,z:g.zs},env);done++;self.postMessage({id:m.id,progress:0.3*done/tot});return P});
+      const rr=xs.map(x=>Math.hypot(x,g.dcpa,zr-g.zs)),i0=xs.indexOf(0),r0=rr[i0];
+      const row={z:zr,r0,TL:[],Ncpa:[],Nwin:[],TLwin:[]};
+      m.bands.forEach((b,ib)=>{
+        const E=Ps.map(P=>bandE(P,b,m.nf,env.cw,env.sig));
+        const TL0=-10*Math.log10(E[i0]);row.TL.push(TL0);row.Ncpa.push(TL0/Math.log10(r0));
+        const Em=E.reduce((a,v)=>a+v,0)/E.length;row.TLwin.push(-10*Math.log10(Em));
+        let N;
+        if(m.rcorr&&xs.length>1){const gN=N=>Math.log(E.reduce((a,v,i)=>a+v*Math.pow(rr[i],N/10),0)/E.length);let lo=-20,hi=100;
+          if(gN(lo)>0)N=lo;else if(gN(hi)<0)N=hi;else{for(let it=0;it<50;it++){const md=(lo+hi)/2;if(gN(md)>0)hi=md;else lo=md}N=(lo+hi)/2}}
+        else N=-10*Math.log10(Em)/Math.log10(r0);
+        row.Nwin.push(N);
+      });
+      rows.push(row);
+    }
+    self.postMessage({id:m.id,ok:true,rows,xs,warn});
+  }else if(m.cmd==='map'){
+    const nx=m.nx,nz=m.nz,TL=new Float32Array(nx*nz),NN=new Float32Array(nx*nz),src={x:0,y:m.dcpa,z:m.zs};
+    for(let ix=0;ix<nx;ix++){const d=m.Dmax*ix/(nx-1);
+      for(let iz=0;iz<nz;iz++){const z=m.Zmax*iz/(nz-1),k=iz*nx+ix;
+        if(isFinite(env.H)&&z>env.H||z<=0){TL[k]=NaN;NN[k]=NaN;continue}
+        const R=Math.hypot(d,z-m.zs);if(R<2){TL[k]=NaN;NN[k]=NaN;continue}
+        const P=paths(0,m.dcpa-d,z,src,env);const t=-10*Math.log10(bandE(P,m.band,m.nf,env.cw,env.sig));TL[k]=t;NN[k]=R>3?t/Math.log10(R):NaN}
+      if(ix%8===0)self.postMessage({id:m.id,progress:ix/nx})}
+    self.postMessage({id:m.id,ok:true,TL,NN},[TL.buffer,NN.buffer]);
+  }
+}catch(err){self.postMessage({id:m.id,error:String(err&&err.message||err)})}};
+`;
+const mworker=new Worker(URL.createObjectURL(new Blob([MODEL_SRC],{type:'text/javascript'})));
+let mrid=0;const mpend=new Map();
+mworker.onmessage=e=>{const m=e.data;const q=mpend.get(m.id);if(!q)return;if(m.progress!=null){q.onp&&q.onp(m.progress);return}mpend.delete(m.id);m.error?q.rej(new Error(m.error)):q.res(m)};
+const mcall=(msg,onp)=>new Promise((res,rej)=>{const id=++mrid;mpend.set(id,{res,rej,onp});mworker.postMessage({...msg,id})});
+
+const CW=1500;
+const BOTTOMS={none:{es:'Sin fondo (aguas profundas)'},clay:{es:'Arcilla',c:1500,rho:1.5,a:0.2},silt:{es:'Limo',c:1575,rho:1.7,a:1.0},
+  sand:{es:'Arena',c:1650,rho:1.9,a:0.8},gravel:{es:'Grava',c:1800,rho:2.0,a:0.6},moraine:{es:'Morrena',c:1950,rho:2.1,a:0.4},
+  chalk:{es:'Creta',c:2400,rho:2.2,a:0.2},limestone:{es:'Caliza',c:3000,rho:2.4,a:0.1},basalt:{es:'Basalto',c:5250,rho:2.7,a:0.1},custom:{es:'Personalizado'}};
+const WALLMAT={quay:{es:'Muelle de hormigón o acero',R:0.9},rock:{es:'Costa rocosa',R:0.7},rubble:{es:'Escollera',R:0.5},beach:{es:'Playa o talud absorbente',R:0.2},custom:{es:'Personalizado'}};
+const PS=()=>S.prop;
+function propZs(){const q=PS();return q.zsAuto?+(0.7*(+q.draft||0)).toFixed(2):+q.zs||0}
+function propHyds(){return String(PS().hyds||'').split(/[;,\s]+/).map(v=>parseFloat(v.replace(',','.'))).filter(v=>fin(v)&&v>0).slice(0,6)}
+function propBottom(){const q=PS();if(q.bottom==='none')return null;if(q.bottom==='custom')return{c:+q.cb||1650,rho:+q.rhob||1.9,a:+q.ab||0.5};return BOTTOMS[q.bottom]}
+function propWalls(){const q=PS();return(q.walls||[]).map(w=>({t:w.t,pos:w.t==='y'?(w.side==='beyond'?(+q.dcpa||0)+(+w.d||0):-(+w.d||0)):(w.side==='astern'?-(+w.d||0):(+w.d||0)),R:w.mat==='custom'?Math.min(1,Math.max(0,+w.R||0)):WALLMAT[w.mat].R}))}
+function propEnv(){const q=PS(),B=propBottom();return{bottom:B,H:B?Math.max(1,+q.H||100):Infinity,sig:Math.max(0,(+q.Hs||0)/4),walls:propWalls(),cw:CW}}
+function propBands(){return BANDS.filter(b=>b.fc>=9&&b.fc<=Math.min(20500,(+PS().fmax||10000)*1.12))}
+let propRes=null,propMap=null,propGen=0,propT=0,nChart=null,propRO=null;
+function propErr(){const q=PS(),hy=propHyds(),zs=propZs();
+  if(!(+q.dcpa>1))return'Indica una distancia en el CPA mayor de 1 m.';if(!hy.length)return'Indica la profundidad de al menos un hidrófono.';
+  if(!(zs>0))return'La profundidad de la fuente debe ser mayor que 0 (indica el calado).';
+  const B=propBottom();if(B){const H=+q.H;if(!(H>0))return'Indica la profundidad del agua.';if(zs>=H)return'La fuente queda por debajo del fondo.';if(hy.some(z=>z>=H))return'Algún hidrófono queda por debajo del fondo: revisa la profundidad del agua.';}
+  return null}
+function scheduleProp(){clearTimeout(propT);propT=setTimeout(runProp,350)}
+async function runProp(){
+  const err=propErr(),st=$('#n-stat');if(err){propRes=null;propMap=null;renderPropResults(err);return}
+  const gen=++propGen,q=PS(),bands=propBands(),env=propEnv(),zs=propZs(),hyds=propHyds();
+  const setSt=t=>{const e=$('#n-stat');if(e)e.innerHTML=t};
+  setSt('<span>Calculando…</span>');
+  try{
+    const r=await mcall({cmd:'bands',env,geo:{dcpa:+q.dcpa,L:Math.max(0,+q.L||0),zs,hyds,npos:15},bands:bands.map(b=>({fc:b.fc,lo:b.lo,hi:b.hi})),nf:16,rcorr:!!q.rcorr},
+      p=>{if(gen===propGen)setSt(`<span>Calculando bandas… ${Math.round(p*100)} %</span>`)});
+    if(gen!==propGen)return;
+    propRes={...r,bands:bands.map(b=>b.fc),zs,hyds,env,q:JSON.parse(JSON.stringify(q))};renderPropResults();
+    await runMap(gen);
+  }catch(e){if(gen===propGen)renderPropResults(e.message)}
+}
+async function runMap(gen){
+  if(!propRes)return;const q=PS(),env=propRes.env,zs=propRes.zs,hy=propRes.hyds;
+  const bs=propBands();let b=bs.reduce((a,x)=>Math.abs(Math.log(x.fc/(+q.mapFc||50)))<Math.abs(Math.log(a.fc/(+q.mapFc||50)))?x:a,bs[0]);
+  const ws=propWalls().filter(w=>w.t==='y');
+  const Dmax=Math.max(2*q.dcpa,q.dcpa+60,...ws.map(w=>q.dcpa-w.pos+20));
+  const Zmax=isFinite(env.H)?env.H*1.08:Math.max(60,1.5*Math.max(...hy),zs*4);
+  const nx=200,nz=90;
+  const e=$('#n-mapstat');if(e)e.textContent='Calculando mapa…';
+  try{const r=await mcall({cmd:'map',env,dcpa:+q.dcpa,zs,Dmax,Zmax,nx,nz,band:{fc:b.fc,lo:b.lo,hi:b.hi},nf:6},p=>{const e=$('#n-mapstat');if(e&&gen===propGen)e.textContent=`Calculando mapa… ${Math.round(p*100)} %`});
+    if(gen!==propGen)return;propMap={...r,nx,nz,Dmax,Zmax,fc:b.fc,dcpa:+q.dcpa,zs,hyds:hy,H:env.H,walls:ws.map(w=>({d:q.dcpa-w.pos,R:w.R}))};drawPropMap();const e2=$('#n-mapstat');if(e2)e2.textContent='';}
+  catch(err){const e2=$('#n-mapstat');if(e2)e2.textContent=err.message}
+}
+/* ---------- formulario ---------- */
+function renderProp(){renderPropForm();if(!propRes)scheduleProp();else{renderPropResults();if(propMap)drawPropMap()}}
+function renderPropForm(){
+  const q=PS(),el=$('#nform'),B=propBottom(),cp=cur();
+  const nfld=(id,lab,v,u,step='any',extra='')=>`<label class="fld"><span>${lab}</span><span class="in"><input type="number" id="${id}" value="${v??''}" step="${step}" ${extra}><span class="unit">${u}</span></span></label>`;
+  const crit=B&&B.c>CW?Math.acos(CW/B.c)*180/Math.PI:null;
+  el.innerHTML=`
+  <section class="blk"><h2>Geometría de la medida<span class="aside"><button class="btn sm" id="n-from" ${cp&&fin(cp.dcpa)?'':'disabled'} title="Copia d_CPA, DWL y profundidades de los hidrófonos de la pasada seleccionada">Tomar de la pasada</button></span></h2>
+    <div class="grid-f">${nfld('n-dcpa','d<sub>CPA</sub> horizontal',q.dcpa,'m','1','min="1"')}${nfld('n-L','Ventana DWL',q.L,'m','1','min="0"')}</div>
+    <div class="grid-f">${nfld('n-draft','Calado del barco',q.draft,'m','0.1','min="0"')}
+      <label class="fld">Profundidad de la fuente<span class="in"><input type="number" id="n-zs" value="${propZs()}" step="0.1" min="0" ${q.zsAuto?'disabled':''}><span class="unit">m</span></span></label>
+      <label class="fld">&nbsp;<span class="in"><label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="n-zsauto" ${q.zsAuto?'checked':''}>0,7 × calado</label></span></label></div>
+    <label class="fld">Profundidad de los hidrófonos<span class="in"><input type="text" id="n-hyds" value="${esc(q.hyds)}" style="width:150px" placeholder="20, 40"><span class="unit">m, separadas por comas</span></span></label>
+  </section>
+  <section class="blk"><h2>Fondo</h2>
+    <div class="grid-f"><label class="fld">Tipo<span class="in"><select id="n-bottom">${Object.entries(BOTTOMS).map(([k,b])=>`<option value="${k}" ${q.bottom===k?'selected':''}>${b.es}</option>`).join('')}</select></span></label>
+      ${B?nfld('n-H','Profundidad del agua',q.H,'m','1','min="1"'):''}</div>
+    ${q.bottom==='custom'?`<div class="grid-f">${nfld('n-cb','Velocidad c<sub>b</sub>',q.cb,'m/s','10','min="1000"')}${nfld('n-rhob','Densidad ρ<sub>b</sub>',q.rhob,'g/cm³','0.1','min="1"')}${nfld('n-ab','Atenuación α',q.ab,'dB/λ','0.1','min="0"')}</div>`:''}
+    <div class="note">${B?`c<sub>b</sub> = ${B.c} m/s · ρ<sub>b</sub> = ${B.rho} g/cm³ · α = ${B.a} dB/λ · ${crit?`ángulo crítico ${crit.toFixed(1)}° (rasante)`:'sin ángulo crítico: el fondo absorbe a todos los ángulos'}. Agua: c = ${CW} m/s, ρ = 1,0 g/cm³.`:'Solo superficie: el fondo está tan lejos que su reflexión no llega con energía apreciable.'}</div>
+  </section>
+  <section class="blk"><h2>Superficie del mar</h2>
+    <div class="grid-f">${nfld('n-hs','Altura significativa de ola H<sub>s</sub>',q.Hs,'m','0.1','min="0"')}</div>
+    <div class="note">La rugosidad (σ = H<sub>s</sub>/4) reduce la reflexión coherente en superficie a alta frecuencia. A baja frecuencia la superficie actúa como espejo de presión nula y forma un dipolo con la fuente.</div>
+  </section>
+  <section class="blk"><h2>Paredes<span class="aside"><button class="btn sm" id="n-addwall">+ Pared</button></span></h2>
+    ${(q.walls||[]).length?q.walls.map((w,i)=>`<div class="wall" data-w="${i}">
+      <div class="row"><select data-wf="t" aria-label="Orientación"><option value="y" ${w.t==='y'?'selected':''}>Paralela a la derrota</option><option value="x" ${w.t==='x'?'selected':''}>Perpendicular a la derrota</option></select>
+        <select data-wf="side" aria-label="Lado">${w.t==='y'?`<option value="behind" ${w.side==='behind'?'selected':''}>detrás del hidrófono</option><option value="beyond" ${w.side==='beyond'?'selected':''}>al otro lado del barco</option>`:`<option value="ahead" ${w.side!=='astern'?'selected':''}>por delante del CPA</option><option value="astern" ${w.side==='astern'?'selected':''}>por detrás del CPA</option>`}</select></div>
+      <button class="del" data-wdel="${i}" aria-label="Quitar pared" title="Quitar pared">✕</button>
+      <div class="row" style="grid-column:1/-1"><span>a</span><input type="number" data-wf="d" value="${w.d}" step="1" min="1" style="width:72px" aria-label="Distancia"><span class="unit">m ${w.t==='y'?(w.side==='beyond'?'de la derrota':'del hidrófono'):'del CPA, a lo largo de la derrota'}</span></div>
+      <div class="row" style="grid-column:1/-1"><select data-wf="mat" aria-label="Material">${Object.entries(WALLMAT).map(([k,m])=>`<option value="${k}" ${w.mat===k?'selected':''}>${m.es}${m.R!=null?' (R ≈ '+String(m.R).replace('.',',')+')':''}</option>`).join('')}</select>
+        ${w.mat==='custom'?`<span>R</span><input type="number" data-wf="R" value="${w.R??0.5}" step="0.05" min="0" max="1" style="width:64px" aria-label="Coeficiente de reflexión">`:''}</div></div>`).join('')
+      :'<div class="note">Sin paredes: mar abierto.</div>'}
+    <div class="note">Paredes verticales de toda la profundidad, planas e infinitas, con un coeficiente de reflexión fijo. Se incluye la reflexión en cada pared y, si hay una paralela y una perpendicular, en la esquina.</div>
+  </section>
+  <section class="blk"><h2>Cálculo</h2>
+    <label class="fld"><span class="in"><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="n-rcorr" ${q.rcorr?'checked':''}>Promediar en la DWL corrigiendo cada posición con r(t), como el procesado sincronizado</label></span></label>
+    <div class="grid-f"><label class="fld">Hasta<span class="in"><select id="n-fmax">${[2000,5000,10000,20000].map(v=>`<option value="${v}" ${+q.fmax===v?'selected':''}>${fmtLog(v)} Hz</option>`).join('')}</select></span></label></div>
+  </section>`;
+  bindPropForm();
+}
+function bindPropForm(){
+  const q=PS(),upd=()=>{saveS();scheduleProp()};
+  const num=(id,k,re)=>{const e=$('#'+id);if(e)e.addEventListener('change',()=>{const v=parseFloat(e.value);if(fin(v)){q[k]=v;if(re)renderPropForm();upd()}})};
+  num('n-dcpa','dcpa');num('n-L','L');num('n-draft','draft',true);num('n-zs','zs');num('n-H','H');num('n-cb','cb',true);num('n-rhob','rhob');num('n-ab','ab');num('n-hs','Hs');
+  $('#n-zsauto').onchange=e=>{q.zsAuto=e.target.checked;if(!q.zsAuto)q.zs=+(0.7*q.draft).toFixed(2);renderPropForm();upd()};
+  $('#n-hyds').onchange=e=>{q.hyds=e.target.value;upd()};
+  $('#n-bottom').onchange=e=>{q.bottom=e.target.value;renderPropForm();upd()};
+  $('#n-rcorr').onchange=e=>{q.rcorr=e.target.checked;upd()};
+  $('#n-fmax').onchange=e=>{q.fmax=+e.target.value;upd()};
+  $('#n-addwall').onclick=()=>{q.walls=q.walls||[];q.walls.push({t:'y',side:'behind',d:50,mat:'quay',R:0.9});renderPropForm();upd()};
+  $$('#nform [data-wdel]').forEach(b=>b.onclick=()=>{q.walls.splice(+b.dataset.wdel,1);renderPropForm();upd()});
+  $$('#nform .wall [data-wf]').forEach(inp=>inp.addEventListener('change',()=>{const w=q.walls[+inp.closest('.wall').dataset.w],k=inp.dataset.wf;
+    if(k==='d'||k==='R'){const v=parseFloat(inp.value);if(!fin(v))return;w[k]=v}else w[k]=inp.value;
+    if(k==='t')w.side=w.t==='y'?'behind':'ahead';if(['t','side','mat'].includes(k))renderPropForm();upd()}));
+  const fr=$('#n-from');if(fr)fr.onclick=()=>{const p=cur();if(!p||!fin(p.dcpa))return;q.dcpa=+p.dcpa.toFixed(1);q.L=+dwlLen(p).toFixed(1);
+    const z=p.chans.filter(c=>c.use).map(c=>+c.depth||0).filter(v=>v>0);if(z.length)q.hyds=z.join(', ');q.rcorr=!!(p.res&&p.res.rcorr)||q.rcorr;
+    renderPropForm();upd();toast(`Geometría tomada de «${p.name}»`)};
+}
+/* ---------- resultados ---------- */
+function renderPropResults(err){
+  const el=$('#nres');if(!el)return;
+  if(err){el.innerHTML=`<section class="blk"><div class="err">${esc(err)}</div></section>`;return}
+  if(!propRes){el.innerHTML=`<section class="blk"><div class="nstat" id="n-stat">Calculando…</div></section>`;return}
+  const R=propRes,fc=R.bands,meanN=fc.map((_,i)=>R.rows.reduce((a,r)=>a+r.Nwin[i],0)/R.rows.length);
+  const pick=f=>{let i=0;for(let k=1;k<fc.length;k++)if(Math.abs(Math.log(fc[k]/f))<Math.abs(Math.log(fc[i]/f)))i=k;return i};
+  const z0=R.hyds[0],r0=R.rows[0].r0,sinT=(z0+R.zs)/Math.hypot(R.q.dcpa,z0+R.zs),fL=CW/(4*R.zs*sinT);
+  const applied=S.Nmode==='model'&&S.Nmodel&&S.Nmodel.key===propKey();
+  el.innerHTML=`
+  <section class="blk"><h2>N estimado<span class="aside nstat" id="n-stat"></span></h2>
+    ${R.warn.map(w=>`<div class="warn">${esc(w)}</div>`).join('')}
+    <div class="nchips kv">${[10,20,31.5,63,125,250,500,1000,4000].filter(f=>f<=fc[fc.length-1]*1.1).map(f=>{const i=pick(f);return `<div class="k"><span>N̄ @ ${fmtLog(+fc[i].toPrecision(3))} Hz</span><b>${fmt(meanN[i],1)}</b></div>`}).join('')}</div>
+    <div class="note">Dipolo de superficie (efecto Lloyd): por debajo de unos <b>${fmtLog(Math.round(fL))} Hz</b> la fuente a ${fmt(R.zs,1)} m y su imagen en la superficie se cancelan y la pérdida crece más rápido que 20·log r (N &gt; 20). r en el CPA: ${R.rows.map(r=>`${fmt(r.r0,1)} m (H a ${r.z} m)`).join(' · ')}.</div>
+    <div class="cbox"><div class="ctool"><span class="t">N por tercio de octava</span>
+      <button class="btn sm pri" id="n-apply" ${applied?'disabled':''}>${applied?'En uso en el procesado':'Usar este N en el procesado'}</button><button class="btn sm" id="n-copyc">Copiar imagen</button><button class="btn sm" id="n-copyt">Copiar tabla</button></div>
+      <div class="chart" id="c-n"></div></div>
+  </section>
+  <section class="blk"><h2>Campo acústico en la sección del CPA<span class="aside"><select id="n-mapfc" aria-label="Banda del mapa" class="limsel">${fc.map(f=>`<option value="${f}" ${Math.abs(Math.log(f/(+PS().mapFc||50)))<0.05?'selected':''}>${f<100?f.toFixed(1):fmtLog(Math.round(f))} Hz</option>`).join('')}</select>
+      <select id="n-mapmode" class="limsel" aria-label="Magnitud del mapa"><option value="TL" ${PS().mapMode==='TL'?'selected':''}>Pérdida TL (dB)</option><option value="N" ${PS().mapMode==='N'?'selected':''}>N = TL / log r</option></select>
+      <button class="btn sm" id="n-copym">Copiar imagen</button></span></h2>
+    <div class="nstat" id="n-mapstat"></div>
+    <div class="mapwrap" id="n-map"><canvas></canvas></div>
+    <div class="note">Plano vertical que pasa por el barco en el CPA y por el hidrófono. Tercio de octava promediado en energía (6 frecuencias); la fuente es puntual a la profundidad indicada.</div>
+  </section>
+  <section class="blk"><h2>Planta</h2>${planSVG()}</section>
+  <details class="blk"><summary class="ctool" style="cursor:pointer"><span class="t">Tabla por tercios de octava</span></summary><div class="tw">${propTable(false)}</div>
+    <div class="note">TL<sub>CPA</sub> = pérdida en el CPA respecto a 1 m. N<sub>CPA</sub> = TL<sub>CPA</sub>/log r<sub>CPA</sub>. N<sub>DWL</sub> = valor que, aplicado como en el procesado, da el nivel de fuente correcto promediando en toda la ventana.</div></details>
+  <details class="blk how"><summary class="ctool" style="cursor:pointer"><span class="t">Cómo se calcula</span></summary>
+    <p>Modelo de fuentes imagen en 3D: camino directo, reflexión en superficie (coeficiente −1 atenuado por el oleaje, −e<sup>−2(kσ sen θ)²</sup>), reflexiones múltiples superficie–fondo con el coeficiente de Rayleigh de un fondo fluido con pérdidas (incluye el ángulo crítico) y la reflexión en paredes verticales.</p>
+    <p>Para cada tercio de octava se suma el campo de forma coherente a 16 frecuencias y se promedia la energía. Así las interferencias se suavizan como en una medida real. La pérdida se refiere al campo libre a 1 m, TL = −10·log<sub>10</sub>(|p|²·1 m²).</p>
+    <p>N<sub>DWL</sub> se obtiene con 15 posiciones del barco en la ventana: es el N que hace que el promedio de |p|²·r<sup>N/10</sup> (o |p|² y r<sub>CPA</sub> si no se corrige con r(t)) devuelva exactamente el nivel de fuente.</p>
+    <p>Límites: fondo plano y homogéneo, agua isoveloz (1500 m/s), fuente puntual. No hay ondas de cabeza ni modos evanescentes, que pueden pesar por debajo de unos 20 Hz en aguas someras a más de unos cientos de metros. Para las distancias de una medida de URN (decenas a cientos de metros) es una aproximación adecuada.</p>
+  </details>`;
+  // gráfica N
+  const t=T(),ser=R.rows.map((r,i)=>({type:'line',x:fc,y:r.Nwin,color:i+1,w:1.8,label:`H ${r.z} m · DWL`}));
+  R.rows.forEach((r,i)=>ser.push({type:'line',x:fc,y:r.Ncpa,color:i+1,w:1.1,dash:[4,3],label:`H ${r.z} m · CPA`}));
+  if(R.rows.length>1)ser.push({type:'line',x:fc,y:meanN,color:'ink',w:2.8,label:S.lang==='es'?'Media':'Mean'});
+  const cN=fc.map(f=>Nf(f,R.hyds[0]));ser.push({type:'line',x:fc,y:cN,color:'ink2',w:1.6,dash:[8,5],label:S.Nmode==='model'?(S.lang==='es'?'N en uso (modelo)':'N in use (model)'):(S.lang==='es'?'N en uso (lineal)':'N in use (linear)')});
+  ser.push({type:'line',x:[fc[0],fc[fc.length-1]],y:[20,20],color:'lim',w:1,dash:[2,4],label:'N = 20',hover:false});
+  const all=ser.flatMap(s=>s.y).filter(fin);
+  nChart=mkChart('c-n',{});nChart.set({title:S.lang==='es'?'N EFECTIVO EN N·log10(r)':'EFFECTIVE N IN N·log10(r)',xlabel:t.freq,ylabel:'N',xlog:true,xname:'f (Hz)',ydec:1,
+    xlim:[fc[0]*0.95,fc[fc.length-1]*1.05],ylim:[Math.min(0,Math.floor(Math.min(...all)/5)*5),Math.max(30,Math.ceil(Math.max(...all)/5)*5)],series:ser});
+  $('#n-copyc').onclick=()=>copyChart(nChart);$('#n-copyt').onclick=()=>copyText(propTable(true),'Tabla de N');
+  $('#n-copym').onclick=()=>{if(!propMap){toast('El mapa aún no está calculado');return}const cv=document.createElement('canvas');cv.width=2200;cv.height=1040;const c=cv.getContext('2d');c.scale(2,2);drawMapTo(c,1100,520,EXPORT_PAL);
+    try{navigator.clipboard.write([new ClipboardItem({'image/png':new Promise(r=>cv.toBlob(r,'image/png'))})]).then(()=>toast('Imagen copiada: pégala en Word con Ctrl+V'),()=>showImg(cv))}catch(e){showImg(cv)}};
+  $('#n-apply').onclick=()=>applyPropN();
+  $('#n-mapfc').onchange=e=>{PS().mapFc=+e.target.value;saveS();runMap(propGen)};
+  $('#n-mapmode').onchange=e=>{PS().mapMode=e.target.value;saveS();drawPropMap()};
+  if(propMap)drawPropMap();
+  if(propRO)propRO.disconnect();propRO=new ResizeObserver(()=>{if(propMap)drawPropMap()});propRO.observe($('#n-map'));
+}
+function propKey(){return JSON.stringify(propRes?propRes.q:PS())}
+function propTable(tsv){
+  const R=propRes;if(!R)return'';const fc=R.bands;
+  if(tsv){const h=['fc_Hz',...R.rows.flatMap(r=>[`TL_CPA_${r.z}m`,`N_CPA_${r.z}m`,`N_DWL_${r.z}m`]),'N_DWL_medio'];
+    return [`# Procesador URN v${APP_VERSION} · modelo de propagación · ${propDesc()}`,h.join('\t'),...fc.map((f,i)=>[f.toFixed(2),...R.rows.flatMap(r=>[r.TL[i].toFixed(2),r.Ncpa[i].toFixed(2),r.Nwin[i].toFixed(2)]),(R.rows.reduce((a,r)=>a+r.Nwin[i],0)/R.rows.length).toFixed(2)].join('\t').replace(/\./g,','))].join('\n')}
+  return `<table><thead><tr><th>f<sub>c</sub> (Hz)</th>${R.rows.map(r=>`<th>TL<sub>CPA</sub> ${r.z} m</th><th>N<sub>CPA</sub></th><th>N<sub>DWL</sub></th>`).join('')}${R.rows.length>1?'<th>N̄<sub>DWL</sub></th>':''}</tr></thead><tbody>
+    ${fc.map((f,i)=>`<tr><td>${f<100?f.toFixed(1):f.toFixed(0)}</td>${R.rows.map(r=>`<td>${fmt(r.TL[i],1)}</td><td>${fmt(r.Ncpa[i],1)}</td><td><b>${fmt(r.Nwin[i],1)}</b></td>`).join('')}${R.rows.length>1?`<td><b>${fmt(R.rows.reduce((a,r)=>a+r.Nwin[i],0)/R.rows.length,1)}</b></td>`:''}</tr>`).join('')}</tbody></table>`;
+}
+function propDesc(){const R=propRes,q=R.q,B=R.env.bottom;const w=(q.walls||[]).length;
+  return `fondo ${BOTTOMS[q.bottom].es.toLowerCase()}${B?' a '+q.H+' m':''}, fuente a ${fmt(R.zs,1)} m, dCPA ${q.dcpa} m, DWL ${q.L} m, Hs ${q.Hs} m${w?`, ${w} pared${w>1?'es':''}`:''}`}
+function applyPropN(){
+  const R=propRes;if(!R)return;
+  S.Nmodel={id:Date.now().toString(36),key:propKey(),fc:R.bands.slice(),rows:R.rows.map(r=>({z:r.z,N:r.Nwin.map(v=>+v.toFixed(3))})),desc:propDesc()};
+  S.Nmode='model';const zsOld=S.zs;S.zs=R.zs;saveS();renderList();renderPropResults();
+  toast(`N del modelo en uso. Profundidad de la fuente para r: ${fmt(R.zs,1)} m${zsOld!==R.zs?` (antes ${fmt(zsOld,1)} m)`:''}. Vuelve a procesar las pasadas.`,7000);
+}
+/* ---------- mapa ---------- */
+const VIRIDIS=[[68,1,84],[72,40,120],[62,74,137],[49,104,142],[38,130,142],[31,158,137],[53,183,121],[109,205,89],[180,222,44],[253,231,37]];
+function cmap(t){t=Math.min(1,Math.max(0,t))*(VIRIDIS.length-1);const i=Math.min(VIRIDIS.length-2,Math.floor(t)),u=t-i,a=VIRIDIS[i],b=VIRIDIS[i+1];return[a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u,a[2]+(b[2]-a[2])*u]}
+function drawPropMap(){const w=$('#n-map');if(!w||!propMap)return;const cv=w.querySelector('canvas');const r=w.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);cv.style.width=r.width+'px';cv.style.height=r.height+'px';const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);drawMapTo(c,r.width,r.height,livePal())}
+function drawMapTo(c,W,H,P){
+  const M=propMap,mode=PS().mapMode==='N'?'N':'TL',data=mode==='N'?M.NN:M.TL;
+  const cs=getComputedStyle(document.documentElement),sed=P===EXPORT_PAL?'#c8b48c':cs.getPropertyValue('--c-sed').trim(),sedl=P===EXPORT_PAL?'#8a7350':cs.getPropertyValue('--c-sedline').trim(),wallc=P===EXPORT_PAL?'#3b4a52':cs.getPropertyValue('--c-wall').trim();
+  c.fillStyle=P.plotbg;c.fillRect(0,0,W,H);
+  const pl=58,pr=86,pt=34,pb=44,pw=W-pl-pr,ph=H-pt-pb;if(pw<50||ph<50)return;
+  let lo,hi;if(mode==='N'){lo=10;hi=35}else{const v=[...data].filter(fin).sort((a,b)=>a-b);lo=v[Math.floor(v.length*0.02)]||0;hi=v[Math.floor(v.length*0.98)]||1;lo=Math.floor(lo/5)*5;hi=Math.ceil(hi/5)*5;if(hi<=lo)hi=lo+5}
+  const img=c.createImageData(M.nx,M.nz);for(let k=0;k<data.length;k++){const v=data[k];if(!fin(v)){img.data[k*4+3]=0;continue}const col=cmap(mode==='TL'?1-(v-lo)/(hi-lo):(v-lo)/(hi-lo));img.data[k*4]=col[0];img.data[k*4+1]=col[1];img.data[k*4+2]=col[2];img.data[k*4+3]=255}
+  const off=document.createElement('canvas');off.width=M.nx;off.height=M.nz;off.getContext('2d').putImageData(img,0,0);
+  c.imageSmoothingEnabled=true;c.drawImage(off,pl,pt,pw,ph);
+  const X=d=>pl+d/M.Dmax*pw,Y=z=>pt+z/M.Zmax*ph;
+  if(isFinite(M.H)&&M.H<=M.Zmax+1e-6){c.fillStyle=sed;c.fillRect(pl,Y(M.H),pw,Math.max(2,pt+ph-Y(M.H)));c.strokeStyle=sedl;c.lineWidth=2;c.beginPath();c.moveTo(pl,Y(M.H));c.lineTo(pl+pw,Y(M.H));c.stroke()}
+  c.strokeStyle=P.ink2;c.lineWidth=1;c.font=FONT(12);c.fillStyle=P.ink2;
+  const xt=linTicks(0,M.Dmax,Math.max(3,pw/90));c.textAlign='center';for(const v of xt.t){const x=X(v);c.beginPath();c.moveTo(x,pt+ph);c.lineTo(x,pt+ph+4);c.stroke();c.fillText(fmtTick(v,xt.st),x,pt+ph+16)}
+  const zt=linTicks(0,M.Zmax,Math.max(3,ph/40));c.textAlign='right';for(const v of zt.t){const y=Y(v);c.beginPath();c.moveTo(pl-4,y);c.lineTo(pl,y);c.stroke();c.fillText(fmtTick(v,zt.st),pl-6,y+4)}
+  c.strokeRect(pl+.5,pt+.5,pw,ph);
+  for(const w of M.walls){if(w.d<0||w.d>M.Dmax)continue;const x=X(w.d);c.strokeStyle=wallc;c.lineWidth=4;c.beginPath();c.moveTo(x,pt);c.lineTo(x,isFinite(M.H)?Y(Math.min(M.H,M.Zmax)):pt+ph);c.stroke();c.fillStyle=P.ink;c.textAlign='center';c.font=FONT(11,600);c.fillText(S.lang==='es'?'pared':'wall',x,pt-4)}
+  // barco y fuente
+  c.fillStyle=P.ink;c.beginPath();c.moveTo(X(0)-2,pt-2);c.lineTo(X(0)+16,pt-2);c.lineTo(X(0)+12,pt+6);c.lineTo(X(0)-2,pt+6);c.closePath();c.fill();
+  c.fillStyle='#e04040';c.strokeStyle='#ffffff';c.lineWidth=1.5;c.beginPath();c.arc(X(0),Y(M.zs),5,0,7);c.fill();c.stroke();
+  // hidrófonos
+  M.hyds.forEach(z=>{const x=X(M.dcpa),y=Y(z);c.fillStyle='#ffffff';c.strokeStyle='#111111';c.lineWidth=1.5;c.beginPath();c.moveTo(x,y-6);c.lineTo(x+6,y);c.lineTo(x,y+6);c.lineTo(x-6,y);c.closePath();c.fill();c.stroke();
+    const ix=Math.round(M.dcpa/M.Dmax*(M.nx-1)),iz=Math.round(z/M.Zmax*(M.nz-1)),v=data[iz*M.nx+ix];
+    if(fin(v)){const tx=(mode==='N'?'N ':'TL ')+v.toFixed(1);c.font=FONT(12,700);c.textAlign='left';const tw=c.measureText(tx).width;c.fillStyle='rgba(0,0,0,.55)';c.fillRect(x+9,y-9,tw+8,18);c.fillStyle='#ffffff';c.fillText(tx,x+13,y+4)}});
+  // barra de color
+  const bx=pl+pw+16,bw=14;for(let i=0;i<ph;i++){const u=1-i/ph,col=cmap(mode==='TL'?1-u:u);c.fillStyle=`rgb(${col[0]|0},${col[1]|0},${col[2]|0})`;c.fillRect(bx,pt+i,bw,1.5)}
+  c.strokeStyle=P.ink2;c.strokeRect(bx+.5,pt+.5,bw,ph);const bt=linTicks(lo,hi,5);c.fillStyle=P.ink2;c.textAlign='left';c.font=FONT(12);
+  for(const v of bt.t){if(v<lo||v>hi)continue;const y=pt+(1-(v-lo)/(hi-lo))*ph;c.fillText(fmtTick(v,bt.st),bx+bw+4,y+4)}
+  c.save();c.translate(W-14,pt+ph/2);c.rotate(Math.PI/2);c.textAlign='center';c.font=FONT(12,600);c.fillStyle=P.ink;c.fillText(mode==='N'?'N':'TL (dB)',0,0);c.restore();
+  c.fillStyle=P.ink;c.textAlign='center';c.font=FONT(15,700);
+  c.fillText(`${mode==='N'?(S.lang==='es'?'N = TL/log r':'N = TL/log r'):(S.lang==='es'?'PÉRDIDA DE TRANSMISIÓN':'TRANSMISSION LOSS')} · ${M.fc<100?M.fc.toFixed(1):Math.round(M.fc)} Hz`,pl+pw/2,20);
+  c.font=FONT(13,600);c.fillText(S.lang==='es'?'Distancia horizontal desde el barco (m)':'Horizontal distance from ship (m)',pl+pw/2,H-8);
+  c.save();c.translate(16,pt+ph/2);c.rotate(-Math.PI/2);c.fillText(S.lang==='es'?'Profundidad (m)':'Depth (m)',0,0);c.restore();
+}
+function planSVG(){
+  const q=PS(),d=+q.dcpa||50,L=+q.L||0,ws=propWalls();
+  const ys=[0,d,...ws.filter(w=>w.t==='y').map(w=>w.pos)],xs=[-L/2,L/2,-d,d,...ws.filter(w=>w.t==='x').map(w=>w.pos)];
+  const y0=Math.min(...ys)-d*0.35,y1=Math.max(...ys)+d*0.35,x0=Math.min(...xs)-d*0.4,x1=Math.max(...xs)+d*0.4;
+  const Wv=520,Hv=Math.max(140,Math.min(260,Wv*(y1-y0)/(x1-x0)));const X=x=>14+(x-x0)/(x1-x0)*(Wv-28),Y=y=>Hv-14-(y-y0)/(y1-y0)*(Hv-28);
+  const wl=ws.map(w=>w.t==='y'?`<line x1="${X(x0)}" x2="${X(x1)}" y1="${Y(w.pos)}" y2="${Y(w.pos)}" stroke="var(--c-wall)" stroke-width="4"/><text x="${X(x0)+4}" y="${Y(w.pos)-6}" font-size="11" fill="var(--ink2)">pared (R ${String(w.R).replace('.',',')})</text>`
+    :`<line y1="${Y(y0)}" y2="${Y(y1)}" x1="${X(w.pos)}" x2="${X(w.pos)}" stroke="var(--c-wall)" stroke-width="4"/><text x="${X(w.pos)+5}" y="${Y(y1)+12}" font-size="11" fill="var(--ink2)">pared (R ${String(w.R).replace('.',',')})</text>`).join('');
+  return `<svg class="plan" viewBox="0 0 ${Wv} ${Hv}" width="${Wv}" role="img" aria-label="Planta: derrota del barco, ventana DWL, hidrófono y paredes">
+    <rect x="0" y="0" width="${Wv}" height="${Hv}" fill="var(--c-plotbg)"/>
+    <line x1="${X(x0)}" x2="${X(x1)}" y1="${Y(d)}" y2="${Y(d)}" stroke="var(--ink2)" stroke-dasharray="6 5" stroke-width="1.5"/>
+    ${L>0?`<line x1="${X(-L/2)}" x2="${X(L/2)}" y1="${Y(d)}" y2="${Y(d)}" stroke="var(--c-dwl)" stroke-width="10" stroke-linecap="butt"/>`:''}
+    <line x1="${X(-L/2)}" x2="${X(L/2)}" y1="${Y(d)}" y2="${Y(d)}" stroke="var(--c-track)" stroke-width="2.5"/>
+    <path d="M${X(0)-12} ${Y(d)-5} L${X(0)+8} ${Y(d)-5} L${X(0)+14} ${Y(d)} L${X(0)+8} ${Y(d)+5} L${X(0)-12} ${Y(d)+5} Z" fill="var(--ink)"/>
+    <line x1="${X(0)}" x2="${X(0)}" y1="${Y(d)}" y2="${Y(0)}" stroke="var(--c-cpa)" stroke-dasharray="3 3" stroke-width="1.5"/>
+    <text x="${X(0)+6}" y="${(Y(d)+Y(0))/2}" font-size="11" fill="var(--ink2)">d<tspan dy="3" font-size="9">CPA</tspan><tspan dy="-3"> ${d} m</tspan></text>
+    ${L>0?`<text x="${X(L/2)}" y="${Y(d)-10}" text-anchor="end" font-size="11" fill="var(--ink2)">DWL ${L} m</text>`:''}
+    <path d="M${X(0)} ${Y(0)-7} L${X(0)+7} ${Y(0)} L${X(0)} ${Y(0)+7} L${X(0)-7} ${Y(0)} Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="1.5"/>
+    <text x="${X(0)+10}" y="${Y(0)+4}" font-size="11" fill="var(--ink2)">hidrófono</text>
+    ${wl}</svg>`;
 }
 
 /* =====================================================================
@@ -1479,8 +1815,8 @@ DWL = L  ó  2·d_CPA·tan(θ)       COMEX = t_CPA·v     FINEX = (t_fin − t_C
    ===================================================================== */
 $$('.tabs button').forEach(b=>b.onclick=()=>{
   $$('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));const v=b.dataset.view;
-  $('#view-p').hidden=v!=='p';$('#view-r').hidden=v!=='r';$('#view-a').hidden=v!=='a';
-  if(v==='r')renderSummary();if(v==='a')renderSettings();if(v==='p')renderDetail();});
+  $('#view-p').hidden=v!=='p';$('#view-r').hidden=v!=='r';$('#view-a').hidden=v!=='a';$('#view-n').hidden=v!=='n';
+  if(v==='r')renderSummary();if(v==='a')renderSettings();if(v==='p')renderDetail();if(v==='n')renderProp();});
 
 function exFixes(str){return str.split(';').map(r=>{const [h,la,lo]=r.split(',');const t=+h.slice(0,2)*3600+ +h.slice(2,4)*60+ +h.slice(4,6);
   const L=v=>{const x=parseFloat(v);const d=Math.floor(x/100);return d+(x-d*100)/60};return{t,lat:L(la),lon:-L(lo)}})}
@@ -1522,7 +1858,7 @@ async function freeAll(){for(const id of loaded){try{await call({cmd:'free',pass
 function loadProjectData(o){
   if(!o||o.app!=='procesador-urn'||!Array.isArray(o.passes))throw new Error('formato');
   freeAll();
-  S=Object.assign({},DEF,o.settings||{});if(S.lim!=='none'&&!LIMITS[S.lim])S.lim='R';S.showLim=S.lim!=='none';saveS();
+  S=Object.assign({},DEF,o.settings||{});S.prop=Object.assign({},DEF.prop,S.prop||{});if(S.lim!=='none'&&!LIMITS[S.lim])S.lim='R';S.showLim=S.lim!=='none';saveS();
   if(o.template){template=o.template;LS.set('urn.template',template);}
   pool=(o.pool||[]).map(g=>{const fixes=g.fixes.map(a=>({t:a[0],lat:a[1],lon:a[2],sog:a[3]??undefined,cog:a[4]??undefined}));const sog=fixes.filter(f=>fin(f.sog)).map(f=>f.sog).sort((a,b)=>a-b);
     return{id:g.id,name:g.name,role:g.role,pairHyd:g.pairHyd,fixes,t0:fixes.length?fixes[0].t:0,t1:fixes.length?fixes[fixes.length-1].t:0,sog:sog.length?sog[Math.floor(sog.length/2)]:null,...guessFromName(g.name)}});
