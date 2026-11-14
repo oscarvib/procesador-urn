@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.4.1**
+**Versión 1.4.2**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -27,7 +27,7 @@ Todo el cálculo se hace en el navegador: los ficheros no salen del equipo.
 
 ## Curvas límite
 
-En **Ajustes → Curva límite** se elige el criterio (DNV-GL RU-SHIP Pt.6 Ch.7 Sec.6, tabla 2; dB re 1 µPa @ 1 m en tercios de octava):
+La curva se elige en el **Resumen**, en los resultados de cada pasada o en **Ajustes → Curva límite**; es una sola elección para todo el proyecto. Criterios disponibles (DNV-GL RU-SHIP Pt.6 Ch.7 Sec.6, tabla 2; dB re 1 µPa @ 1 m en tercios de octava):
 
 | Notación | Condición | Criterio |
 |---|---|---|
@@ -67,6 +67,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.4.2**: selector de curva límite también en el resumen y en los resultados de cada pasada (sincronizado con Ajustes).
 - **1.4.1**: las versiones nuevas se ven al recargar (sin esperar a la caché de GitHub Pages) y aviso cuando hay una versión nueva.
 - **1.4.0**: arranque en blanco; proyectos Nuevo/Abrir/Guardar/Guardar como (.json con ajustes, GPS, pasadas y resultados), aviso de cambios sin guardar y restauración de la última sesión.
 - **1.3.2**: velocidad sobre el fondo (SOG, media en ±5 s a partir de las posiciones) en eje secundario de la gráfica de distancia.
