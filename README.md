@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.5.1**
+**Versión 1.5.2**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -81,6 +81,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.5.2**: uso sin conexión más robusto: con red lenta se abre la copia guardada a los 3,5 s, las fuentes se guardan al instalar e indicador «Disponible sin conexión» / «Sin conexión».
 - **1.5.1**: opción «Qué corrige N» en la pestaña Propagación: nivel radiado (solo fondo y paredes, por defecto, comparable con DNV/ICES) o nivel de fuente monopolar (también la superficie).
 - **1.5.0**: pestaña Propagación (N): modelo de fuentes imagen con superficie rugosa, fondo fluido (Rayleigh), paredes, N efectivo en la DWL, mapa de TL/N y aplicación del N por banda e hidrófono al procesado.
 - **1.4.2**: selector de curva límite también en el resumen y en los resultados de cada pasada (sincronizado con Ajustes).

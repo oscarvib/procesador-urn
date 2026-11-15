@@ -65,6 +65,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .projbar .proj{font-size:13px;color:var(--ink2);max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .projbar .proj b{color:var(--ink);font-weight:600}
 .projbar .dirty{color:var(--warn);font-weight:600}
+.netchip{font-size:12px;padding:2px 9px;border-radius:10px;border:1px solid var(--line);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.netchip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.netchip.ok{color:var(--good)}
+.netchip.off{color:var(--warn);font-weight:600}
 .view-n{display:grid;grid-template-columns:360px minmax(0,1fr);gap:16px;align-items:start}
 @media (max-width:1000px){.view-n{grid-template-columns:minmax(0,1fr)}}
 .nform{display:flex;flex-direction:column;gap:12px}
@@ -186,7 +190,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.5.1</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.5.2</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <div class="projbar">
     <span class="proj" id="projName" title="Proyecto actual"></span>
     <button class="btn sm" id="b-new" title="Empezar un proyecto vacío">Nuevo</button>
@@ -246,7 +250,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.5.1';
+const APP_VERSION='1.5.2';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -1938,6 +1942,22 @@ renderList();renderDetail();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ALLCH.forEach(c=>c.draw()));
 </script>
 
-<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http')){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had)toast('Hay una versión nueva de la herramienta: guarda el proyecto y recarga la página (F5)',8000)});}</script>
+<script>
+(function(){
+  if(!('serviceWorker' in navigator)||!location.protocol.startsWith('http'))return;
+  const had=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had)toast('Hay una versión nueva de la herramienta: guarda el proyecto y recarga la página (F5)',8000)});
+  const chip=document.createElement('span');chip.className='netchip';chip.id='netchip';chip.hidden=true;
+  const bar=document.querySelector('.projbar');if(bar)bar.prepend(chip);
+  let ready=false;
+  const upd=()=>{if(!navigator.onLine){chip.hidden=false;chip.className='netchip off';chip.textContent=ready?'Sin conexión · funcionando con la copia guardada':'Sin conexión';chip.title='';}
+    else if(ready){chip.hidden=false;chip.className='netchip ok';chip.textContent='Disponible sin conexión';chip.title='La herramienta está guardada en este equipo y se abre aunque no haya internet'}
+    else chip.hidden=true};
+  navigator.serviceWorker.ready.then(async()=>{try{ready=!!(await caches.match('index.html'))||!!(await caches.match('./'))}catch(e){}upd();
+    if(!ready)setTimeout(async()=>{try{ready=!!(await caches.match('index.html'))}catch(e){}upd()},4000)});
+  addEventListener('online',upd);addEventListener('offline',upd);upd();
+})();
+</script>
 </body>
 </html>
