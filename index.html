@@ -194,7 +194,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.6.2</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.6.3</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <div class="projbar">
     <span class="proj" id="projName" title="Proyecto actual"></span>
     <button class="btn sm" id="b-new" title="Empezar un proyecto vacío">Nuevo</button>
@@ -254,7 +254,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.6.2';
+const APP_VERSION='1.6.3';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -911,12 +911,18 @@ class Chart{
       else if(Math.abs(b-a)<=6&&this.opt.onClick){const [px,py]=pos(e);if(py>=g.pt&&py<=g.pt+g.ph){const xv=g.invX(px),yv=g.invY(py);clearTimeout(this.ct);this.ct=setTimeout(()=>this.opt.onClick(xv,yv),280)}}
       else this.req();});
     this.cv.addEventListener('pointercancel',()=>{this.drag=null;this.req()});
-    this.cv.addEventListener('dblclick',()=>{clearTimeout(this.ct);this.view=null;this.req()});
+    this.cv.addEventListener('dblclick',()=>{clearTimeout(this.ct);this.view=null;this.yview=null;this.req()});
+    if(opt.ywheel)this.cv.addEventListener('wheel',e=>{const g=this.g;if(!g)return;const [x,y]=pos(e);if(x<0||x>g.pl+g.pw+20||y<g.pt||y>g.pt+g.ph)return;e.preventDefault();
+      const v=g.invY(y),sp=g.y1-g.y0,dir=Math.sign(e.deltaY)||1;let a,b;
+      if(e.shiftKey){const sh=sp*0.06*dir;a=g.y0-sh;b=g.y1-sh}
+      else{const f=dir<0?0.85:1/0.85;a=v-(v-g.y0)*f;b=v+(g.y1-v)*f;if(b-a<0.2){const c=(a+b)/2;a=c-0.1;b=c+0.1}}
+      this.yview=[a,b];this.req();opt.onYZoom&&opt.onYZoom()},{passive:false});
     ALLCH.add(this);
   }
   destroy(){this.ro.disconnect();clearTimeout(this.ct);ALLCH.delete(this);this.d=null;
   }
-  set(d){this.d=d;if(!d||!this.keepView)this.view=null;this.draw()}
+  set(d){this.d=d;if(!d||!this.keepView){this.view=null;this.yview=null}this.draw()}
+  resetZoom(){this.view=null;this.yview=null;this.draw()}
   req(){if(this.raf)return;this.raf=requestAnimationFrame(()=>{this.raf=0;this.draw()})}
   draw(){const r=this.el.getBoundingClientRect();const W=Math.max(10,r.width),H=Math.max(10,r.height);const dpr=window.devicePixelRatio||1;
     if(this.cv.width!==Math.round(W*dpr)||this.cv.height!==Math.round(H*dpr)){this.cv.width=Math.round(W*dpr);this.cv.height=Math.round(H*dpr);this.cv.style.width=W+'px';this.cv.style.height=H+'px'}
@@ -940,6 +946,7 @@ class Chart{
     const ext=a=>a.length?[Math.min(...a),Math.max(...a)]:[0,1];
     let [x0,x1]=(this.view&&this.view.x)||d.xlim||ext(allX);let [y0,y1]=d.ylim||ext(allY);
     if(!d.ylim){const m=(y1-y0)*0.06||1;y0-=m;y1+=m}
+    if(this.yview)[y0,y1]=this.yview;
     if(!(x1>x0)){x1=x0+1}if(!(y1>y0)){y1=y0+1}
     if(d.equal){if(!this.view){const m=(x1-x0)*0.06;x0-=m;x1+=m}const ux=(x1-x0)/pw,uy=(y1-y0)/ph;if(ux>uy){const cc=(y0+y1)/2,h=ux*ph/2;y0=cc-h;y1=cc+h}else{const cc=(x0+x1)/2,w=uy*pw/2;x0=cc-w;x1=cc+w}}
     const lx=!!d.xlog,lx0=lx?log10(x0):0,lx1=lx?log10(x1):0;
@@ -1743,8 +1750,9 @@ function renderPropResults(err){
       :`<div class="note">Nivel radiado: el efecto de la superficie se mantiene, como en ISO 17208-1, DNV e ICES. N solo corrige lo que el fondo y las paredes añaden o quitan respecto a aguas profundas: N = 20 significa que el entorno no influye.</div>`}
     <div class="note">r en el CPA: ${R.rows.map(r=>`${fmt(r.r0,1)} m (H a ${r.z} m)`).join(' · ')}.</div>
     <div class="cbox"><div class="ctool"><span class="t">Por tercio de octava</span><select id="n-chartq" class="limsel" aria-label="Magnitud de la gráfica"><option value="N" ${PS().chartQ!=='TL'?'selected':''}>N</option><option value="TL" ${PS().chartQ==='TL'?'selected':''}>Pérdida TL (dB)</option></select>
-      <button class="btn sm pri" id="n-apply" ${applied?'disabled':''}>${applied?'En uso en el procesado':'Usar este N en el procesado'}</button><button class="btn sm" id="n-copyc">Copiar imagen</button><button class="btn sm" id="n-copyt">Copiar tabla</button></div>
-      <div class="chart" id="c-n"></div></div>
+      <button class="btn sm pri" id="n-apply" ${applied?'disabled':''}>${applied?'En uso en el procesado':'Usar este N en el procesado'}</button><button class="btn sm" id="n-yauto" title="Escala automática en los dos ejes (también con doble clic en la gráfica)">Auto</button><button class="btn sm" id="n-copyc">Copiar imagen</button><button class="btn sm" id="n-copyt">Copiar tabla</button></div>
+      <div class="chart" id="c-n" style="cursor:ns-resize"></div>
+      <div class="note">Rueda: zoom vertical alrededor del valor que señalas · Mayús + rueda: desplazar en vertical · arrastrar en horizontal: zoom en frecuencia · Auto o doble clic: escala automática.</div></div>
   </section>
   <section class="blk"><h2>Campo acústico en la sección del CPA<span class="aside">
       <select id="n-mapmode" class="limsel" aria-label="Magnitud del mapa"><option value="TL" ${PS().mapMode==='TL'?'selected':''}>Pérdida TL (dB)</option><option value="N" ${PS().mapMode==='N'?'selected':''}>${PS().ref==='sl'?'N = TL / log r':'N (nivel radiado)'}</option></select>
@@ -1773,6 +1781,7 @@ function renderPropResults(err){
   </details>`;
   drawNChart(R,fc,meanN);
   $('#n-chartq').onchange=e=>{PS().chartQ=e.target.value;saveS();drawNChart(R,fc,meanN)};
+  $('#n-yauto').onclick=()=>{if(nChart)nChart.resetZoom()};
   $('#n-copyc').onclick=()=>copyChart(nChart);$('#n-copyt').onclick=()=>copyText(propTable(true),'Tabla de N');
   $('#n-copym').onclick=()=>{if(!propMap){toast('El mapa aún no está calculado');return}const cv=document.createElement('canvas');cv.width=2200;cv.height=1040;const c=cv.getContext('2d');c.scale(2,2);drawMapTo(c,1100,520,EXPORT_PAL);
     try{navigator.clipboard.write([new ClipboardItem({'image/png':new Promise(r=>cv.toBlob(r,'image/png'))})]).then(()=>toast('Imagen copiada: pégala en Word con Ctrl+V'),()=>showImg(cv))}catch(e){showImg(cv)}};
@@ -1820,7 +1829,7 @@ function drawNChart(R,fc,meanN){
     const all=ser.flatMap(s=>s.y).filter(fin);ylim=[Math.min(0,Math.floor(Math.min(...all)/5)*5),Math.max(30,Math.ceil(Math.max(...all)/5)*5)];
     title=(es?'N EFECTIVO EN N·log10(r) · ':'EFFECTIVE N IN N·log10(r) · ')+(R.q.ref==='sl'?(es?'NIVEL DE FUENTE MONOPOLAR':'MONOPOLE SOURCE LEVEL'):(es?'NIVEL RADIADO':'RADIATED NOISE LEVEL'));ylabel='N';
   }
-  nChart=mkChart('c-n',{});nChart.set({title,xlabel:t.freq,ylabel,xlog:true,xname:'f (Hz)',ydec:1,xlim:[fc[0]*0.95,fc[fc.length-1]*1.05],ylim,series:ser,
+  nChart=mkChart('c-n',{ywheel:true});nChart.set({title,xlabel:t.freq,ylabel,xlog:true,xname:'f (Hz)',ydec:1,xlim:[fc[0]*0.95,fc[fc.length-1]*1.05],ylim,series:ser,
     vlines:propSelF?[{x:propSelF,color:'ink2',w:1.5,dash:[3,3]}]:[]});
 }
 function propKey(){return JSON.stringify(propRes?propRes.q:PS())}

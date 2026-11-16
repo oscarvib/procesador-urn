@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.6.2**
+**Versión 1.6.3**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -81,6 +81,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.6.3**: zoom vertical con la rueda (y desplazamiento con Mayús + rueda) en la gráfica de N/TL por frecuencia, con botón Auto.
 - **1.6.2**: en la pestaña Propagación, la ventana DWL puede seguir a Ajustes o definirse por longitud fija, por ángulo ± desde el CPA o por duración a la velocidad del barco; se muestra la longitud, el ángulo y la duración resultantes.
 - **1.6.1**: la gráfica de la pestaña Propagación muestra N o TL (TL en el CPA, TL medio en la DWL, 20·log r y la pérdida que aplica el N en uso).
 - **1.6.0**: tercios de octava normalizados IEC 61260-1 (base 10, fc = 1000·10^(n/10), rotulados 10, 12,5, 16 … 31,5 … Hz) en todo el procesado y en la propagación; deslizador de frecuencia en la pestaña Propagación con lectura de N y TL de la banda y marca en la gráfica de N.
