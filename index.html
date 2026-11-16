@@ -194,7 +194,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.6.0</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.6.1</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <div class="projbar">
     <span class="proj" id="projName" title="Proyecto actual"></span>
     <button class="btn sm" id="b-new" title="Empezar un proyecto vacío">Nuevo</button>
@@ -254,7 +254,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.6.0';
+const APP_VERSION='1.6.1';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -595,7 +595,7 @@ const log10=Math.log10;
 /* =====================================================================
    Ajustes
    ===================================================================== */
-const DEF={Nmode:'lin',Nmodel:null,prop:{dcpa:50,L:90,draft:3,zsAuto:true,zs:2.1,hyds:'20, 40',bottom:'sand',H:100,cb:1650,rhob:1.9,ab:0.8,Hs:0.5,walls:[],mapFc:50,mapMode:'TL',rcorr:true,fmax:10000,ref:'rnl',cmap:'jet',avz:2,avd:0,avs:0},dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
+const DEF={Nmode:'lin',Nmodel:null,prop:{dcpa:50,L:90,draft:3,zsAuto:true,zs:2.1,hyds:'20, 40',bottom:'sand',H:100,cb:1650,rhob:1.9,ab:0.8,Hs:0.5,walls:[],mapFc:50,mapMode:'TL',rcorr:true,fmax:10000,ref:'rnl',cmap:'jet',avz:2,avd:0,avs:0,chartQ:'N'},dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
   showLim:true,lim:'R',tzMode:'madrid',tzH:2,lang:'en',fmin:10,fmax:50000,ymin:50,ymax:170,symin:100,symax:160,snr:3,bg0:0,bg1:5,keep:2,depth0:40};
 let S=Object.assign({},DEF,LS.get('urn.settings',{}));S.prop=Object.assign({},DEF.prop,S.prop||{});
 if(!LS.get('urn.settings',{}).lim)S.lim=S.showLim===false?'none':'R';
@@ -1613,7 +1613,7 @@ function propBottom(){const q=PS();if(q.bottom==='none')return null;if(q.bottom=
 function propWalls(){const q=PS();return(q.walls||[]).map(w=>({t:w.t,pos:w.t==='y'?(w.side==='beyond'?(+q.dcpa||0)+(+w.d||0):-(+w.d||0)):(w.side==='astern'?-(+w.d||0):(+w.d||0)),R:w.mat==='custom'?Math.min(1,Math.max(0,+w.R||0)):WALLMAT[w.mat].R}))}
 function propEnv(){const q=PS(),B=propBottom();return{bottom:B,H:B?Math.max(1,+q.H||100):Infinity,sig:Math.max(0,(+q.Hs||0)/4),walls:propWalls(),cw:CW}}
 function propBands(){return BANDS.filter(b=>b.fc>=9&&b.fc<=Math.min(20500,(+PS().fmax||10000)*1.12))}
-let propRes=null,propMap=null,propGen=0,propT=0,nChart=null,propRO=null;const propRange={TL:null,N:null};
+let propRes=null,propMap=null,propGen=0,propT=0,nChart=null,propRO=null;const propRange={TL:null,N:null};let propSelF=null;
 function propErr(){const q=PS(),hy=propHyds(),zs=propZs();
   if(!(+q.dcpa>1))return'Indica una distancia en el CPA mayor de 1 m.';if(!hy.length)return'Indica la profundidad de al menos un hidrófono.';
   if(!(zs>0))return'La profundidad de la fuente debe ser mayor que 0 (indica el calado).';
@@ -1729,7 +1729,7 @@ function renderPropResults(err){
     ${R.q.ref==='sl'?`<div class="note">Nivel de fuente monopolar: N quita también el efecto de la superficie. Por debajo de unos <b>${fmtLog(Math.round(fL))} Hz</b> la fuente a ${fmt(R.zs,1)} m y su imagen en la superficie se cancelan (dipolo, efecto Lloyd), así que N &gt; 20. <b>No uses este N para comparar con DNV o ICES.</b></div>`
       :`<div class="note">Nivel radiado: el efecto de la superficie se mantiene, como en ISO 17208-1, DNV e ICES. N solo corrige lo que el fondo y las paredes añaden o quitan respecto a aguas profundas: N = 20 significa que el entorno no influye.</div>`}
     <div class="note">r en el CPA: ${R.rows.map(r=>`${fmt(r.r0,1)} m (H a ${r.z} m)`).join(' · ')}.</div>
-    <div class="cbox"><div class="ctool"><span class="t">N por tercio de octava</span>
+    <div class="cbox"><div class="ctool"><span class="t">Por tercio de octava</span><select id="n-chartq" class="limsel" aria-label="Magnitud de la gráfica"><option value="N" ${PS().chartQ!=='TL'?'selected':''}>N</option><option value="TL" ${PS().chartQ==='TL'?'selected':''}>Pérdida TL (dB)</option></select>
       <button class="btn sm pri" id="n-apply" ${applied?'disabled':''}>${applied?'En uso en el procesado':'Usar este N en el procesado'}</button><button class="btn sm" id="n-copyc">Copiar imagen</button><button class="btn sm" id="n-copyt">Copiar tabla</button></div>
       <div class="chart" id="c-n"></div></div>
   </section>
@@ -1758,15 +1758,8 @@ function renderPropResults(err){
     <p>N<sub>DWL</sub> se obtiene con 15 posiciones del barco en la ventana: es el N que hace que el promedio de |p|²·r<sup>N/10</sup> (o |p|² y r<sub>CPA</sub> si no se corrige con r(t)) devuelva exactamente el nivel de fuente.</p>
     <p>Límites: fondo plano y homogéneo, agua isoveloz (1500 m/s), fuente puntual. No hay ondas de cabeza ni modos evanescentes, que pueden pesar por debajo de unos 20 Hz en aguas someras a más de unos cientos de metros. Para las distancias de una medida de URN (decenas a cientos de metros) es una aproximación adecuada.</p>
   </details>`;
-  // gráfica N
-  const t=T(),ser=R.rows.map((r,i)=>({type:'line',x:fc,y:r.Nwin,color:i+1,w:1.8,label:`H ${r.z} m · DWL`}));
-  R.rows.forEach((r,i)=>ser.push({type:'line',x:fc,y:r.Ncpa,color:i+1,w:1.1,dash:[4,3],label:`H ${r.z} m · CPA`}));
-  if(R.rows.length>1)ser.push({type:'line',x:fc,y:meanN,color:'ink',w:2.8,label:S.lang==='es'?'Media':'Mean'});
-  const cN=fc.map(f=>Nf(f,R.hyds[0]));ser.push({type:'line',x:fc,y:cN,color:'ink2',w:1.6,dash:[8,5],label:S.Nmode==='model'?(S.lang==='es'?'N en uso (modelo)':'N in use (model)'):(S.lang==='es'?'N en uso (lineal)':'N in use (linear)')});
-  ser.push({type:'line',x:[fc[0],fc[fc.length-1]],y:[20,20],color:'lim',w:1,dash:[2,4],label:'N = 20',hover:false});
-  const all=ser.flatMap(s=>s.y).filter(fin);
-  nChart=mkChart('c-n',{});nChart.set({title:(S.lang==='es'?'N EFECTIVO EN N·log10(r) · ':'EFFECTIVE N IN N·log10(r) · ')+(R.q.ref==='sl'?(S.lang==='es'?'NIVEL DE FUENTE MONOPOLAR':'MONOPOLE SOURCE LEVEL'):(S.lang==='es'?'NIVEL RADIADO':'RADIATED NOISE LEVEL')),xlabel:t.freq,ylabel:'N',xlog:true,xname:'f (Hz)',ydec:1,
-    xlim:[fc[0]*0.95,fc[fc.length-1]*1.05],ylim:[Math.min(0,Math.floor(Math.min(...all)/5)*5),Math.max(30,Math.ceil(Math.max(...all)/5)*5)],series:ser});
+  drawNChart(R,fc,meanN);
+  $('#n-chartq').onchange=e=>{PS().chartQ=e.target.value;saveS();drawNChart(R,fc,meanN)};
   $('#n-copyc').onclick=()=>copyChart(nChart);$('#n-copyt').onclick=()=>copyText(propTable(true),'Tabla de N');
   $('#n-copym').onclick=()=>{if(!propMap){toast('El mapa aún no está calculado');return}const cv=document.createElement('canvas');cv.width=2200;cv.height=1040;const c=cv.getContext('2d');c.scale(2,2);drawMapTo(c,1100,520,EXPORT_PAL);
     try{navigator.clipboard.write([new ClipboardItem({'image/png':new Promise(r=>cv.toBlob(r,'image/png'))})]).then(()=>toast('Imagen copiada: pégala en Word con Ctrl+V'),()=>showImg(cv))}catch(e){showImg(cv)}};
@@ -1774,7 +1767,7 @@ function renderPropResults(err){
   {const sl=$('#n-mapfc');let slT=0;
     const showF=()=>{const i=+sl.value,f=fc[i];$('#n-mapfcl').textContent=`${nomOf(f)} Hz`;
       $('#n-fread').innerHTML=`<b>${nomOf(f)} Hz</b>${R.rows.length>1?` · N̄<sub>DWL</sub> = <b>${fmt(meanN[i],1)}</b>`:''} · ${R.rows.map(r=>`H ${r.z} m: N<sub>DWL</sub> ${fmt(r.Nwin[i],1)}, N<sub>CPA</sub> ${fmt(r.Ncpa[i],1)}, TL<sub>CPA</sub> ${fmt(r.TL[i],1)} dB`).join(' · ')}`;
-      if(nChart&&nChart.d){nChart.d.vlines=[{x:f,color:'ink2',w:1.5,dash:[3,3]}];nChart.draw()}};
+      propSelF=f;if(nChart&&nChart.d){nChart.d.vlines=[{x:f,color:'ink2',w:1.5,dash:[3,3]}];nChart.draw()}};
     sl.addEventListener('input',()=>{showF();clearTimeout(slT);slT=setTimeout(()=>{PS().mapFc=fc[+sl.value];saveS();runMap(propGen)},250)});
     showF();}
   $('#n-mapmode').onchange=e=>{PS().mapMode=e.target.value;saveS();drawPropMap()};
@@ -1795,6 +1788,27 @@ function renderPropResults(err){
     propRange[g.mode]=[lo,hi];drawPropMap()},{passive:false});
   if(propMap)drawPropMap();
   if(propRO)propRO.disconnect();propRO=new ResizeObserver(()=>{if(propMap)drawPropMap()});propRO.observe($('#n-map'));
+}
+function drawNChart(R,fc,meanN){
+  const t=T(),es=S.lang==='es',ser=[];let title,ylabel,ylim;
+  if(PS().chartQ==='TL'){
+    R.rows.forEach((r,i)=>ser.push({type:'line',x:fc,y:r.TL,color:i+1,w:1.8,label:`H ${r.z} m · TL CPA`}));
+    R.rows.forEach((r,i)=>ser.push({type:'line',x:fc,y:r.TLwin,color:i+1,w:1.1,dash:[4,3],label:`H ${r.z} m · TL ${es?'medio DWL':'DWL mean'}`}));
+    R.rows.forEach((r,i)=>ser.push({type:'line',x:[fc[0],fc[fc.length-1]],y:[20*log10(r.r0),20*log10(r.r0)],color:i+1,w:1,dash:[1,4],label:`20·log r (${fmt(r.r0,1)} m)`,hover:false}));
+    R.rows.forEach((r,i)=>ser.push({type:'line',x:fc,y:fc.map(f=>Nf(f,r.z)*log10(r.r0)),color:'ink2',w:1.4,dash:[8,5],label:(es?'N en uso · log r, H ':'N in use · log r, H ')+r.z+' m'}));
+    const all=ser.flatMap(s=>s.y).filter(fin);ylim=[Math.floor(Math.min(...all)/5)*5,Math.ceil(Math.max(...all)/5)*5];
+    title=(es?'PÉRDIDA DE TRANSMISIÓN TL (re 1 m)':'TRANSMISSION LOSS TL (re 1 m)');ylabel='TL (dB)';
+  }else{
+    R.rows.forEach((r,i)=>ser.push({type:'line',x:fc,y:r.Nwin,color:i+1,w:1.8,label:`H ${r.z} m · DWL`}));
+    R.rows.forEach((r,i)=>ser.push({type:'line',x:fc,y:r.Ncpa,color:i+1,w:1.1,dash:[4,3],label:`H ${r.z} m · CPA`}));
+    if(R.rows.length>1)ser.push({type:'line',x:fc,y:meanN,color:'ink',w:2.8,label:es?'Media':'Mean'});
+    ser.push({type:'line',x:fc,y:fc.map(f=>Nf(f,R.hyds[0])),color:'ink2',w:1.6,dash:[8,5],label:S.Nmode==='model'?(es?'N en uso (modelo)':'N in use (model)'):(es?'N en uso (lineal)':'N in use (linear)')});
+    ser.push({type:'line',x:[fc[0],fc[fc.length-1]],y:[20,20],color:'lim',w:1,dash:[2,4],label:'N = 20',hover:false});
+    const all=ser.flatMap(s=>s.y).filter(fin);ylim=[Math.min(0,Math.floor(Math.min(...all)/5)*5),Math.max(30,Math.ceil(Math.max(...all)/5)*5)];
+    title=(es?'N EFECTIVO EN N·log10(r) · ':'EFFECTIVE N IN N·log10(r) · ')+(R.q.ref==='sl'?(es?'NIVEL DE FUENTE MONOPOLAR':'MONOPOLE SOURCE LEVEL'):(es?'NIVEL RADIADO':'RADIATED NOISE LEVEL'));ylabel='N';
+  }
+  nChart=mkChart('c-n',{});nChart.set({title,xlabel:t.freq,ylabel,xlog:true,xname:'f (Hz)',ydec:1,xlim:[fc[0]*0.95,fc[fc.length-1]*1.05],ylim,series:ser,
+    vlines:propSelF?[{x:propSelF,color:'ink2',w:1.5,dash:[3,3]}]:[]});
 }
 function propKey(){return JSON.stringify(propRes?propRes.q:PS())}
 function propTable(tsv){
