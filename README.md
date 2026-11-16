@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.5.4**
+**Versión 1.6.0**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -81,6 +81,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.6.0**: tercios de octava normalizados IEC 61260-1 (base 10, fc = 1000·10^(n/10), rotulados 10, 12,5, 16 … 31,5 … Hz) en todo el procesado y en la propagación; deslizador de frecuencia en la pestaña Propagación con lectura de N y TL de la banda y marca en la gráfica de N.
 - **1.5.4**: promediado espacial en la estimación de N: profundidad del hidrófono ±Δz (5 puntos, por defecto ±2 m), distancia ±Δd y profundidad de la fuente ±Δz (3 puntos cada uno).
 - **1.5.3**: mapa de propagación con escala de color jet (o viridis), zoom de la escala de niveles con la rueda del ratón, desplazamiento con Mayús + rueda, límites editables y escala automática con doble clic.
 - **1.5.2**: uso sin conexión más robusto: con red lenta se abre la copia guardada a los 3,5 s, las fuentes se guardan al instalar e indicador «Disponible sin conexión» / «Sin conexión».
