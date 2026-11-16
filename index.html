@@ -190,7 +190,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.5.3</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.5.4</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <div class="projbar">
     <span class="proj" id="projName" title="Proyecto actual"></span>
     <button class="btn sm" id="b-new" title="Empezar un proyecto vacío">Nuevo</button>
@@ -250,7 +250,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.5.3';
+const APP_VERSION='1.5.4';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -591,7 +591,7 @@ const log10=Math.log10;
 /* =====================================================================
    Ajustes
    ===================================================================== */
-const DEF={Nmode:'lin',Nmodel:null,prop:{dcpa:50,L:90,draft:3,zsAuto:true,zs:2.1,hyds:'20, 40',bottom:'sand',H:100,cb:1650,rhob:1.9,ab:0.8,Hs:0.5,walls:[],mapFc:50.8,mapMode:'TL',rcorr:true,fmax:10000,ref:'rnl',cmap:'jet'},dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
+const DEF={Nmode:'lin',Nmodel:null,prop:{dcpa:50,L:90,draft:3,zsAuto:true,zs:2.1,hyds:'20, 40',bottom:'sand',H:100,cb:1650,rhob:1.9,ab:0.8,Hs:0.5,walls:[],mapFc:50.8,mapMode:'TL',rcorr:true,fmax:10000,ref:'rnl',cmap:'jet',avz:2,avd:0,avs:0},dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
   showLim:true,lim:'R',tzMode:'madrid',tzH:2,lang:'en',fmin:10,fmax:50000,ymin:50,ymax:170,symin:100,symax:160,snr:3,bg0:0,bg1:5,keep:2,depth0:40};
 let S=Object.assign({},DEF,LS.get('urn.settings',{}));S.prop=Object.assign({},DEF.prop,S.prop||{});
 if(!LS.get('urn.settings',{}).lim)S.lim=S.showLim===false?'none':'R';
@@ -1551,13 +1551,17 @@ self.onmessage=e=>{const m=e.data;try{
     if(!xs.some(x=>x===0))xs.push(0);xs.sort((a,b)=>a-b);
     const rows=[];let done=0;const tot=g.hyds.length*xs.length;const rnl=m.ref==='rnl',envD={...env,H:Infinity,B:null,walls:[]};
     for(const zr of g.hyds){
-      const Ps=xs.map(x=>{const P=paths(0,0,zr,{x,y:g.dcpa,z:g.zs},env);done++;self.postMessage({id:m.id,progress:0.3*done/tot});return P});
-      const Pd=rnl?xs.map(x=>paths(0,0,zr,{x,y:g.dcpa,z:g.zs},envD)):null;
+      const offs=(d,n)=>d>0?Array.from({length:n},(_,i)=>-d+2*d*i/(n-1)):[0];
+      const combos=[];for(const a of offs(g.avz||0,5))for(const b of offs(g.avd||0,3))for(const c of offs(g.avs||0,3)){const z=zr+a,y=g.dcpa+b,zs=g.zs+c;if(z<=0.2||zs<=0.1||y<=1||(isFinite(env.H)&&(z>=env.H||zs>=env.H)))continue;combos.push({z,y,zs})}
+      if(!combos.length)combos.push({z:zr,y:g.dcpa,zs:g.zs});
+      const Ps=xs.map(x=>{const L=combos.map(q=>paths(0,0,q.z,{x,y:q.y,z:q.zs},env));done++;self.postMessage({id:m.id,progress:0.3*done/tot});return L});
+      const Pd=rnl?xs.map(x=>combos.map(q=>paths(0,0,q.z,{x,y:q.y,z:q.zs},envD))):null;
+      const bE=(L,b)=>L.reduce((a,P)=>a+bandE(P,b,m.nf,env.cw,env.sig),0)/L.length;
       const rr=xs.map(x=>Math.hypot(x,g.dcpa,zr-g.zs)),i0=xs.indexOf(0),r0=rr[i0];
       const row={z:zr,r0,TL:[],Ncpa:[],Nwin:[],TLwin:[]};
       m.bands.forEach((b,ib)=>{
-        const E=Ps.map(P=>bandE(P,b,m.nf,env.cw,env.sig));
-        const Ed=rnl?Pd.map(P=>bandE(P,b,m.nf,env.cw,env.sig)):null;
+        const E=Ps.map(L=>bE(L,b));self.postMessage({id:m.id,progress:0.3+0.7*((rows.length+ib/m.bands.length)/g.hyds.length)});
+        const Ed=rnl?Pd.map(L=>bE(L,b)):null;
         const TL0=-10*Math.log10(E[i0]);row.TL.push(TL0);
         row.Ncpa.push(rnl?20+(TL0+10*Math.log10(Ed[i0]))/Math.log10(r0):TL0/Math.log10(r0));
         const Em=E.reduce((a,v)=>a+v,0)/E.length;row.TLwin.push(-10*Math.log10(Em));
@@ -1615,7 +1619,7 @@ async function runProp(){
   const setSt=t=>{const e=$('#n-stat');if(e)e.innerHTML=t};
   setSt('<span>Calculando…</span>');
   try{
-    const r=await mcall({cmd:'bands',env,geo:{dcpa:+q.dcpa,L:Math.max(0,+q.L||0),zs,hyds,npos:15},bands:bands.map(b=>({fc:b.fc,lo:b.lo,hi:b.hi})),nf:16,rcorr:!!q.rcorr,ref:q.ref==='sl'?'sl':'rnl'},
+    const r=await mcall({cmd:'bands',env,geo:{dcpa:+q.dcpa,L:Math.max(0,+q.L||0),zs,hyds,npos:15,avz:Math.max(0,+q.avz||0),avd:Math.max(0,+q.avd||0),avs:Math.max(0,+q.avs||0)},bands:bands.map(b=>({fc:b.fc,lo:b.lo,hi:b.hi})),nf:16,rcorr:!!q.rcorr,ref:q.ref==='sl'?'sl':'rnl'},
       p=>{if(gen===propGen)setSt(`<span>Calculando bandas… ${Math.round(p*100)} %</span>`)});
     if(gen!==propGen)return;
     propRes={...r,bands:bands.map(b=>b.fc),zs,hyds,env,q:JSON.parse(JSON.stringify(q))};renderPropResults();
@@ -1673,6 +1677,10 @@ function renderPropForm(){
       :'<div class="note">Sin paredes: mar abierto.</div>'}
     <div class="note">Paredes verticales de toda la profundidad, planas e infinitas, con un coeficiente de reflexión fijo. Se incluye la reflexión en cada pared y, si hay una paralela y una perpendicular, en la esquina.</div>
   </section>
+  <section class="blk"><h2>Promediado espacial</h2>
+    <div class="grid-f">${nfld('n-avz','Hidrófono ±Δz',q.avz,'m','0.5','min="0"')}${nfld('n-avd','d<sub>CPA</sub> ±Δd',q.avd,'m','1','min="0"')}${nfld('n-avs','Fuente ±Δz',q.avs,'m','0.1','min="0"')}</div>
+    <div class="note">Media de energía en ${[(+q.avz>0?5:1),(+q.avd>0?3:1),(+q.avs>0?3:1)].reduce((a,b)=>a*b,1)} puntos alrededor de cada posición nominal: 5 profundidades del hidrófono, 3 distancias y 3 profundidades de la fuente (cada uno solo si su ± es mayor que 0). Representa el movimiento del hidrófono y de la boya y que la hélice no es un punto. Suaviza los picos de interferencia de la curva de N; 0 desactiva cada uno. Cuantos más puntos, más tarda el cálculo.</div>
+  </section>
   <section class="blk"><h2>Cálculo</h2>
     <label class="fld"><span class="in"><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="n-rcorr" ${q.rcorr?'checked':''}>Promediar en la DWL corrigiendo cada posición con r(t), como el procesado sincronizado</label></span></label>
     <div class="grid-f"><label class="fld">Hasta<span class="in"><select id="n-fmax">${[2000,5000,10000,20000].map(v=>`<option value="${v}" ${+q.fmax===v?'selected':''}>${fmtLog(v)} Hz</option>`).join('')}</select></span></label></div>
@@ -1682,7 +1690,7 @@ function renderPropForm(){
 function bindPropForm(){
   const q=PS(),upd=()=>{saveS();scheduleProp()};
   const num=(id,k,re)=>{const e=$('#'+id);if(e)e.addEventListener('change',()=>{const v=parseFloat(e.value);if(fin(v)){q[k]=v;if(re)renderPropForm();upd()}})};
-  num('n-dcpa','dcpa');num('n-L','L');num('n-draft','draft',true);num('n-zs','zs');num('n-H','H');num('n-cb','cb',true);num('n-rhob','rhob');num('n-ab','ab');num('n-hs','Hs');
+  num('n-dcpa','dcpa');num('n-L','L');num('n-draft','draft',true);num('n-zs','zs');num('n-H','H');num('n-cb','cb',true);num('n-rhob','rhob');num('n-ab','ab');num('n-hs','Hs');num('n-avz','avz',true);num('n-avd','avd',true);num('n-avs','avs',true);
   $$('#nform input[name="n-ref"]').forEach(r=>r.onchange=()=>{if(r.checked){q.ref=r.value;upd()}});
   $('#n-zsauto').onchange=e=>{q.zsAuto=e.target.checked;if(!q.zsAuto)q.zs=+(0.7*q.draft).toFixed(2);renderPropForm();upd()};
   $('#n-hyds').onchange=e=>{q.hyds=e.target.value;upd()};
@@ -1781,7 +1789,8 @@ function propTable(tsv){
     ${fc.map((f,i)=>`<tr><td>${f<100?f.toFixed(1):f.toFixed(0)}</td>${R.rows.map(r=>`<td>${fmt(r.TL[i],1)}</td><td>${fmt(r.Ncpa[i],1)}</td><td><b>${fmt(r.Nwin[i],1)}</b></td>`).join('')}${R.rows.length>1?`<td><b>${fmt(R.rows.reduce((a,r)=>a+r.Nwin[i],0)/R.rows.length,1)}</b></td>`:''}</tr>`).join('')}</tbody></table>`;
 }
 function propDesc(){const R=propRes,q=R.q,B=R.env.bottom;const w=(q.walls||[]).length;
-  return `${q.ref==='sl'?'nivel de fuente monopolar':'nivel radiado'}, fondo ${BOTTOMS[q.bottom].es.toLowerCase()}${B?' a '+q.H+' m':''}, fuente a ${fmt(R.zs,1)} m, dCPA ${q.dcpa} m, DWL ${q.L} m, Hs ${q.Hs} m${w?`, ${w} pared${w>1?'es':''}`:''}`}
+  const av=[+q.avz>0?`hidrófono ±${q.avz} m`:'',+q.avd>0?`dCPA ±${q.avd} m`:'',+q.avs>0?`fuente ±${q.avs} m`:''].filter(Boolean);
+  return `${q.ref==='sl'?'nivel de fuente monopolar':'nivel radiado'}${av.length?' (promedio '+av.join(', ')+')':''}, fondo ${BOTTOMS[q.bottom].es.toLowerCase()}${B?' a '+q.H+' m':''}, fuente a ${fmt(R.zs,1)} m, dCPA ${q.dcpa} m, DWL ${q.L} m, Hs ${q.Hs} m${w?`, ${w} pared${w>1?'es':''}`:''}`}
 function applyPropN(){
   const R=propRes;if(!R)return;
   S.Nmodel={id:Date.now().toString(36),key:propKey(),fc:R.bands.slice(),rows:R.rows.map(r=>({z:r.z,N:r.Nwin.map(v=>+v.toFixed(3))})),desc:propDesc()};
