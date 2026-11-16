@@ -194,7 +194,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.6.1</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.6.2</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <div class="projbar">
     <span class="proj" id="projName" title="Proyecto actual"></span>
     <button class="btn sm" id="b-new" title="Empezar un proyecto vacío">Nuevo</button>
@@ -254,7 +254,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.6.1';
+const APP_VERSION='1.6.2';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -595,7 +595,7 @@ const log10=Math.log10;
 /* =====================================================================
    Ajustes
    ===================================================================== */
-const DEF={Nmode:'lin',Nmodel:null,prop:{dcpa:50,L:90,draft:3,zsAuto:true,zs:2.1,hyds:'20, 40',bottom:'sand',H:100,cb:1650,rhob:1.9,ab:0.8,Hs:0.5,walls:[],mapFc:50,mapMode:'TL',rcorr:true,fmax:10000,ref:'rnl',cmap:'jet',avz:2,avd:0,avs:0,chartQ:'N'},dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
+const DEF={Nmode:'lin',Nmodel:null,prop:{dcpa:50,L:90,draft:3,zsAuto:true,zs:2.1,hyds:'20, 40',bottom:'sand',H:100,cb:1650,rhob:1.9,ab:0.8,Hs:0.5,walls:[],mapFc:50,mapMode:'TL',rcorr:true,fmax:10000,ref:'rnl',cmap:'jet',avz:2,avd:0,avs:0,chartQ:'N',dwlMode:'settings',ang:30,T:20,v:7},dwlMode:'m',dwl:90,dwlAng:30,block:0.1,trendWin:10,hp:200,dfT:1,N1:11,f1:10,N2:20,f2:100,zs:0,
   showLim:true,lim:'R',tzMode:'madrid',tzH:2,lang:'en',fmin:10,fmax:50000,ymin:50,ymax:170,symin:100,symax:160,snr:3,bg0:0,bg1:5,keep:2,depth0:40};
 let S=Object.assign({},DEF,LS.get('urn.settings',{}));S.prop=Object.assign({},DEF.prop,S.prop||{});
 if(!LS.get('urn.settings',{}).lim)S.lim=S.showLim===false?'none':'R';
@@ -1607,6 +1607,10 @@ const BOTTOMS={none:{es:'Sin fondo (aguas profundas)'},clay:{es:'Arcilla',c:1500
   chalk:{es:'Creta',c:2400,rho:2.2,a:0.2},limestone:{es:'Caliza',c:3000,rho:2.4,a:0.1},basalt:{es:'Basalto',c:5250,rho:2.7,a:0.1},custom:{es:'Personalizado'}};
 const WALLMAT={quay:{es:'Muelle de hormigón o acero',R:0.9},rock:{es:'Costa rocosa',R:0.7},rubble:{es:'Escollera',R:0.5},beach:{es:'Playa o talud absorbente',R:0.2},custom:{es:'Personalizado'}};
 const PS=()=>S.prop;
+function propL(){const q=PS(),d=+q.dcpa||0;let m=q.dwlMode;if(m==='settings')return S.dwlMode==='deg'?2*d*Math.tan(S.dwlAng*Math.PI/180):Math.max(0,+S.dwl||0);
+  if(m==='ang')return 2*d*Math.tan(Math.min(80,Math.max(0,+q.ang||0))*Math.PI/180);if(m==='time')return Math.max(0,(+q.T||0)*(+q.v||0)*KN);return Math.max(0,+q.L||0)}
+function dwlInfo(){const q=PS(),L=propL(),d=+q.dcpa||0,v=+q.v||0,ang=d>0?Math.atan(L/2/d)*180/Math.PI:NaN;
+  return `DWL = <b>${fmt(L,1)} m</b> · ±${fmt(ang,1)}° desde el CPA${v>0?` · ${fmt(L/(v*KN),1)} s a ${fmt(v,1)} kn`:''}`}
 function propZs(){const q=PS();return q.zsAuto?+(0.7*(+q.draft||0)).toFixed(2):+q.zs||0}
 function propHyds(){return String(PS().hyds||'').split(/[;,\s]+/).map(v=>parseFloat(v.replace(',','.'))).filter(v=>fin(v)&&v>0).slice(0,6)}
 function propBottom(){const q=PS();if(q.bottom==='none')return null;if(q.bottom==='custom')return{c:+q.cb||1650,rho:+q.rhob||1.9,a:+q.ab||0.5};return BOTTOMS[q.bottom]}
@@ -1626,7 +1630,7 @@ async function runProp(){
   const setSt=t=>{const e=$('#n-stat');if(e)e.innerHTML=t};
   setSt('<span>Calculando…</span>');
   try{
-    const r=await mcall({cmd:'bands',env,geo:{dcpa:+q.dcpa,L:Math.max(0,+q.L||0),zs,hyds,npos:15,avz:Math.max(0,+q.avz||0),avd:Math.max(0,+q.avd||0),avs:Math.max(0,+q.avs||0)},bands:bands.map(b=>({fc:b.fc,lo:b.lo,hi:b.hi})),nf:16,rcorr:!!q.rcorr,ref:q.ref==='sl'?'sl':'rnl'},
+    const r=await mcall({cmd:'bands',env,geo:{dcpa:+q.dcpa,L:propL(),zs,hyds,npos:15,avz:Math.max(0,+q.avz||0),avd:Math.max(0,+q.avd||0),avs:Math.max(0,+q.avs||0)},bands:bands.map(b=>({fc:b.fc,lo:b.lo,hi:b.hi})),nf:16,rcorr:!!q.rcorr,ref:q.ref==='sl'?'sl':'rnl'},
       p=>{if(gen===propGen)setSt(`<span>Calculando bandas… ${Math.round(p*100)} %</span>`)});
     if(gen!==propGen)return;
     propRes={...r,bands:bands.map(b=>b.fc),zs,hyds,env,q:JSON.parse(JSON.stringify(q))};renderPropResults();
@@ -1657,7 +1661,14 @@ function renderPropForm(){
     <label class="fld" style="flex-direction:row;gap:8px;align-items:flex-start;color:var(--ink)"><input type="radio" name="n-ref" value="sl" ${q.ref==='sl'?'checked':''} style="margin-top:3px"><span><b>También la superficie</b> · nivel de fuente monopolar (ISO 17208-2). Da N &gt; 20 a baja frecuencia. No es comparable con las curvas DNV/ICES.</span></label>
   </section>
   <section class="blk"><h2>Geometría de la medida<span class="aside"><button class="btn sm" id="n-from" ${cp&&fin(cp.dcpa)?'':'disabled'} title="Copia d_CPA, DWL y profundidades de los hidrófonos de la pasada seleccionada">Tomar de la pasada</button></span></h2>
-    <div class="grid-f">${nfld('n-dcpa','d<sub>CPA</sub> horizontal',q.dcpa,'m','1','min="1"')}${nfld('n-L','Ventana DWL',q.L,'m','1','min="0"')}</div>
+    <div class="grid-f">${nfld('n-dcpa','d<sub>CPA</sub> horizontal',q.dcpa,'m','1','min="1"')}${nfld('n-v','Velocidad',q.v,'kn','0.1','min="0"')}</div>
+    <div class="grid-f"><label class="fld"><span>Ventana DWL</span><span class="in"><select id="n-dwlmode">
+        <option value="settings" ${q.dwlMode==='settings'?'selected':''}>Como en Ajustes (${S.dwlMode==='deg'?'±'+S.dwlAng+'°':S.dwl+' m'})</option>
+        <option value="len" ${q.dwlMode==='len'?'selected':''}>Longitud fija</option>
+        <option value="ang" ${q.dwlMode==='ang'?'selected':''}>Ángulo ± desde el CPA</option>
+        <option value="time" ${q.dwlMode==='time'?'selected':''}>Duración a la velocidad</option></select></span></label>
+      ${q.dwlMode==='len'?nfld('n-L','Longitud',q.L,'m','1','min="0"'):''}${q.dwlMode==='ang'?nfld('n-ang','Ángulo ±',q.ang,'°','1','min="1" max="80"'):''}${q.dwlMode==='time'?nfld('n-T','Duración',q.T,'s','1','min="0"'):''}</div>
+    <div class="note" id="n-dwlinfo">${dwlInfo()}</div>
     <div class="grid-f">${nfld('n-draft','Calado del barco',q.draft,'m','0.1','min="0"')}
       <label class="fld">Profundidad de la fuente<span class="in"><input type="number" id="n-zs" value="${propZs()}" step="0.1" min="0" ${q.zsAuto?'disabled':''}><span class="unit">m</span></span></label>
       <label class="fld">&nbsp;<span class="in"><label style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="n-zsauto" ${q.zsAuto?'checked':''}>0,7 × calado</label></span></label></div>
@@ -1697,7 +1708,9 @@ function renderPropForm(){
 function bindPropForm(){
   const q=PS(),upd=()=>{saveS();scheduleProp()};
   const num=(id,k,re)=>{const e=$('#'+id);if(e)e.addEventListener('change',()=>{const v=parseFloat(e.value);if(fin(v)){q[k]=v;if(re)renderPropForm();upd()}})};
-  num('n-dcpa','dcpa');num('n-L','L');num('n-draft','draft',true);num('n-zs','zs');num('n-H','H');num('n-cb','cb',true);num('n-rhob','rhob');num('n-ab','ab');num('n-hs','Hs');num('n-avz','avz',true);num('n-avd','avd',true);num('n-avs','avs',true);
+  num('n-dcpa','dcpa');num('n-L','L');num('n-ang','ang');num('n-T','T');num('n-v','v');
+  $('#n-dwlmode').onchange=e=>{q.dwlMode=e.target.value;renderPropForm();upd()};
+  ['n-dcpa','n-L','n-ang','n-T','n-v'].forEach(id=>{const e=$('#'+id);if(e)e.addEventListener('change',()=>{const i=$('#n-dwlinfo');if(i)i.innerHTML=dwlInfo()})});num('n-draft','draft',true);num('n-zs','zs');num('n-H','H');num('n-cb','cb',true);num('n-rhob','rhob');num('n-ab','ab');num('n-hs','Hs');num('n-avz','avz',true);num('n-avd','avd',true);num('n-avs','avs',true);
   $$('#nform input[name="n-ref"]').forEach(r=>r.onchange=()=>{if(r.checked){q.ref=r.value;upd()}});
   $('#n-zsauto').onchange=e=>{q.zsAuto=e.target.checked;if(!q.zsAuto)q.zs=+(0.7*q.draft).toFixed(2);renderPropForm();upd()};
   $('#n-hyds').onchange=e=>{q.hyds=e.target.value;upd()};
@@ -1709,7 +1722,7 @@ function bindPropForm(){
   $$('#nform .wall [data-wf]').forEach(inp=>inp.addEventListener('change',()=>{const w=q.walls[+inp.closest('.wall').dataset.w],k=inp.dataset.wf;
     if(k==='d'||k==='R'){const v=parseFloat(inp.value);if(!fin(v))return;w[k]=v}else w[k]=inp.value;
     if(k==='t')w.side=w.t==='y'?'behind':'ahead';if(['t','side','mat'].includes(k))renderPropForm();upd()}));
-  const fr=$('#n-from');if(fr)fr.onclick=()=>{const p=cur();if(!p||!fin(p.dcpa))return;q.dcpa=+p.dcpa.toFixed(1);q.L=+dwlLen(p).toFixed(1);
+  const fr=$('#n-from');if(fr)fr.onclick=()=>{const p=cur();if(!p||!fin(p.dcpa))return;q.dcpa=+p.dcpa.toFixed(1);q.L=+dwlLen(p).toFixed(1);if(fin(vKn(p)))q.v=+vKn(p).toFixed(1);
     const z=p.chans.filter(c=>c.use).map(c=>+c.depth||0).filter(v=>v>0);if(z.length)q.hyds=z.join(', ');q.rcorr=!!(p.res&&p.res.rcorr)||q.rcorr;
     renderPropForm();upd();toast(`Geometría tomada de «${p.name}»`)};
 }
@@ -1820,7 +1833,7 @@ function propTable(tsv){
 }
 function propDesc(){const R=propRes,q=R.q,B=R.env.bottom;const w=(q.walls||[]).length;
   const av=[+q.avz>0?`hidrófono ±${q.avz} m`:'',+q.avd>0?`dCPA ±${q.avd} m`:'',+q.avs>0?`fuente ±${q.avs} m`:''].filter(Boolean);
-  return `${q.ref==='sl'?'nivel de fuente monopolar':'nivel radiado'}${av.length?' (promedio '+av.join(', ')+')':''}, fondo ${BOTTOMS[q.bottom].es.toLowerCase()}${B?' a '+q.H+' m':''}, fuente a ${fmt(R.zs,1)} m, dCPA ${q.dcpa} m, DWL ${q.L} m, Hs ${q.Hs} m${w?`, ${w} pared${w>1?'es':''}`:''}`}
+  return `${q.ref==='sl'?'nivel de fuente monopolar':'nivel radiado'}${av.length?' (promedio '+av.join(', ')+')':''}, fondo ${BOTTOMS[q.bottom].es.toLowerCase()}${B?' a '+q.H+' m':''}, fuente a ${fmt(R.zs,1)} m, dCPA ${q.dcpa} m, DWL ${fmt(propL(),0)} m, Hs ${q.Hs} m${w?`, ${w} pared${w>1?'es':''}`:''}`}
 function applyPropN(){
   const R=propRes;if(!R)return;
   S.Nmodel={id:Date.now().toString(36),key:propKey(),fc:R.bands.slice(),rows:R.rows.map(r=>({z:r.z,N:r.Nwin.map(v=>+v.toFixed(3))})),desc:propDesc()};
@@ -1868,7 +1881,7 @@ function drawMapTo(c,W,H,P){
   c.save();c.translate(16,pt+ph/2);c.rotate(-Math.PI/2);c.fillText(S.lang==='es'?'Profundidad (m)':'Depth (m)',0,0);c.restore();
 }
 function planSVG(){
-  const q=PS(),d=+q.dcpa||50,L=+q.L||0,ws=propWalls();
+  const q=PS(),d=+q.dcpa||50,L=propL(),ws=propWalls();
   const ys=[0,d,...ws.filter(w=>w.t==='y').map(w=>w.pos)],xs=[-L/2,L/2,-d,d,...ws.filter(w=>w.t==='x').map(w=>w.pos)];
   const y0=Math.min(...ys)-d*0.35,y1=Math.max(...ys)+d*0.35,x0=Math.min(...xs)-d*0.4,x1=Math.max(...xs)+d*0.4;
   const Wv=520,Hv=Math.max(140,Math.min(260,Wv*(y1-y0)/(x1-x0)));const X=x=>14+(x-x0)/(x1-x0)*(Wv-28),Y=y=>Hv-14-(y-y0)/(y1-y0)*(Hv-28);
@@ -1882,7 +1895,7 @@ function planSVG(){
     <path d="M${X(0)-12} ${Y(d)-5} L${X(0)+8} ${Y(d)-5} L${X(0)+14} ${Y(d)} L${X(0)+8} ${Y(d)+5} L${X(0)-12} ${Y(d)+5} Z" fill="var(--ink)"/>
     <line x1="${X(0)}" x2="${X(0)}" y1="${Y(d)}" y2="${Y(0)}" stroke="var(--c-cpa)" stroke-dasharray="3 3" stroke-width="1.5"/>
     <text x="${X(0)+6}" y="${(Y(d)+Y(0))/2}" font-size="11" fill="var(--ink2)">d<tspan dy="3" font-size="9">CPA</tspan><tspan dy="-3"> ${d} m</tspan></text>
-    ${L>0?`<text x="${X(L/2)}" y="${Y(d)-10}" text-anchor="end" font-size="11" fill="var(--ink2)">DWL ${L} m</text>`:''}
+    ${L>0?`<text x="${X(L/2)}" y="${Y(d)-10}" text-anchor="end" font-size="11" fill="var(--ink2)">DWL ${fmt(L,0)} m</text>`:''}
     <path d="M${X(0)} ${Y(0)-7} L${X(0)+7} ${Y(0)} L${X(0)} ${Y(0)+7} L${X(0)-7} ${Y(0)} Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="1.5"/>
     <text x="${X(0)+10}" y="${Y(0)+4}" font-size="11" fill="var(--ink2)">hidrófono</text>
     ${wl}</svg>`;

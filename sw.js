@@ -2,7 +2,7 @@
 // - Páginas propias: red primero (sin caché HTTP, para ver las versiones nuevas), pero si la red
 //   no responde en 3,5 s o no hay conexión, se sirve la copia guardada.
 // - Fuentes y otros recursos externos: copia guardada primero (no cambian).
-const CACHE = 'procesador-urn-v1.6.1';
+const CACHE = 'procesador-urn-v1.6.2';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'favicon.ico', 'icon-48.png', 'icon-64.png', 'icon-96.png', 'icon-128.png', 'icon-256.png'];
 const FONTS = 'https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap';
 const NET_TIMEOUT = 3500;
