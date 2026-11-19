@@ -2,7 +2,7 @@
 
 # Procesador URN
 
-**Versión 1.6.3**
+**Versión 1.6.4**
 
 Herramienta web (un único `index.html`, sin instalación) para procesar medidas de **ruido radiado al agua (URN)** en pruebas de mar y obtener el **nivel de fuente a 1 m** por tercios de octava.
 
@@ -55,6 +55,11 @@ La pestaña **Propagación (N)** estima, para la geometría de la medida, el N d
   - planta y tabla.
 - **«Usar este N en el procesado»:** cada hidrófono usa la curva de su profundidad (también en la corrección r(t)), y se toma la profundidad de la fuente para r. En Ajustes se puede volver al N lineal.
 
+## Uso sin conexión
+
+- **Copia en el navegador:** al abrirla una vez con internet (o al instalarla desde Chrome/Edge), la herramienta queda guardada y se abre sin red. El indicador de la cabecera dice si esa copia existe.
+- **Archivo en el ordenador** (lo más seguro si Chrome borra los datos de los sitios al cerrarse, algo habitual en equipos de empresa): pulsa el indicador de la cabecera → «Guardar la herramienta en un archivo (.html)» y ábrelo con doble clic en Chrome o Edge. Funciona todo sin internet, incluido guardar y abrir proyectos. Para actualizar, vuelve a guardarlo desde la versión publicada.
+
 ## Proyectos
 
 La herramienta se abre **en blanco**. Desde la cabecera:
@@ -81,6 +86,7 @@ Los ficheros `.mat` en formato v7.3 (HDF5) no se pueden leer: guárdalos con `sa
 
 ## Historial de versiones
 
+- **1.6.4**: la herramienta se puede guardar como archivo .html para usarla sin internet sin depender de la caché del navegador; el indicador de la cabecera muestra si existe la copia para uso sin conexión.
 - **1.6.3**: zoom vertical con la rueda (y desplazamiento con Mayús + rueda) en la gráfica de N/TL por frecuencia, con botón Auto.
 - **1.6.2**: en la pestaña Propagación, la ventana DWL puede seguir a Ajustes o definirse por longitud fija, por ángulo ± desde el CPA o por duración a la velocidad del barco; se muestra la longitud, el ángulo y la duración resultantes.
 - **1.6.1**: la gráfica de la pestaña Propagación muestra N o TL (TL en el CPA, TL medio en la DWL, 20·log r y la pérdida que aplica el N en uso).

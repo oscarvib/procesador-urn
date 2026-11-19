@@ -68,6 +68,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .netchip{font-size:12px;padding:2px 9px;border-radius:10px;border:1px solid var(--line);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
 .netchip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .netchip.ok{color:var(--good)}
+button.netchip{background:var(--panel);font:12px var(--f-body);cursor:pointer}
+button.netchip:hover{border-color:var(--accent)}
 .netchip.off{color:var(--warn);font-weight:600}
 .view-n{display:grid;grid-template-columns:360px minmax(0,1fr);gap:16px;align-items:start}
 @media (max-width:1000px){.view-n{grid-template-columns:minmax(0,1fr)}}
@@ -194,7 +196,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 
 <header class="top">
-  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.6.3</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
+  <div class="brand"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYzZhODAiLz48cGF0aCBkPSJNMTIgMjBoNDBsLTUgOUgxN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjcgMTNoMTF2N0gyN3oiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNCAzMWM1LTMgOS0zIDE0IDBzOSAzIDE0IDAgOS0zIDE0IDAgOSAzIDE0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlmZGNlYSIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjQgMzhhMTEgMTEgMCAwIDAgMTYgMCIgc3Ryb2tlLXdpZHRoPSIyLjgiLz48cGF0aCBkPSJNMTkgNDJhMTcgMTcgMCAwIDAgMjYgMCIgc3Ryb2tlLXdpZHRoPSIyLjQiIG9wYWNpdHk9Ii44Ii8+PHBhdGggZD0iTTE0IDQ2YTI0IDI0IDAgMCAwIDM2IDAiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iLjU1Ii8+PC9nPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTYiIHI9IjMuMiIgZmlsbD0iI2ZmZDE2NiIvPjwvc3ZnPg==" alt="" width="30" height="30">Procesador URN <span class="ver" id="app-ver">v1.6.4</span><small>ruido radiado al agua · nivel de fuente a 1 m</small></div>
   <div class="projbar">
     <span class="proj" id="projName" title="Proyecto actual"></span>
     <button class="btn sm" id="b-new" title="Empezar un proyecto vacío">Nuevo</button>
@@ -254,7 +256,7 @@ td.neg{color:var(--bad);font-weight:600} td.lo{color:var(--warn)}
 
 <script>
 'use strict';
-const APP_VERSION='1.6.3';
+const APP_VERSION='1.6.4';
 /* =====================================================================
    WORKER: lectura de ficheros (MAT v5/v7, UNV 58/58b, WAV), filtrado,
    RMS por bloques, tendencia, CPA y espectros de Welch.
@@ -2026,20 +2028,50 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ALLCH.forE
 
 <script>
 (function(){
-  if(!('serviceWorker' in navigator)||!location.protocol.startsWith('http'))return;
-  const had=!!navigator.serviceWorker.controller;
-  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
-  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had)toast('Hay una versión nueva de la herramienta: guarda el proyecto y recarga la página (F5)',8000)});
-  const chip=document.createElement('span');chip.className='netchip';chip.id='netchip';chip.hidden=true;
+  const chip=document.createElement('button');chip.type='button';chip.className='netchip';chip.id='netchip';
   const bar=document.querySelector('.projbar');if(bar)bar.prepend(chip);
-  let ready=false;
-  const upd=()=>{if(!navigator.onLine){chip.hidden=false;chip.className='netchip off';chip.textContent=ready?'Sin conexión · funcionando con la copia guardada':'Sin conexión';chip.title='';}
-    else if(ready){chip.hidden=false;chip.className='netchip ok';chip.textContent='Disponible sin conexión';chip.title='La herramienta está guardada en este equipo y se abre aunque no haya internet'}
-    else chip.hidden=true};
-  navigator.serviceWorker.ready.then(async()=>{try{ready=!!(await caches.match('index.html'))||!!(await caches.match('./'))}catch(e){}upd();
-    if(!ready)setTimeout(async()=>{try{ready=!!(await caches.match('index.html'))}catch(e){}upd()},4000)});
+  const isFile=location.protocol==='file:';let state=isFile?'file':'wait';
+  const upd=()=>{
+    if(state==='file'){chip.className='netchip ok';chip.textContent='Copia local · funciona sin internet';return}
+    if(!navigator.onLine){chip.className='netchip off';chip.textContent=state==='ready'?'Sin conexión · usando la copia guardada':'Sin conexión';return}
+    if(state==='ready'){chip.className='netchip ok';chip.textContent='Disponible sin conexión'}
+    else if(state==='none'){chip.className='netchip off';chip.textContent='Sin copia para usar sin internet'}
+    else{chip.className='netchip';chip.textContent='Preparando uso sin conexión…'}};
+  chip.onclick=()=>offlineInfo(state);
+  if(!isFile){
+    if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+      const had=!!navigator.serviceWorker.controller;
+      navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{state='none';upd()});
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had)toast('Hay una versión nueva de la herramienta: guarda el proyecto y recarga la página (F5)',8000)});
+      const check=async()=>{try{return !!(await caches.match('index.html'))||!!(await caches.match('./'))}catch(e){return false}};
+      navigator.serviceWorker.ready.then(async()=>{if(await check()){state='ready'}upd();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}});
+      setTimeout(async()=>{if(state!=='ready'){state=(await check())?'ready':'none';upd()}},8000);
+    }else state='none';
+  }
   addEventListener('online',upd);addEventListener('offline',upd);upd();
 })();
+async function saveOfflineCopy(){
+  let html=null;
+  try{html=await (await fetch(location.href.split('#')[0].split('?')[0],{cache:'no-cache'})).text()}catch(e){}
+  if(!html||html.indexOf('Procesador URN')<0){try{const r=await caches.match('index.html');if(r)html=await r.text()}catch(e){}}
+  if(!html){toast('No se pudo obtener la página. Ábrela con internet y vuelve a intentarlo.',6000);return}
+  const name=`Procesador URN ${APP_VERSION}.html`;
+  if(typeof window.showSaveFilePicker==='function'){try{const h=await window.showSaveFilePicker({suggestedName:name,types:[{description:'Página web',accept:{'text/html':['.html']}}]});
+      const w=await h.createWritable();await w.write(html);await w.close();$('#ovl').hidden=true;toast(`Guardado «${h.name}». Ábrelo con doble clic (en Chrome o Edge) aunque no haya internet.`,8000);return}
+    catch(e){if(e&&e.name==='AbortError')return}}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  $('#ovl').hidden=true;toast(`Descargado «${name}». Muévelo a una carpeta tuya y ábrelo con doble clic.`,8000);
+}
+function offlineInfo(state){
+  const b=$('#ovlbox'),isFile=state==='file';
+  const st={ready:'<b style="color:var(--good)">Sí</b>: este navegador tiene guardada una copia y la herramienta se abre sin internet.',none:'<b style="color:var(--warn)">No</b>: este navegador no ha guardado la copia (puede que lo impida una política de la empresa o que se borren los datos de los sitios al cerrar Chrome).',wait:'Comprobando…',file:'Estás usando la herramienta como archivo de tu equipo: funciona sin internet.'}[state]||'';
+  b.innerHTML=`<div class="ctool"><span class="t">Uso sin conexión</span><button class="btn sm" id="ov-x">Cerrar</button></div>
+    <div class="note" style="max-width:62ch;font-size:14px;color:var(--ink)">${st}</div>
+    ${isFile?`<div class="note" style="max-width:62ch">Para actualizar a una versión nueva, abre <span style="user-select:all">https://oscarvib.github.io/procesador-urn/</span> con internet y vuelve a guardar el archivo desde este mismo botón.</div>`
+    :`<div class="note" style="max-width:62ch">La forma más segura de trabajar sin internet, por ejemplo a bordo, es <b>guardar la herramienta como archivo</b> en tu ordenador y abrirla con doble clic. No depende de la caché del navegador: funciona todo, incluido procesar, la pestaña Propagación y guardar y abrir proyectos. Cuando haya una versión nueva, vuelve a guardarla desde aquí.</div>
+      <div class="ctool" style="justify-content:flex-end"><button class="btn pri" id="ov-save">Guardar la herramienta en un archivo (.html)</button></div>`}`;
+  $('#ovl').hidden=false;$('#ov-x').onclick=()=>$('#ovl').hidden=true;const sv=$('#ov-save');if(sv)sv.onclick=saveOfflineCopy;
+}
 </script>
 </body>
 </html>
